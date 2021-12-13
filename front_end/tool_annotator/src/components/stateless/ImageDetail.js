@@ -1,9 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { parse } from 'json2csv';
 import PropTypes from 'prop-types';
-import BoxesDetail from './BoxesDetail';
-import UploadInfo from './UploadInfo';
-import ImageAnnoDisplay from './ImageAnnoDisplay';
+import BoxesDetail from './statefull/BoxesDetail';
+import UploadInfo from '../UploadInfo';
+import ImageAnnoDisplay from './stateless/ImageAnnoDisplay';
 import { convertIdStrToInt } from './utils/helpers';
 
 function ImageDetail({ image, createMessage }) {
