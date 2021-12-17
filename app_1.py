@@ -25,6 +25,7 @@ fs = gridfs.GridFS(db)
 # collection
 user = db["User"]
 book = db['Book']
+box_img = db['Box']
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
@@ -92,6 +93,7 @@ def detect_symbol(filename):
 
 def get_box_img(box, image):
     img = Image.open(io.BytesIO(image))
+    width, height = img.size
     img = np.array(img)
     # print("Image", img)
     b = np.array(box, dtype=np.int16)
@@ -103,7 +105,7 @@ def get_box_img(box, image):
     print("Type", type(xmin))
     crop_img = img[ymin:ymax, xmin:xmax, :].copy()
 
-    return crop_img 
+    return crop_img, xmin, ymin, xmax, ymax, height, width
 
 
 
@@ -158,7 +160,7 @@ def logout():
     return jsonify({'message': 'You successfully logged'})
 
 
-@app.route('/books', methods=['GET'])
+@app.route('/api/images', methods=['GET'])
 def getAllBook():
     books = book.find()
     books_ = []
@@ -166,7 +168,9 @@ def getAllBook():
         temp = {
             "book_id": item.get("book_id"),
             "user_id": item.get("user_id"),
-            "filename": item.get("filename")
+            "name": item.get("filename"),
+            "width": item.get("width"),
+            "height": item.get("height")
         }
         books_.append(temp)
     print(books_)
@@ -174,7 +178,7 @@ def getAllBook():
 
 
 
-@app.route('/book/upload', methods=['GET', 'POST'])
+@app.route('/api/images/upload', methods=['GET', 'POST'])
 def upload():
     file = request.files['inputFile']
     user_id = request.form['user_id']
@@ -190,17 +194,16 @@ def upload():
     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
     return jsonify({'message': 'Upload file successful'}), 201
 
-@app.route('/book/uploads/<file_path>', methods=['GET'])
+@app.route('/api/images/uploads/<file_path>', methods=['GET'])
 def get_img(file_path):
     """Get image preview, return image"""
-    # file_path = 'uploads/' + file_path
     if (os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], file_path))):
         print("File has existed")
 
-    # return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=True)
-    return send_file('static/uploads/Lien_Phai.jpg')
+    return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=True)
 
-@app.route('/book/annotate/<book_id>', methods=['GET', 'POST'])
+
+@app.route('/api/images/annotate/<book_id>', methods=['GET', 'POST'])
 def annotate(book_id):
     img_id = book_id
     img_file = book.find_one({"_id": ObjectId(str(img_id))})
@@ -209,25 +212,36 @@ def annotate(book_id):
     img = img_.read()
     bbox = detect_single_image(img)['bbox']
 
-    book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"annotation": bbox}})
+    book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": bbox}})
 
     return jsonify({'message': 'Get annotion successful'}, {"bbox": bbox}), 200
 
-@app.route('/book/autolabel/<img_id>', methods=['GET', 'POST'])
+@app.route('/api/images/autolabel/<img_id>', methods=['GET', 'POST'])
 def autolabel(img_id):
     current_book = book.find_one({"_id": ObjectId(str(img_id))})
     img_file = current_book['filename']
     img_ = fs.find_one({'filename': img_file})
     img = img_.read()
-    bbox = current_book['annotation']
-    label = []
-    for box in bbox:
+    bboxes = detect_single_image(img)['bbox']
+    # bboxes = current_book['annotation']
+    detected_boxes = []
+    for box in bboxes:
         print("Sample box: {}".format(box))
-        img_box_crop = get_box_img(box, img)
+        img_box_crop, x_min, y_min, x_max, y_max, height, width  = get_box_img(box, img)
+        # x_min, y_min, x_max, y_max = x_min.item(), y_min.item(), x_max.item(), y_max.item()
         label_detect = detect_symbol(img_box_crop)
-        label.append({"annotation": box, "label": label_detect})
+        current_box = {
+            'id': uuid.uuid4(),
+            'label': label_detect,
+            'x_min': x_min.item(),
+            'y_min': y_min.item(),
+            'x_max': x_max.item(),
+            'y_max': y_max.item()
+        }
+        # print(type(x_min))
+        detected_boxes.append(current_box)
     
-    book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"detected": label}})
+    book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": detected_boxes, "height": height, "width": width}})
     return jsonify({'message': 'Label successfull'})
 
 

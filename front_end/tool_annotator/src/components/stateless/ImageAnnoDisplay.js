@@ -9,7 +9,7 @@ function ImageAnnoDisplay(props) {
     imageHeight,
     drawBoxes,
     scale,
-    name,
+    filename,
     onImageClick,
     createMessage,
   } = props;
@@ -61,9 +61,7 @@ function ImageAnnoDisplay(props) {
       onClick={() => setMoveable(!moveable)}
     >
       <image
-        xlinkHref={`${process.env.REACT_APP_API_URL}/api/uploads/${name}`}
-        x="0"
-        y="0"
+        xlinkHref={`http://localhost:5000/api/images/uploads/${filename}`}
         width={svgWidth}
         height={svgHeight}
         style={
@@ -91,7 +89,7 @@ ImageAnnoDisplay.propTypes = {
   svgHeight: PropTypes.number.isRequired,
   imageWidth: PropTypes.number.isRequired,
   imageHeight: PropTypes.number.isRequired,
-  name: PropTypes.string.isRequired,
+  filename: PropTypes.string.isRequired,
   scale: PropTypes.number.isRequired,
   drawBoxes: PropTypes.array.isRequired,
   onImageClick: PropTypes.func.isRequired,

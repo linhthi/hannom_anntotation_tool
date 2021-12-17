@@ -1,10 +1,9 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { parse } from 'json2csv';
 import PropTypes from 'prop-types';
-import BoxesDetail from './statefull/BoxesDetail';
-import UploadInfo from '../UploadInfo';
-import ImageAnnoDisplay from './stateless/ImageAnnoDisplay';
-import { convertIdStrToInt } from './utils/helpers';
+import BoxesDetail from './BoxesDetail';
+import ImageAnnoDisplay from './ImageAnnoDisplay';
+import { convertIdStrToInt } from '../utils/helpers';
 
 function ImageDetail({ image, createMessage }) {
   const [drawBoxes, setDrawBoxes] = useState([]);
@@ -17,6 +16,7 @@ function ImageDetail({ image, createMessage }) {
   const ref = useRef(null);
 
   useEffect(() => {
+    console.log(image)
     if (typeof image === 'undefined') return;
     if (ref.current && ref.current.offsetWidth < image.width) {
       setScale(ref.current.offsetWidth / image.width);
@@ -129,7 +129,7 @@ function ImageDetail({ image, createMessage }) {
     const hiddenElement = document.createElement('a');
     hiddenElement.setAttribute('href', encodeURI(csv));
     hiddenElement.setAttribute('target', '_blank');
-    hiddenElement.setAttribute('download', image.name.replace('jpg', 'csv'));
+    hiddenElement.setAttribute('download', image.filename.replace('jpg', 'csv'));
     hiddenElement.click();
   };
 
@@ -143,7 +143,7 @@ function ImageDetail({ image, createMessage }) {
           imageHeight={image.height}
           scale={scale}
           drawBoxes={drawBoxes}
-          name={image.name}
+          filename={image.filename}
           onImageClick={onImageClick}
           createMessage={createMessage}
         />
@@ -154,10 +154,10 @@ function ImageDetail({ image, createMessage }) {
         </button>
       </div>
       <div className="half-width-item text-center">
-        <UploadInfo
+        {/* <UploadInfo
           username={image.user.username}
           uploaded_at={image.uploaded_at}
-        />
+        /> */}
         <BoxesDetail
           boxes={boxes || []}
           drawList={drawBoxes.map(box => box.id)}

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import BoxDetail from './BoxDetail';
+import BoxDetail from '../statefull/BoxDetail';
 
 function BoxesDetail({
   boxes,

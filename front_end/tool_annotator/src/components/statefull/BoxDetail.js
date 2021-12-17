@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { FaEye, FaCheck, FaEdit, FaTrash } from 'react-icons/fa';
-import BoxCoord from './stateless/BoxCoord';
-import BoxEditForm from './stateless/BoxEditForm';
-import Label from './stateless/Label';
-import LabelEditForm from './stateless/LabelEditForm';
+import BoxCoord from '../stateless/BoxCoord';
+import BoxEditForm from '../stateless/BoxEditForm';
+import Label from '../stateless/Label';
+import LabelEditForm from '../stateless/LabelEditForm';
 
 class BoxDetail extends React.Component {
   constructor(props) {

@@ -49,11 +49,10 @@ class RegisterLoginForm extends React.Component {
   }
 
   render() {
-    const { isAuthenticated, formType } = this.props;
     const { username, password, valid } = this.state;
-    if (isAuthenticated) {
-      return <Redirect to="/" />;
-    }
+    // if (isAuthenticated) {
+    //   return <Redirect to="/" />;
+    // }
 
     return (
       <div className="container column" style={{ margin: '30px auto' }}>
@@ -102,7 +101,6 @@ class RegisterLoginForm extends React.Component {
 }
 
 RegisterLoginForm.propTypes = {
-  isAuthenticated: PropTypes.bool,
   formType: PropTypes.string.isRequired,
   onButtonClick: PropTypes.func.isRequired,
 };
