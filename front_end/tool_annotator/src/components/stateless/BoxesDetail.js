@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import BoxDetail from '../statefull/BoxDetail';
+import ReactPaginate from 'react-paginate';
 
 function BoxesDetail({
   boxes,
@@ -11,9 +12,18 @@ function BoxesDetail({
   onCheckIconClick,
   onTrashIconClick,
 }) {
+  const firstPage = boxes.slice(0,3)
+  const [currentBoxes, setCurrentBoxes] = useState()
+  const handlePageClick = (e) => {
+    const currentBoxes = boxes.slice(e.selected*3, e.selected*3 +3)
+    setCurrentBoxes(currentBoxes)
+  }
+  const newBox = currentBoxes ? currentBoxes : firstPage
   return (
     <div className="ui segments">
-      {boxes.map((box, i) => (
+      
+      <div>
+      {newBox.map((box, i) => (
         <BoxDetail
           key={box.id}
           box={box}
@@ -25,6 +35,30 @@ function BoxesDetail({
           onInputChange={onInputChange}
         />
       ))}
+      </div>
+
+      <div style={{display: 'inline-block'}}>
+      <ReactPaginate
+        breakLabel="..."
+        nextLabel="next >"
+        onPageChange={handlePageClick}
+        pageRangeDisplayed={4}
+        pageCount={boxes.length/3}
+        previousLabel="< previous"
+        renderOnZeroPageCount={null}
+        pageClassName="page-item"
+        pageLinkClassName="page-link"
+        previousClassName="page-item"
+        previousLinkClassName="page-link"
+        nextClassName="page-item"
+        nextLinkClassName="page-link"
+        breakLabel="..."
+        breakClassName="page-item"
+        breakLinkClassName="page-link"
+        containerClassName="pagination"
+        activeClassName="active"
+      />
+      </div>
     </div>
   );
 }
