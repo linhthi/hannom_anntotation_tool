@@ -278,10 +278,15 @@ span.label {
 }
 
 .box-label {
-  color: firebrick;
+  color: #4000FF;
   letter-spacing: 0.25rem;
-  font-size: 2rem;
+  font-size: 3rem;
   font-weight: 800;
+}
+
+.box-label-first {
+  color: #121212;
+  font-size: 2rem;
 }
 
 .footer-dark {

@@ -112,17 +112,17 @@ class BoxDetail extends React.Component {
                     </button>
                   ) : (
                     <button
-                      className="circular red button"
+                      className="circular button"
                       onClick={this.toggleEditMode}
                     >
-                      <FaEdit color="white" />
+                      <FaEdit />
                     </button>
                   )}
                   <button
-                    className="circular red button"
+                    className="circular button"
                     onClick={this.handleTrashIconClick}
                   >
-                    <FaTrash color="white" />
+                    <FaTrash />
                   </button>
                 </span>
               </div>
