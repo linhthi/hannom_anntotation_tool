@@ -35,7 +35,7 @@ function Card({ image, onDeleteImage }) {
                 onClick={() => onDeleteImage(image.filename.replace('.jpg', ''))}
               />
           </div>
-          <div className="description">
+          {/* <div className="description">
             This image may contain:{' '}
             {image.boxes.length > 0 ? (
               [...new Set(image.boxes.map(box => box.label))].map(
@@ -48,13 +48,12 @@ function Card({ image, onDeleteImage }) {
             ) : (
               <div className="label">nothing</div>
             )}
-          </div>
+          </div> */}
         </div>
         <div className="extra-content">
           <div>
-            Uploaded by{' '}
-            <span style={{ color: 'red' }}>{image.user_id}</span> at{' '}
-            {image.uploaded_at}
+            Được tải lên bởi{' '}
+            <span style={{ color: 'red' }}>{image.user_id}</span>
           </div>
         </div>
       </div>
