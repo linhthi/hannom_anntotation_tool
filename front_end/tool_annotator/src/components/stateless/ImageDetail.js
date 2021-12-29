@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 import BoxesDetail from './BoxesDetail';
 import ImageAnnoDisplay from './ImageAnnoDisplay';
 import { convertIdStrToInt } from '../utils/helpers';
+import ImageLabelDisplay from './ImageLabelDisplay';
 
 function ImageDetail({ image, createMessage }) {
   const [drawBoxes, setDrawBoxes] = useState([]);
@@ -147,18 +148,25 @@ function ImageDetail({ image, createMessage }) {
           onImageClick={onImageClick}
           createMessage={createMessage}
         />
-        <p></p>
 
         <button className="primary button" onClick={downloadBoxesAsCSV}>
           Download annotation
         </button>
       </div>
       <div className="half-width-item text-center">
+        <ImageLabelDisplay
+          svgWidth={svgWidth || 0}
+          svgHeight={svgHeight || 0}
+          scale={scale}
+          drawBoxes={boxes}
+          onImageClick={onImageClick}
+          createMessage={createMessage}
+        />
         {/* <UploadInfo
           username={image.user.username}
           uploaded_at={image.uploaded_at}
         /> */}
-        <BoxesDetail
+        {/* <BoxesDetail
           boxes={boxes || []}
           drawList={drawBoxes.map(box => box.id)}
           editModes={editModes || []}
@@ -181,7 +189,7 @@ function ImageDetail({ image, createMessage }) {
           >
             Add
           </button>
-        )}
+        )} */}
       </div>
     </div>
   );
