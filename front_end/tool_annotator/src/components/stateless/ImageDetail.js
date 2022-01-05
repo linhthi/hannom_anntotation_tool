@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback} from 'react';
 import { parse } from 'json2csv';
 import PropTypes from 'prop-types';
 import BoxesDetail from './BoxesDetail';
@@ -15,6 +15,10 @@ function ImageDetail({ image, createMessage }) {
   const [svgWidth, setSvgWidth] = useState(0);
   const [svgHeight, setSvgHeight] = useState(0);
   const ref = useRef(null);
+
+  const callback = useCallback((drawBoxes) => {
+    setDrawBoxes(drawBoxes);
+  }, []);
 
   useEffect(() => {
     console.log(image)
@@ -37,16 +41,6 @@ function ImageDetail({ image, createMessage }) {
     return <div>Loading...</div>;
   }
 
-  const onEyeIconClick = box => {
-    const currentBox = drawBoxes.filter(drawBox => drawBox.id === box.id);
-    if (currentBox.length === 0) {
-      setDrawBoxes([...drawBoxes, box]);
-    } else {
-      const otherBoxes = drawBoxes.filter(drawBox => drawBox.id !== box.id);
-      setDrawBoxes([...otherBoxes]);
-    }
-  };
-
   const updateBoxes = box => {
     const otherBoxes = boxes.filter(originalBox => originalBox.id !== box.id);
     const newBoxes = [...otherBoxes, box];
@@ -63,29 +57,6 @@ function ImageDetail({ image, createMessage }) {
     );
   };
 
-  const onInputChange = box => {
-    updateBoxes(box);
-  };
-
-  const onCheckIconClick = currentBox => {
-    const currentId = convertIdStrToInt(currentBox.id);
-    if (
-      currentId === Math.max(...boxes.map(box => convertIdStrToInt(box.id)))
-    ) {
-      setAddBoxMode(false);
-    }
-    updateBoxes(currentBox);
-    setEditModes([...editModes.slice(0, editModes.length - 1), false]);
-  };
-
-  const onTrashIconClick = id => {
-    setAddBoxMode(false);
-    const otherBoxes = boxes.filter(box => box.id !== id);
-    setBoxes(otherBoxes);
-    const otherDrawBoxes = drawBoxes.filter(box => box.id !== id);
-    setDrawBoxes(otherDrawBoxes);
-  };
-
   const onAddBoxButtonClick = () => {
     setAddBoxMode(true);
     const newBox = {
@@ -99,15 +70,6 @@ function ImageDetail({ image, createMessage }) {
     setBoxes([...boxes, newBox]);
     setDrawBoxes([...drawBoxes, newBox]);
     setEditModes([...editModes, true]);
-  };
-
-  const onUndoBoxAddingButtonClick = () => {
-    setAddBoxMode(false);
-    const oldBoxes = boxes.slice(0, boxes.length - 1);
-    setBoxes([...oldBoxes]);
-    const oldDrawBoxes = drawBoxes.slice(0, drawBoxes.length - 1);
-    setDrawBoxes([...oldDrawBoxes]);
-    setEditModes(Array(oldBoxes.length).fill(false));
   };
 
   const onImageClick = newBox => {
@@ -132,7 +94,12 @@ function ImageDetail({ image, createMessage }) {
     hiddenElement.setAttribute('target', '_blank');
     hiddenElement.setAttribute('download', image.filename.replace('jpg', 'csv'));
     hiddenElement.click();
-  };
+  }
+
+  const onClickLayout = () => {
+    setDrawBoxes(drawBoxes)
+    console.log("DrawBoxes", drawBoxes)
+  }
 
   return (
     <div className="row space-around">
@@ -143,24 +110,37 @@ function ImageDetail({ image, createMessage }) {
           imageWidth={image.width}
           imageHeight={image.height}
           scale={scale}
+          boxes={boxes}
           drawBoxes={drawBoxes}
           filename={image.filename}
           onImageClick={onImageClick}
           createMessage={createMessage}
+          parrentCallback={callback}
         />
 
         <button className="primary button" onClick={downloadBoxesAsCSV}>
           Download annotation
         </button>
+
+        <button
+            className="circular primary button"
+            onClick={onAddBoxButtonClick}
+          >
+            Add
+        </button>
       </div>
-      <div className="half-width-item text-center">
+
+      {console.log("DrawBoxes", drawBoxes)}
+        <div className="half-width-item text-center">
         <ImageLabelDisplay
           svgWidth={svgWidth || 0}
           svgHeight={svgHeight || 0}
           scale={scale}
-          drawBoxes={boxes}
-          onImageClick={onImageClick}
+          boxes={boxes}
+          drawBoxes={drawBoxes}
+          onClick={onClickLayout}
           createMessage={createMessage}
+          parrentCallback={callback}
         />
         {/* <UploadInfo
           username={image.user.username}

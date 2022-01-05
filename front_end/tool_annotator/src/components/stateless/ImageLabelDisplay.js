@@ -1,52 +1,56 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
+import React, { useState} from 'react'
+import PropTypes from 'prop-types'
 
 function ImageLabelDisplay(props) {
   const {
     svgWidth,
     svgHeight,
-    drawBoxes,
+    boxes,
     scale,
-    onImageClick,
     createMessage,
+    parrentCallback,
   } = props;
 
-  const [moveable, setMoveable] = useState(false);
+  const [moveable, setMoveable] = useState(false)
+  const [box, setBox] = useState()
+  const [drawBoxes, setDrawBoxes] = useState([])
 
-  const handleMouseMove = e => {
-    if (!moveable) return;
-    if (drawBoxes.length > 1) {
-      createMessage(
-        'error',
-        'Only one box can be editted by clicking at a time.'
-      );
-      return;
-    }
-    if (drawBoxes.length === 0) {
-      return;
-    }
-    const rect = e.target.getBoundingClientRect();
-    const clickX = (e.clientX - rect.x) / scale;
-    const clickY = (e.clientY - rect.y) / scale;
-    const newBox = { ...drawBoxes[0] };
-    if (
-      Math.abs(clickX - drawBoxes[0].x_min) >
-      Math.abs(clickX - drawBoxes[0].x_max)
-    ) {
-      newBox.x_max = clickX;
-    } else {
-      newBox.x_min = clickX;
-    }
-    if (
-      Math.abs(clickY - drawBoxes[0].y_min) >
-      Math.abs(clickY - drawBoxes[0].y_max)
-    ) {
-      newBox.y_max = clickY;
-    } else {
-      newBox.y_min = clickY;
-    }
-    onImageClick(newBox);
-  };
+  // const numberLines = 17
+  // var x = 0
+  // var y = 0
+  // const [lines, setLines] = useState([]);
+
+  const searchBox = (x, y) => {
+    boxes.map(box => {
+      if (x > box.x_min * scale && x < box.x_max*scale && y > box.y_min*scale && y < box.y_max*scale) {
+        // return <label>{box.label}</label>
+        setBox(box)
+        // alert("box: "+box.label+" x: "+x+" y:"+y)
+        setDrawBoxes(box)
+        parrentCallback(box)
+      }
+    })
+  }
+
+  // for (let index = 0; index < numberLines; index++) {
+  //   x = x * index + 20
+  //   lines.push({
+  //     x1: x,
+  //     y1: y,
+  //     x2: x,
+  //     y2: svgHeight
+  //   })
+  // }
+  // console.log("Lines", lines)
+
+  const handleOnclick = e => {
+    var evt = e.target
+    var dim = evt.getBoundingClientRect()
+    var x = e.clientX - dim.left
+    var y = e.clientY - dim.top
+
+    searchBox(x, y)
+  }
 
   return (
     <svg
@@ -55,13 +59,31 @@ function ImageLabelDisplay(props) {
       className="image-large"
       width={svgWidth}
       height={svgHeight}
-      onClick={() => setMoveable(!moveable)}
+      onClick={handleOnclick}
     >
-      {console.log(drawBoxes)}
+      <g>
+        <rect 
+          x={10}
+          y={10}
+          width={svgWidth-12}
+          height={svgHeight-12}
+          style={{ fill: 'none', stroke: 'black', strokeWidth: '1' }}
+        />
+      </g>
 
-      {drawBoxes.map(box => (
+      {/* {console.log(lines)}
+      {lines.map(line => (
         <g>
-          <rect
+          <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+        </g>
+      ))} */}
+
+      {/* {console.log(boxes)} */}
+
+      {boxes.map(box => (
+        box.label ? 
+        <g>
+          {/* <rect
               key={box.id}
               x={box.x_min * scale}
               y={box.y_min * scale}
@@ -69,8 +91,29 @@ function ImageLabelDisplay(props) {
               height={(box.y_max - box.y_min) * scale}
               style={{ fill: 'none', stroke: 'lime', strokeWidth: '1' }}
 
-          />
+          /> */}
           <text 
+              x={box.x_min * scale}
+              y={(box.y_min + box.y_max) * scale / 2}
+              width={(box.x_max - box.x_min) * scale}
+              height={(box.y_max - box.y_min) * scale}
+              font-size="13" fill="blue"
+          > 
+            {box.label}
+          </text>
+        </g>
+        :
+        <g>
+          {/* <rect
+              key={box.id}
+              x={box.x_min * scale}
+              y={box.y_min * scale}
+              width={(box.x_max - box.x_min) * scale}
+              height={(box.y_max - box.y_min) * scale}
+              style={{ fill: 'none', stroke: 'black', strokeWidth: '1' }}
+
+          /> */}
+          {/* <text 
               x={box.x_min * scale}
               y={box.y_min * scale}
               width={(box.x_max - box.x_min) * scale}
@@ -78,20 +121,32 @@ function ImageLabelDisplay(props) {
               font-size="14" fill="blue"
           > 
             {box.label}
-          </text>
+          </text> */}
         </g>
         ))}
+
+          <g>
+            <rect
+                key={box.id}
+                x={box.x_min * scale}
+                y={box.y_min * scale}
+                width={(box.x_max - box.x_min) * scale}
+                height={(box.y_max - box.y_min) * scale}
+                style={{ fill: 'none', stroke: 'red', strokeWidth: '2' }}
+
+            />
+            </g>
     </svg>
-  );
+  )
 }
 
 ImageLabelDisplay.propTypes = {
   svgWidth: PropTypes.number.isRequired,
   svgHeight: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,
-  drawBoxes: PropTypes.array.isRequired,
-  onImageClick: PropTypes.func.isRequired,
+  boxes:PropTypes.array.isRequired,
   createMessage: PropTypes.func.isRequired,
-};
+  parrentCallback: PropTypes.func.isRequired,
+}
 
 export default ImageLabelDisplay;
