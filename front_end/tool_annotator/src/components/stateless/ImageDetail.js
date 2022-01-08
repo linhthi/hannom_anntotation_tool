@@ -5,6 +5,8 @@ import BoxesDetail from './BoxesDetail';
 import ImageAnnoDisplay from './ImageAnnoDisplay';
 import { convertIdStrToInt } from '../utils/helpers';
 import ImageLabelDisplay from './ImageLabelDisplay';
+import Label from './Label'
+import BoxEdit from './BoxEdit';
 
 function ImageDetail({ image, createMessage }) {
   const [drawBoxes, setDrawBoxes] = useState([]);
@@ -15,9 +17,14 @@ function ImageDetail({ image, createMessage }) {
   const [svgWidth, setSvgWidth] = useState(0);
   const [svgHeight, setSvgHeight] = useState(0);
   const ref = useRef(null);
+  const [newBox, setNewBox] = useState();
 
   const callback = useCallback((drawBoxes) => {
     setDrawBoxes(drawBoxes);
+  }, []);
+
+  const updateNewBox = useCallback((newBox) => {
+    setNewBox(newBox);
   }, []);
 
   useEffect(() => {
@@ -70,7 +77,7 @@ function ImageDetail({ image, createMessage }) {
     setBoxes([...boxes, newBox]);
     setDrawBoxes([...drawBoxes, newBox]);
     setEditModes([...editModes, true]);
-  };
+  }
 
   const onImageClick = newBox => {
     const otherBoxes = boxes.filter(box => box.id !== newBox.id);
@@ -119,19 +126,19 @@ function ImageDetail({ image, createMessage }) {
         />
 
         <button className="primary button" onClick={downloadBoxesAsCSV}>
-          Download annotation
+          Tải xuống annotation
         </button>
 
         <button
             className="circular primary button"
             onClick={onAddBoxButtonClick}
           >
-            Add
+            Thêm 
         </button>
       </div>
 
       {console.log("DrawBoxes", drawBoxes)}
-        <div className="half-width-item text-center">
+      <div className="half-width-item text-center">
         <ImageLabelDisplay
           svgWidth={svgWidth || 0}
           svgHeight={svgHeight || 0}
@@ -142,6 +149,12 @@ function ImageDetail({ image, createMessage }) {
           createMessage={createMessage}
           parrentCallback={callback}
         />
+
+        <BoxEdit 
+        box={drawBoxes}
+        label={drawBoxes.label}
+        parrentCallback={updateNewBox}
+        />
         {/* <UploadInfo
           username={image.user.username}
           uploaded_at={image.uploaded_at}
@@ -150,8 +163,6 @@ function ImageDetail({ image, createMessage }) {
           boxes={boxes || []}
           drawList={drawBoxes.map(box => box.id)}
           editModes={editModes || []}
-          onEyeIconClick={onEyeIconClick}
-          onCheckIconClick={onCheckIconClick}
           onTrashIconClick={onTrashIconClick}
           onInputChange={onInputChange}
         />

@@ -1,15 +1,13 @@
 import React, { useState } from 'react';
 import PropTypes from 'prop-types';
 import BoxDetail from '../statefull/BoxDetail';
-import ReactPaginate from 'react-paginate';
+// import ReactPaginate from 'react-paginate';
 
 function BoxesDetail({
   boxes,
   editModes,
   drawList,
   onInputChange,
-  onEyeIconClick,
-  onCheckIconClick,
   onTrashIconClick,
 }) {
   const firstPage = boxes.slice(0,3)
@@ -29,15 +27,13 @@ function BoxesDetail({
           box={box}
           boxIsDrawn={drawList.includes(box.id)}
           editMode={editModes[i]}
-          onEyeIconClick={onEyeIconClick}
-          onCheckIconClick={onCheckIconClick}
           onTrashIconClick={onTrashIconClick}
           onInputChange={onInputChange}
         />
       ))}
       </div>
 
-      <div style={{display: 'inline-block'}}>
+      {/* <div style={{display: 'inline-block'}}>
       <ReactPaginate
         breakLabel="..."
         nextLabel="next >"
@@ -58,7 +54,7 @@ function BoxesDetail({
         containerClassName="pagination"
         activeClassName="active"
       />
-      </div>
+      </div> */}
     </div>
   );
 }
@@ -68,9 +64,7 @@ BoxesDetail.propTypes = {
   drawList: PropTypes.array.isRequired,
   editModes: PropTypes.array.isRequired,
   onInputChange: PropTypes.func.isRequired,
-  onEyeIconClick: PropTypes.func.isRequired,
   onTrashIconClick: PropTypes.func.isRequired,
-  onCheckIconClick: PropTypes.func.isRequired,
 };
 
 export default BoxesDetail;

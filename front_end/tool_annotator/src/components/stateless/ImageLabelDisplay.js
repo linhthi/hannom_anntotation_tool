@@ -1,5 +1,6 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
+import lines from '../../lines.json'
 
 function ImageLabelDisplay(props) {
   const {
@@ -7,6 +8,7 @@ function ImageLabelDisplay(props) {
     svgHeight,
     boxes,
     scale,
+    newBox,
     createMessage,
     parrentCallback,
   } = props;
@@ -19,6 +21,10 @@ function ImageLabelDisplay(props) {
   // var x = 0
   // var y = 0
   // const [lines, setLines] = useState([]);
+
+  // useEffect(()=> {
+  //   newBoxIndex = boxes.findIndex((obj => obj.label == newBox.x_min and ne))
+  // }, [])
 
   const searchBox = (x, y) => {
     boxes.map(box => {
@@ -60,6 +66,7 @@ function ImageLabelDisplay(props) {
       width={svgWidth}
       height={svgHeight}
       onClick={handleOnclick}
+      parrentCallback={parrentCallback}
     >
       <g>
         <rect 
@@ -71,14 +78,17 @@ function ImageLabelDisplay(props) {
         />
       </g>
 
-      {/* {console.log(lines)}
       {lines.map(line => (
         <g>
-          <line x1="0" y1="0" x2="200" y2="200" style="stroke:rgb(255,0,0);stroke-width:2" />
+          <line 
+          x1={line.x*scale*1.45} 
+          y1={line.y1*scale*1.3+10} 
+          x2={line.x*scale*1.45} 
+          y2={line.y2*scale*1.3} 
+          style={{ stroke: 'black', strokeWidth: '0.5' }}
+          />
         </g>
-      ))} */}
-
-      {/* {console.log(boxes)} */}
+      ))}
 
       {boxes.map(box => (
         box.label ? 
@@ -125,7 +135,7 @@ function ImageLabelDisplay(props) {
         </g>
         ))}
 
-          <g>
+          {/* <g>
             <rect
                 key={box.id}
                 x={box.x_min * scale}
@@ -135,7 +145,7 @@ function ImageLabelDisplay(props) {
                 style={{ fill: 'none', stroke: 'red', strokeWidth: '2' }}
 
             />
-            </g>
+            </g> */}
     </svg>
   )
 }
@@ -145,6 +155,7 @@ ImageLabelDisplay.propTypes = {
   svgHeight: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,
   boxes:PropTypes.array.isRequired,
+  newBox: PropTypes.object.isRequired,
   createMessage: PropTypes.func.isRequired,
   parrentCallback: PropTypes.func.isRequired,
 }

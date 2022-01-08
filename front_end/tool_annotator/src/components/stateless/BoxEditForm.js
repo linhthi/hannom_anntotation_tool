@@ -14,14 +14,6 @@ function BoxEditForm({ coords, onInputChange }) {
           onChange={onInputChange}
         />
       </div>
-      {/* <div>
-        <input 
-        type="text"
-        name="x_min"
-        value={x_min}
-        onChange={onInputChange}
-        />
-      </div> */}
       <div className="input-field one-forth">
         <input
           type="text"

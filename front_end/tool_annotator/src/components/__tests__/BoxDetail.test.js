@@ -19,8 +19,6 @@ describe('Not in edit mode', () => {
       box={box}
       boxIsDrawn={false}
       onInputChange={jest.fn()}
-      onEyeIconClick={jest.fn()}
-      onCheckIconClick={jest.fn()}
       onTrashIconClick={jest.fn()}
     />
   );
@@ -38,10 +36,8 @@ describe('Not in edit mode', () => {
     expect(buttons.at(0).find('FaEye').length).toBe(1);
     expect(buttons.at(1).find('FaEdit').length).toBe(1);
     expect(buttons.at(2).find('FaTrash').length).toBe(1);
-    expect(component.props.onEyeIconClick).toHaveBeenCalledTimes(0);
     expect(component.props.onTrashIconClick).toHaveBeenCalledTimes(0);
     buttons.at(0).simulate('click');
-    expect(component.props.onEyeIconClick).toHaveBeenCalledTimes(1);
     buttons.at(2).simulate('click');
     expect(component.props.onTrashIconClick).toHaveBeenCalledTimes(1);
   });
@@ -59,8 +55,6 @@ describe('In edit mode', () => {
       box={box}
       boxIsDrawn={false}
       onInputChange={jest.fn()}
-      onEyeIconClick={jest.fn()}
-      onCheckIconClick={jest.fn()}
       onTrashIconClick={jest.fn()}
     />
   );
@@ -79,8 +73,6 @@ describe('In edit mode', () => {
     expect(buttons.at(0).find('FaEye').length).toBe(1);
     expect(buttons.at(1).find('FaCheck').length).toBe(1);
     expect(buttons.at(2).find('FaTrash').length).toBe(1);
-    expect(component.props.onEyeIconClick).toHaveBeenCalledTimes(0);
-    expect(component.props.onCheckIconClick).toHaveBeenCalledTimes(0);
     expect(component.props.onTrashIconClick).toHaveBeenCalledTimes(0);
     instance.handleInputChange({
       target: {
@@ -100,9 +92,7 @@ describe('In edit mode', () => {
       coords: { ...box, x_min: 20, label: 'cat' },
     });
     buttons.at(0).simulate('click');
-    expect(component.props.onEyeIconClick).toHaveBeenCalledTimes(1);
     buttons.at(1).simulate('click');
-    expect(component.props.onCheckIconClick).toHaveBeenCalledTimes(1);
     buttons.at(2).simulate('click');
     expect(component.props.onTrashIconClick).toHaveBeenCalledTimes(1);
   });

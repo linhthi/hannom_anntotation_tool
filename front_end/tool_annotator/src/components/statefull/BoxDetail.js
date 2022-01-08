@@ -24,8 +24,6 @@ class BoxDetail extends React.Component {
     };
 
     this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleEyeIconClick = this.handleEyeIconClick.bind(this);
-    this.handleCheckIconClick = this.handleCheckIconClick.bind(this);
     this.handleTrashIconClick = this.handleTrashIconClick.bind(this);
     this.toggleEditMode = this.toggleEditMode.bind(this);
   }
@@ -42,43 +40,27 @@ class BoxDetail extends React.Component {
       }),
       () => {
         const { coords } = this.state;
-        onInputChange(coords);
+        onInputChange(coords)
       }
-    );
-  }
-
-  handleEyeIconClick() {
-    const { box, onEyeIconClick } = this.props;
-    this.setState(prev => ({
-      boxIsDrawn: !prev.boxIsDrawn,
-    }));
-
-    onEyeIconClick(box);
-  }
-
-  handleCheckIconClick() {
-    const { onCheckIconClick } = this.props;
-    const { coords } = this.state;
-    this.toggleEditMode();
-    onCheckIconClick(coords);
+    )
   }
 
   handleTrashIconClick() {
     const { onTrashIconClick } = this.props;
     const { coords } = this.state;
-    onTrashIconClick(coords.id);
+    onTrashIconClick(coords.id)
   }
 
   toggleEditMode() {
     this.setState(prev => ({
       editMode: !prev.editMode,
-    }));
+    }))
   }
 
   render() {
-    const { box } = this.props;
+    const { box } = this.props
 
-    const { boxIsDrawn, editMode, coords } = this.state;
+    const { boxIsDrawn, editMode, coords } = this.state
 
     return (
       <div className="segment" key={box.id}>
@@ -97,12 +79,6 @@ class BoxDetail extends React.Component {
               </div>
               <div>
                 <span>
-                  <button
-                    className={`circular ${boxIsDrawn ? 'primary' : ''} button`}
-                    onClick={this.handleEyeIconClick}
-                  >
-                    <FaEye />
-                  </button>
                   {editMode ? (
                     <button
                       className="circular primary button"
@@ -140,7 +116,7 @@ class BoxDetail extends React.Component {
           </div>
         </div>
       </div>
-    );
+    )
   }
 }
 
@@ -149,13 +125,11 @@ BoxDetail.propTypes = {
   boxIsDrawn: PropTypes.bool.isRequired,
   editMode: PropTypes.bool,
   onInputChange: PropTypes.func.isRequired,
-  onEyeIconClick: PropTypes.func.isRequired,
-  onCheckIconClick: PropTypes.func.isRequired,
   onTrashIconClick: PropTypes.func.isRequired,
-};
+}
 
 BoxDetail.defaultProps = {
   editMode: false,
-};
+}
 
-export default BoxDetail;
+export default BoxDetail

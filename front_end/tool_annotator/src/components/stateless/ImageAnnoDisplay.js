@@ -7,50 +7,73 @@ function ImageAnnoDisplay(props) {
     svgHeight,
     imageWidth,
     imageHeight,
-    drawBoxes,
     boxes,
     scale,
     filename,
     onImageClick,
     createMessage,
+    parrentCallback
   } = props;
 
   const [moveable, setMoveable] = useState(false)
+  const [box, setBox] = useState()
+  const [drawBoxes, setDrawBoxes] = useState([])
+
+  const searchBox = (x, y) => {
+    boxes.map(box => {
+      if (x > box.x_min * scale && x < box.x_max*scale && y > box.y_min*scale && y < box.y_max*scale) {
+        // return <label>{box.label}</label>
+        setBox(box)
+        // alert("box: "+box.label+" x: "+x+" y:"+y)
+        setDrawBoxes(box)
+        parrentCallback(box)
+      }
+    })
+  }
+
+  const handleOnclick = e => {
+    var evt = e.target
+    var dim = evt.getBoundingClientRect()
+    var x = e.clientX - dim.left
+    var y = e.clientY - dim.top
+
+    searchBox(x, y)
+  }
 
   const handleMouseMove = e => {
     if (!moveable) return;
-    // if (drawBoxes.length > 1) {
-    //   createMessage(
-    //     'error',
-    //     'Only one box can be editted by clicking at a time.'
-    //   );
-    //   return;
+    // // if (drawBoxes.length > 1) {
+    // //   createMessage(
+    // //     'error',
+    // //     'Only one box can be editted by clicking at a time.'
+    // //   );
+    // //   return;
+    // // }
+    // // if (drawBoxes.length === 0) {
+    // //   return;
+    // // }
+    // const rect = e.target.getBoundingClientRect();
+    // const clickX = (e.clientX - rect.x) / scale;
+    // const clickY = (e.clientY - rect.y) / scale;
+    // const newBox = { ...drawBoxes[0] };
+    // if (
+    //   Math.abs(clickX - drawBoxes[0].x_min) >
+    //   Math.abs(clickX - drawBoxes[0].x_max)
+    // ) {
+    //   newBox.x_max = clickX;
+    // } else {
+    //   newBox.x_min = clickX;
     // }
-    // if (drawBoxes.length === 0) {
-    //   return;
+    // if (
+    //   Math.abs(clickY - drawBoxes[0].y_min) >
+    //   Math.abs(clickY - drawBoxes[0].y_max)
+    // ) {
+    //   newBox.y_max = clickY;
+    // } else {
+    //   newBox.y_min = clickY;
     // }
-    const rect = e.target.getBoundingClientRect();
-    const clickX = (e.clientX - rect.x) / scale;
-    const clickY = (e.clientY - rect.y) / scale;
-    const newBox = { ...drawBoxes[0] };
-    if (
-      Math.abs(clickX - drawBoxes[0].x_min) >
-      Math.abs(clickX - drawBoxes[0].x_max)
-    ) {
-      newBox.x_max = clickX;
-    } else {
-      newBox.x_min = clickX;
-    }
-    if (
-      Math.abs(clickY - drawBoxes[0].y_min) >
-      Math.abs(clickY - drawBoxes[0].y_max)
-    ) {
-      newBox.y_max = clickY;
-    } else {
-      newBox.y_min = clickY;
-    }
-    onImageClick(newBox);
-  };
+    // onImageClick(newBox);
+  }
 
   return (
     <svg
@@ -59,7 +82,7 @@ function ImageAnnoDisplay(props) {
       className="image-large"
       width={svgWidth}
       height={svgHeight}
-      onClick={() => setMoveable(!moveable)}
+      onClick={handleOnclick}
     >
       {
         console.log("DrawBoxes Child 2", drawBoxes)
@@ -94,7 +117,7 @@ function ImageAnnoDisplay(props) {
               y={box.y_min * scale}
               width={(box.x_max - box.x_min) * scale}
               height={(box.y_max - box.y_min) * scale}
-              style={{ fill: 'none', stroke: 'yellow', strokeWidth: '1' }}
+              style={{ fill: 'none', stroke: 'red', strokeWidth: '0.5' }}
 
           />
           </g>
@@ -126,10 +149,10 @@ ImageAnnoDisplay.propTypes = {
   imageHeight: PropTypes.number.isRequired,
   filename: PropTypes.string.isRequired,
   scale: PropTypes.number.isRequired,
-  drawBoxes: PropTypes.array.isRequired,
   boxes: PropTypes.array.isRequired,
   onImageClick: PropTypes.func.isRequired,
   createMessage: PropTypes.func.isRequired,
+  parrentCallback: PropTypes.func.isRequired,
 };
 
 export default ImageAnnoDisplay;

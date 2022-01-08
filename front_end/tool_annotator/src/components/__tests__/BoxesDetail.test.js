@@ -31,8 +31,6 @@ const component = (
     drawList={[1]}
     editModes={editModes}
     onInputChange={jest.fn()}
-    onEyeIconClick={jest.fn()}
-    onCheckIconClick={jest.fn()}
     onTrashIconClick={jest.fn()}
   />
 );
