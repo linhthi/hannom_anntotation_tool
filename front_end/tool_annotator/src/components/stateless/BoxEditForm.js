@@ -1,8 +1,8 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 function BoxEditForm({ coords, onInputChange }) {
-  const { x_min, y_min, x_max, y_max } = coords;
+  const { x_min, y_min, x_max, y_max } = coords
 
   return (
     <div className="row space-around">
@@ -39,12 +39,12 @@ function BoxEditForm({ coords, onInputChange }) {
         />
       </div>
     </div>
-  );
+  )
 }
 
 BoxEditForm.propTypes = {
   coords: PropTypes.object.isRequired,
   onInputChange: PropTypes.func.isRequired,
-};
+}
 
-export default BoxEditForm;
+export default BoxEditForm

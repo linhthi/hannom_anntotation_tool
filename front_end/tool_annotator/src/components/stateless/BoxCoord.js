@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 function BoxCoord({ coords }) {
   return (
@@ -9,11 +9,11 @@ function BoxCoord({ coords }) {
       <span className="box-coord">{Math.floor(coords.x_max)}</span>
       <span className="box-coord">{Math.floor(coords.y_max)}</span>
     </React.Fragment>
-  );
+  )
 }
 
 BoxCoord.propTypes = {
   coords: PropTypes.object.isRequired,
-};
+}
 
-export default BoxCoord;
+export default BoxCoord

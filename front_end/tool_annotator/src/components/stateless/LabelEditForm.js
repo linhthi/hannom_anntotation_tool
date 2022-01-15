@@ -14,12 +14,12 @@ function LabelEditForm({ label, onInputChange }) {
         />
       </div>
     </div>
-  );
+  )
 }
 
 LabelEditForm.propTypes = {
   label: PropTypes.string.isRequired,
   onInputChange: PropTypes.func.isRequired,
-};
+}
 
 export default LabelEditForm

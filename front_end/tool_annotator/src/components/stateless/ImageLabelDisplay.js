@@ -8,55 +8,10 @@ function ImageLabelDisplay(props) {
     svgHeight,
     boxes,
     scale,
-    newBox,
-    createMessage,
-    parrentCallback,
-  } = props;
+    drawBoxes,
+  } = props
 
   const [moveable, setMoveable] = useState(false)
-  const [box, setBox] = useState()
-  const [drawBoxes, setDrawBoxes] = useState([])
-
-  // const numberLines = 17
-  // var x = 0
-  // var y = 0
-  // const [lines, setLines] = useState([]);
-
-  // useEffect(()=> {
-  //   newBoxIndex = boxes.findIndex((obj => obj.label == newBox.x_min and ne))
-  // }, [])
-
-  const searchBox = (x, y) => {
-    boxes.map(box => {
-      if (x > box.x_min * scale && x < box.x_max*scale && y > box.y_min*scale && y < box.y_max*scale) {
-        // return <label>{box.label}</label>
-        setBox(box)
-        // alert("box: "+box.label+" x: "+x+" y:"+y)
-        setDrawBoxes(box)
-        parrentCallback(box)
-      }
-    })
-  }
-
-  // for (let index = 0; index < numberLines; index++) {
-  //   x = x * index + 20
-  //   lines.push({
-  //     x1: x,
-  //     y1: y,
-  //     x2: x,
-  //     y2: svgHeight
-  //   })
-  // }
-  // console.log("Lines", lines)
-
-  const handleOnclick = e => {
-    var evt = e.target
-    var dim = evt.getBoundingClientRect()
-    var x = e.clientX - dim.left
-    var y = e.clientY - dim.top
-
-    searchBox(x, y)
-  }
 
   return (
     <svg
@@ -65,8 +20,6 @@ function ImageLabelDisplay(props) {
       className="image-large"
       width={svgWidth}
       height={svgHeight}
-      onClick={handleOnclick}
-      parrentCallback={parrentCallback}
     >
       <g>
         <rect 
@@ -93,18 +46,9 @@ function ImageLabelDisplay(props) {
       {boxes.map(box => (
         box.label ? 
         <g>
-          {/* <rect
-              key={box.id}
-              x={box.x_min * scale}
-              y={box.y_min * scale}
-              width={(box.x_max - box.x_min) * scale}
-              height={(box.y_max - box.y_min) * scale}
-              style={{ fill: 'none', stroke: 'lime', strokeWidth: '1' }}
-
-          /> */}
           <text 
-              x={box.x_min * scale}
-              y={(box.y_min + box.y_max) * scale / 2}
+              x={box.x_min * scale +2 }
+              y={(box.y_min + box.y_max) * scale / 2 + 2}
               width={(box.x_max - box.x_min) * scale}
               height={(box.y_max - box.y_min) * scale}
               font-size="13" fill="blue"
@@ -114,38 +58,20 @@ function ImageLabelDisplay(props) {
         </g>
         :
         <g>
-          {/* <rect
-              key={box.id}
-              x={box.x_min * scale}
-              y={box.y_min * scale}
-              width={(box.x_max - box.x_min) * scale}
-              height={(box.y_max - box.y_min) * scale}
-              style={{ fill: 'none', stroke: 'black', strokeWidth: '1' }}
-
-          /> */}
-          {/* <text 
-              x={box.x_min * scale}
-              y={box.y_min * scale}
-              width={(box.x_max - box.x_min) * scale}
-              height={(box.y_max - box.y_min) * scale}
-              font-size="14" fill="blue"
-          > 
-            {box.label}
-          </text> */}
         </g>
-        ))}
+      ))}
 
-          {/* <g>
+          <g>
             <rect
-                key={box.id}
-                x={box.x_min * scale}
-                y={box.y_min * scale}
-                width={(box.x_max - box.x_min) * scale}
-                height={(box.y_max - box.y_min) * scale}
-                style={{ fill: 'none', stroke: 'red', strokeWidth: '2' }}
+                key={drawBoxes.id}
+                x={drawBoxes.x_min * scale}
+                y={drawBoxes.y_min * scale}
+                width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
+                height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
+                style={{ fill: 'none', stroke: 'yellow', strokeWidth: '2' }}
 
             />
-            </g> */}
+            </g>
     </svg>
   )
 }
@@ -155,9 +81,7 @@ ImageLabelDisplay.propTypes = {
   svgHeight: PropTypes.number.isRequired,
   scale: PropTypes.number.isRequired,
   boxes:PropTypes.array.isRequired,
-  newBox: PropTypes.object.isRequired,
-  createMessage: PropTypes.func.isRequired,
-  parrentCallback: PropTypes.func.isRequired,
+  drawboxes: PropTypes.object.isRequired,
 }
 
-export default ImageLabelDisplay;
+export default ImageLabelDisplay

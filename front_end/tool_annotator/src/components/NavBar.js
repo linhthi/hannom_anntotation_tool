@@ -1,6 +1,6 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
 
 function NavBar({ title, isAuthenticated }) {
   return (
@@ -30,12 +30,12 @@ function NavBar({ title, isAuthenticated }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 NavBar.propTypes = {
   title: PropTypes.string.isRequired,
   isAuthenticated: PropTypes.bool.isRequired,
-};
+}
 
-export default NavBar;
+export default NavBar

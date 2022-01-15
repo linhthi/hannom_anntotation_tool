@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import BoxDetail from '../statefull/BoxDetail';
-// import ReactPaginate from 'react-paginate';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import BoxDetail from '../statefull/BoxDetail'
+// import ReactPaginate from 'react-paginate'
 
 function BoxesDetail({
   boxes,
@@ -56,7 +56,7 @@ function BoxesDetail({
       />
       </div> */}
     </div>
-  );
+  )
 }
 
 BoxesDetail.propTypes = {
@@ -65,6 +65,6 @@ BoxesDetail.propTypes = {
   editModes: PropTypes.array.isRequired,
   onInputChange: PropTypes.func.isRequired,
   onTrashIconClick: PropTypes.func.isRequired,
-};
+}
 
-export default BoxesDetail;
+export default BoxesDetail

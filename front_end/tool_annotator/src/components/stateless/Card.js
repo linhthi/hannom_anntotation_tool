@@ -1,10 +1,10 @@
-import React, { useState } from 'react';
-import PropTypes from 'prop-types';
-import { Link } from 'react-router-dom';
-import { FaClone, FaInfoCircle, FaTrashAlt } from 'react-icons/fa';
+import React, { useState } from 'react'
+import PropTypes from 'prop-types'
+import { Link } from 'react-router-dom'
+import { FaClone, FaInfoCircle, FaTrashAlt } from 'react-icons/fa'
 
 function Card({ image, onDeleteImage }) {
-  const [detectImage, toggleDetectImage] = useState(true);
+  const [detectImage, toggleDetectImage] = useState(true)
 
   return (
     <div className="grid-item" style={{ textAlign: 'left' }}>
@@ -58,12 +58,12 @@ function Card({ image, onDeleteImage }) {
         </div>
       </div>
     </div>
-  );
+  )
 }
 
 Card.propTypes = {
   image: PropTypes.object.isRequired,
   onDeleteImage: PropTypes.func.isRequired,
-};
+}
 
-export default Card;
+export default Card

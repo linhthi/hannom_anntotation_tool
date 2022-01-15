@@ -17,7 +17,13 @@ function BoxEdit(props) {
 	const toggleEditMode = (e) => {
 		setEdit(!isEdit)
 	}
+
+	const handleSave = (e) => {
+		setEdit(!isEdit)
+	}
+
 	const handleTrashIconClick = (e) => {}
+	
 	const onLabelChange = (e) => {
 		setNewLabel(e.target.value)
 		const newBox = {
@@ -51,23 +57,23 @@ function BoxEdit(props) {
 			>
 				<FaTrash />
 			/</button>
-			{isEdit ?  
-			<button
-        className="circular primary button"
-      >
-        Lưu
-      </button>
-			: <div></div>
-			}
-		</div>
+			{isEdit ?  (
+				<button
+				className="circular primary button"
+				onClick={handleSave}
+				>
+					Lưu
+				</button>
+			) : null}
+	</div>
 
-  );
+  )
 }
 
 BoxEdit.propTypes = {
 	box: PropTypes.object.isRequired,
 	label: PropTypes.string.isRequired,
 	parrentCallback: PropTypes.func.isRequired
-};
+}
 
-export default BoxEdit;
+export default BoxEdit

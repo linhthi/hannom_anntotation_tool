@@ -1,10 +1,10 @@
-import React from 'react';
-import { Route } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import AddImageForm from '../statefull/AddImageForm';
-import CardList from './CardList';
-import ImageTabNavBar from './ImageTabNavBar';
-import ImageDetail from './ImageDetail';
+import React from 'react'
+import { Route } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import AddImageForm from '../statefull/AddImageForm'
+import CardList from './CardList'
+import ImageTabNavBar from './ImageTabNavBar'
+import ImageDetail from './ImageDetail'
 
 function Container(props) {
   return (
@@ -43,7 +43,7 @@ function Container(props) {
         )}
       />
     </div>
-  );
+  )
 }
 
 Container.propTypes = {
@@ -54,6 +54,6 @@ Container.propTypes = {
   onTabChange: PropTypes.func.isRequired,
   onDeleteImage: PropTypes.func.isRequired,
   createMessage: PropTypes.func.isRequired,
-};
+}
 
-export default Container;
+export default Container

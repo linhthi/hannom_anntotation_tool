@@ -1,57 +1,57 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { Redirect } from 'react-router-dom';
-import validator from 'validator';
-import { formRules } from './utils/form-rules';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { Redirect } from 'react-router-dom'
+import validator from 'validator'
+import { formRules } from './utils/form-rules'
 
 class RegisterLoginForm extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       username: '',
       password: '',
       valid: false,
-    };
+    }
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleButtonClick = this.handleButtonClick.bind(this)
   }
 
   validateForm() {
-    const { username, password } = this.state;
+    const { username, password } = this.state
 
-    formRules[0].valid = !!validator.isLength(username, { min: 5 });
-    formRules[1].valid = !!validator.isHalfWidth(username);
-    formRules[2].valid = !!validator.isLength(password, { min: 8 });
+    formRules[0].valid = !!validator.isLength(username, { min: 5 })
+    formRules[1].valid = !!validator.isHalfWidth(username)
+    formRules[2].valid = !!validator.isLength(password, { min: 8 })
 
     this.setState({
       valid: formRules.reduce((res, cur) => ({ valid: res.valid && cur.valid }))
         .valid,
-    });
+    })
   }
 
   handleInputChange(e) {
-    const { name, value } = e.target;
+    const { name, value } = e.target
     this.setState(
       {
         [name]: value,
       },
       () => this.validateForm()
-    );
+    )
   }
 
   handleButtonClick(e) {
-    e.preventDefault();
-    const { onButtonClick, formType } = this.props;
+    e.preventDefault()
+    const { onButtonClick, formType } = this.props
 
-    onButtonClick(this.state, formType);
+    onButtonClick(this.state, formType)
   }
 
   render() {
-    const { username, password, valid } = this.state;
+    const { username, password, valid } = this.state
     // if (isAuthenticated) {
-    //   return <Redirect to="/" />;
+    //   return <Redirect to="/" />
     // }
 
     return (
@@ -96,17 +96,17 @@ class RegisterLoginForm extends React.Component {
           </button>
         </div>
       </div>
-    );
+    )
   }
 }
 
 RegisterLoginForm.propTypes = {
   formType: PropTypes.string.isRequired,
   onButtonClick: PropTypes.func.isRequired,
-};
+}
 
 RegisterLoginForm.defaultProps = {
   isAuthenticated: false,
-};
+}
 
-export default RegisterLoginForm;
+export default RegisterLoginForm

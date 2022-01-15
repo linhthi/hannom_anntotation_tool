@@ -1,11 +1,11 @@
-import React from 'react';
-// import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
-import Card from './Card';
-import Loader from '../Loader';
+import React from 'react'
+// import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
+import Card from './Card'
+import Loader from '../Loader'
 
 function CardList(props) {
-  const { selectedTab, images, isLoading } = props;
+  const { selectedTab, images, isLoading } = props
   // if (selectedTab === 'yours' && currentUser === '') {
   //   return (
   //     <div className="row">
@@ -16,10 +16,10 @@ function CardList(props) {
   //         </p>
   //       </div>
   //     </div>
-  //   );
+  //   )
   // }
 
-  let cards;
+  let cards
   if (selectedTab === 'all') {
     cards = images
       .sort((a, b) => b.id - a.id)
@@ -29,7 +29,7 @@ function CardList(props) {
           image={image}
           onDeleteImage={props.onDeleteImage}
         />
-      ));
+      ))
   // } else {
   //   cards = props.images
   //     .filter(image => image.user.username === props.currentUser)
@@ -40,7 +40,7 @@ function CardList(props) {
   //         image={image}
   //         onDeleteImage={props.onDeleteImage}
   //       />
-  //     ));
+  //     ))
   }
 
   return (
@@ -52,7 +52,7 @@ function CardList(props) {
       )}
       {cards}
     </React.Fragment>
-  );
+  )
 }
 
 CardList.propTypes = {
@@ -60,6 +60,6 @@ CardList.propTypes = {
   selectedTab: PropTypes.string.isRequired,
   images: PropTypes.array.isRequired,
   onDeleteImage: PropTypes.func.isRequired,
-};
+}
 
-export default CardList;
+export default CardList

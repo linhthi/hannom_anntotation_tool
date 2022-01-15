@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 function UploadInfo({ username, uploaded_at }) {
   return (
@@ -15,12 +15,12 @@ function UploadInfo({ username, uploaded_at }) {
         </span>
       </p>
     </div>
-  );
+  )
 }
 
 UploadInfo.propTypes = {
   username: PropTypes.string.isRequired,
   uploaded_at: PropTypes.string.isRequired,
-};
+}
 
-export default UploadInfo;
+export default UploadInfo

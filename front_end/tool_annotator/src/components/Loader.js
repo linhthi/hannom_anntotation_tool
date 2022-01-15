@@ -1,29 +1,29 @@
-import React from 'react';
+import React from 'react'
 
 class Loader extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       text: 'Uploading',
-    };
+    }
   }
 
   componentDidMount() {
     this.interval = setInterval(() => {
-      const { text } = this.state;
+      const { text } = this.state
       this.setState({
         text: text === 'Uploading...' ? 'Uploading' : `${text}.`,
-      });
-    }, 500);
+      })
+    }, 500)
   }
 
   componentWillUnmount() {
-    clearInterval(this.interval);
+    clearInterval(this.interval)
   }
 
   render() {
-    const { text } = this.state;
+    const { text } = this.state
     return (
       <div className="segment loader">
         <p>{text}</p>
@@ -31,8 +31,8 @@ class Loader extends React.Component {
         <br />
         <br />
       </div>
-    );
+    )
   }
 }
 
-export default Loader;
+export default Loader

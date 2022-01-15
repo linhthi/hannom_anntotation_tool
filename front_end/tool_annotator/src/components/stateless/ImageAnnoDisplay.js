@@ -1,5 +1,36 @@
-import React, { useState} from 'react';
-import PropTypes from 'prop-types';
+import React, { useState} from 'react'
+import PropTypes from 'prop-types'
+
+const initMouse = {
+  lastMoveX:0,
+  lastMoveY:0,
+  width:0,
+  height:0,
+  offsetX:0,
+  offsetY:0,
+  startX:0,
+  startY:0,
+  isDrawing: false
+}
+
+const getElOffset = el => {
+  const rect = el.getBoundingClientRect()
+
+  return {
+    top: rect.top + window.pageYOffset,
+    left: rect.left + window.pageXOffset
+  }
+}
+
+const getCoords = e => {
+  if (e.pageX || e.pageY) {
+    return { x: e.pageX, y: e.pageY }
+  }
+  return {
+    x: e.clientX,
+    y: e.clientY
+  }
+}
 
 function ImageAnnoDisplay(props) {
   const {
@@ -10,21 +41,16 @@ function ImageAnnoDisplay(props) {
     boxes,
     scale,
     filename,
-    onImageClick,
-    createMessage,
     parrentCallback
-  } = props;
-
-  const [moveable, setMoveable] = useState(false)
-  const [box, setBox] = useState()
+  } = props
+  
+  const [drawings, setDrawings] = React.useState([])
+  const [mouseState, setMouseState] = React.useState(initMouse)
   const [drawBoxes, setDrawBoxes] = useState([])
 
   const searchBox = (x, y) => {
     boxes.map(box => {
       if (x > box.x_min * scale && x < box.x_max*scale && y > box.y_min*scale && y < box.y_max*scale) {
-        // return <label>{box.label}</label>
-        setBox(box)
-        // alert("box: "+box.label+" x: "+x+" y:"+y)
         setDrawBoxes(box)
         parrentCallback(box)
       }
@@ -40,106 +66,185 @@ function ImageAnnoDisplay(props) {
     searchBox(x, y)
   }
 
-  const handleMouseMove = e => {
-    if (!moveable) return;
-    // // if (drawBoxes.length > 1) {
-    // //   createMessage(
-    // //     'error',
-    // //     'Only one box can be editted by clicking at a time.'
-    // //   );
-    // //   return;
-    // // }
-    // // if (drawBoxes.length === 0) {
-    // //   return;
-    // // }
-    // const rect = e.target.getBoundingClientRect();
-    // const clickX = (e.clientX - rect.x) / scale;
-    // const clickY = (e.clientY - rect.y) / scale;
-    // const newBox = { ...drawBoxes[0] };
-    // if (
-    //   Math.abs(clickX - drawBoxes[0].x_min) >
-    //   Math.abs(clickX - drawBoxes[0].x_max)
-    // ) {
-    //   newBox.x_max = clickX;
-    // } else {
-    //   newBox.x_min = clickX;
-    // }
-    // if (
-    //   Math.abs(clickY - drawBoxes[0].y_min) >
-    //   Math.abs(clickY - drawBoxes[0].y_max)
-    // ) {
-    //   newBox.y_max = clickY;
-    // } else {
-    //   newBox.y_min = clickY;
-    // }
-    // onImageClick(newBox);
+  const down = e => {
+    var mouseCoords = getCoords(e)
+    var offset = getElOffset(e.target.parentNode)
+    const startX = mouseCoords.x - offset.left
+    const startY = mouseCoords.y - offset.top
+
+    setMouseState({
+      ...mouseState,
+      isDrawing: true,
+      startX: startX,
+      startY: startY,
+      width: 5,
+      height: 5,
+      offsetX: offset.left,
+      offsetY: offset.top
+    })
+  }
+
+  const up = e => {
+    if (!mouseState.isDrawing) return
+
+    var wid = mouseState.width
+    var hei = mouseState.height
+
+    if (wid < 10 || hei < 10) {
+      setMouseState({ ...initMouse })
+    } else {
+      setMouseState({ ...initMouse })
+      setDrawings([...drawings, ...[mouseState]])
+    }
+  }
+
+  const move = e => {
+    if (!mouseState.isDrawing) return
+
+    var currX = e.pageX - mouseState.offsetX
+    var currY = e.pageY - mouseState.offsetY
+
+    var wid = currX - mouseState.startX
+    var hei = currY - mouseState.startY
+    if (wid <= 0) {
+      wid = Math.abs(wid)
+    } else {
+      currX = mouseState.startX
+    }
+    if (hei <= 0) {
+      hei = Math.abs(hei)
+    } else {
+      currY = mouseState.startY
+    }
+
+    setMouseState({
+      ...mouseState,
+      startX: currX,
+      startY: currY,
+      width: wid,
+      height: hei
+    })
+  }
+
+  const leave = e => {
+    if (!mouseState.isDrawing) return
+    setMouseState({ ...initMouse })
+  }  
+
+  const renderManual = () => {
+    return drawings.length > 0 ? (
+      <>
+        {mouseState.isDrawing ? (
+          <rect
+            x={mouseState.startX}
+            y={mouseState.startY}
+            width={mouseState.width}
+            height={mouseState.height}
+            fill="none"
+            style={{ strokeWidth: 1, stroke: "black" }}
+          />
+        ) : null}
+        {drawings.map((a, index) => (
+          <g key={index} style={{ cursor: "pointer" }}>
+            <rect
+              x={a.startX}
+              y={a.startY}
+              width={a.width}
+              height={a.height}
+              fill="none"
+              style={{ strokeWidth: 1, stroke: "black" }}
+            />
+          </g>
+        ))}
+      </>
+    ) : (
+      <>
+        {mouseState.isDrawing ? (
+          <rect
+            x={mouseState.startX}
+            y={mouseState.startY}
+            width={mouseState.width}
+            height={mouseState.height}
+            fill="none"
+            style={{ strokeWidth: 1, stroke: "black" }}
+          />
+        ) : null}
+      </>
+    )
   }
 
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      xmlnsXlink="http://www.w3.org/1999/xlink"
-      className="image-large"
-      width={svgWidth}
-      height={svgHeight}
-      onClick={handleOnclick}
+    <div
+      id="svgWrapper"
+      onMouseLeave={leave}
+      onMouseUp={up}
+      onMouseMove={move}
+      onMouseDown={down}
     >
-      {
-        console.log("DrawBoxes Child 2", drawBoxes)
-      }
-      <image
-        xlinkHref={`http://localhost:5000/api/images/uploads/${filename}`}
+      <svg
+        xmlns="http://www.w3.org/2000/svg"
+        xmlnsXlink="http://www.w3.org/1999/xlink"
+        className="image-large"
         width={svgWidth}
         height={svgHeight}
-        style={
-          imageWidth > imageHeight ? { width: '100%' } : { height: '100%' }
-        }
-        onMouseMove={handleMouseMove}
-      />
-      {boxes.map(box => (
-        box.label ?
-        <g>
-          <rect
-              key={box.id}
-              x={box.x_min * scale}
-              y={box.y_min * scale}
-              width={(box.x_max - box.x_min) * scale}
-              height={(box.y_max - box.y_min) * scale}
-              style={{ fill: 'none', stroke: 'lime', strokeWidth: '1' }}
-
-          />
-          </g>
-          :
-          <g>
-          <rect
-              key={box.id}
-              x={box.x_min * scale}
-              y={box.y_min * scale}
-              width={(box.x_max - box.x_min) * scale}
-              height={(box.y_max - box.y_min) * scale}
-              style={{ fill: 'none', stroke: 'red', strokeWidth: '0.5' }}
-
-          />
-          </g>
-
-          ))}
-      {/* {drawBoxes.length > 0 
-        drawBoxes.map(box => ( */}
+        onClick={handleOnclick}
+      >
+        
+        <image
+          xlinkHref={`http://localhost:5000/api/images/uploads/${filename}`}
+          width={svgWidth}
+          height={svgHeight}
+          style={
+            imageWidth > imageHeight ? { width: '100%' } : { height: '100%' }
+          }
+          // onMouseMove={handleMouseMove}
+        />
+        {boxes.map(box => (
+          box.label ?
           <g>
             <rect
-                key={drawBoxes.id}
-                x={drawBoxes.x_min * scale}
-                y={drawBoxes.y_min * scale}
-                width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
-                height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
-                style={{ fill: 'none', stroke: 'red', strokeWidth: '2' }}
+                key={box.id}
+                x={box.x_min * scale}
+                y={box.y_min * scale}
+                width={(box.x_max - box.x_min) * scale}
+                height={(box.y_max - box.y_min) * scale}
+                style={{ fill: 'none', stroke: 'lime', strokeWidth: '0.5' }}
 
             />
             </g>
-          {/* </g>
-        ))} */}
-    </svg>
-  );
+            :
+            <g>
+            <rect
+                key={box.id}
+                x={box.x_min * scale}
+                y={box.y_min * scale}
+                width={(box.x_max - box.x_min) * scale}
+                height={(box.y_max - box.y_min) * scale}
+                style={{ fill: 'none', stroke: 'red', strokeWidth: '0.5' }}
+
+            />
+            </g>
+
+            ))}
+        {/* {drawBoxes.length > 0 
+          drawBoxes.map(box => ( */}
+            <g>
+              <rect
+                  key={drawBoxes.id}
+                  x={drawBoxes.x_min * scale}
+                  y={drawBoxes.y_min * scale}
+                  width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
+                  height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
+                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '2' }}
+
+              />
+              </g>
+            {/* </g>
+          ))} */}
+          {renderManual()}
+      </svg>
+    </div>
+  )
 }
 
 ImageAnnoDisplay.propTypes = {
@@ -150,9 +255,9 @@ ImageAnnoDisplay.propTypes = {
   filename: PropTypes.string.isRequired,
   scale: PropTypes.number.isRequired,
   boxes: PropTypes.array.isRequired,
-  onImageClick: PropTypes.func.isRequired,
-  createMessage: PropTypes.func.isRequired,
+  // onImageClick: PropTypes.func.isRequired,
+  // createMessage: PropTypes.func.isRequired,
   parrentCallback: PropTypes.func.isRequired,
-};
+}
 
-export default ImageAnnoDisplay;
+export default ImageAnnoDisplay

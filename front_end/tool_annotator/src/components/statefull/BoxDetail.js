@@ -1,14 +1,14 @@
-import React from 'react';
-import PropTypes from 'prop-types';
-import { FaEye, FaCheck, FaEdit, FaTrash } from 'react-icons/fa';
-import BoxCoord from '../stateless/BoxCoord';
-import BoxEditForm from '../stateless/BoxEditForm';
-import Label from '../stateless/Label';
-import LabelEditForm from '../stateless/LabelEditForm';
+import React from 'react'
+import PropTypes from 'prop-types'
+import { FaEye, FaCheck, FaEdit, FaTrash } from 'react-icons/fa'
+import BoxCoord from '../stateless/BoxCoord'
+import BoxEditForm from '../stateless/BoxEditForm'
+import Label from '../stateless/Label'
+import LabelEditForm from '../stateless/LabelEditForm'
 
 class BoxDetail extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
 
     this.state = {
       boxIsDrawn: props.boxIsDrawn,
@@ -21,16 +21,16 @@ class BoxDetail extends React.Component {
         x_max: Math.floor(props.box.x_max),
         y_max: Math.floor(props.box.y_max),
       },
-    };
+    }
 
-    this.handleInputChange = this.handleInputChange.bind(this);
-    this.handleTrashIconClick = this.handleTrashIconClick.bind(this);
-    this.toggleEditMode = this.toggleEditMode.bind(this);
+    this.handleInputChange = this.handleInputChange.bind(this)
+    this.handleTrashIconClick = this.handleTrashIconClick.bind(this)
+    this.toggleEditMode = this.toggleEditMode.bind(this)
   }
 
   handleInputChange(e) {
-    const { name, value } = e.target;
-    const { onInputChange } = this.props;
+    const { name, value } = e.target
+    const { onInputChange } = this.props
     this.setState(
       prev => ({
         coords: {
@@ -39,15 +39,15 @@ class BoxDetail extends React.Component {
         },
       }),
       () => {
-        const { coords } = this.state;
+        const { coords } = this.state
         onInputChange(coords)
       }
     )
   }
 
   handleTrashIconClick() {
-    const { onTrashIconClick } = this.props;
-    const { coords } = this.state;
+    const { onTrashIconClick } = this.props
+    const { coords } = this.state
     onTrashIconClick(coords.id)
   }
 

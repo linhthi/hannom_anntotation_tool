@@ -1,5 +1,5 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React from 'react'
+import PropTypes from 'prop-types'
 
 function Label({ label }) {
   return (
@@ -13,6 +13,6 @@ function Label({ label }) {
 
 Label.propTypes = {
   label: PropTypes.string.isRequired,
-};
+}
 
-export default Label;
+export default Label

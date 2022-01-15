@@ -1,11 +1,11 @@
-import React from 'react';
-import { Link } from 'react-router-dom';
-import PropTypes from 'prop-types';
+import React from 'react'
+import { Link } from 'react-router-dom'
+import PropTypes from 'prop-types'
 
 class LogOut extends React.Component {
   componentDidMount() {
-    const { onLogoutUser } = this.props;
-    onLogoutUser();
+    const { onLogoutUser } = this.props
+    onLogoutUser()
   }
 
   render() {
@@ -19,12 +19,12 @@ class LogOut extends React.Component {
           in.
         </p>
       </div>
-    );
+    )
   }
 }
 
 LogOut.propTypes = {
   onLogoutUser: PropTypes.func.isRequired,
-};
+}
 
-export default LogOut;
+export default LogOut
