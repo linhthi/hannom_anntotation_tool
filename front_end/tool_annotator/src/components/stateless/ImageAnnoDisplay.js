@@ -1,4 +1,4 @@
-import React, { useState} from 'react'
+import React, { useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
 
 const initMouse = {
@@ -41,7 +41,9 @@ function ImageAnnoDisplay(props) {
     boxes,
     scale,
     filename,
-    parrentCallback
+    isDrawing,
+    parrentCallback,
+    updateNewListDrawing,
   } = props
   
   const [drawings, setDrawings] = React.useState([])
@@ -62,7 +64,6 @@ function ImageAnnoDisplay(props) {
     var dim = evt.getBoundingClientRect()
     var x = e.clientX - dim.left
     var y = e.clientY - dim.top
-
     searchBox(x, y)
   }
 
@@ -74,7 +75,7 @@ function ImageAnnoDisplay(props) {
 
     setMouseState({
       ...mouseState,
-      isDrawing: true,
+      isDrawing: isDrawing,
       startX: startX,
       startY: startY,
       width: 5,
@@ -134,6 +135,7 @@ function ImageAnnoDisplay(props) {
   const renderManual = () => {
     return drawings.length > 0 ? (
       <>
+        {updateNewListDrawing(drawings)}
         {mouseState.isDrawing ? (
           <rect
             x={mouseState.startX}
@@ -152,7 +154,7 @@ function ImageAnnoDisplay(props) {
               width={a.width}
               height={a.height}
               fill="none"
-              style={{ strokeWidth: 1, stroke: "black" }}
+              style={{ strokeWidth: 0.5, stroke: "red" }}
             />
           </g>
         ))}
@@ -241,6 +243,7 @@ function ImageAnnoDisplay(props) {
               </g>
             {/* </g>
           ))} */}
+          {console.log("Drawings: ", drawings)}
           {renderManual()}
       </svg>
     </div>
@@ -255,9 +258,11 @@ ImageAnnoDisplay.propTypes = {
   filename: PropTypes.string.isRequired,
   scale: PropTypes.number.isRequired,
   boxes: PropTypes.array.isRequired,
+  isDrawing: PropTypes.bool.isRequired,
   // onImageClick: PropTypes.func.isRequired,
   // createMessage: PropTypes.func.isRequired,
   parrentCallback: PropTypes.func.isRequired,
+  updateNewListDrawing: PropTypes.func.isRequired,
 }
 
 export default ImageAnnoDisplay

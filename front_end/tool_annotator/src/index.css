@@ -216,6 +216,11 @@ ul {
   color: #FEFEFE;
 }
 
+.blue {
+  background: #0000FF;
+  color: #FFFEFE;;
+}
+
 .text-center {
   text-align: center;
 }

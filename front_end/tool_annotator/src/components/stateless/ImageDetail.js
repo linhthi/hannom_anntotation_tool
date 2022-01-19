@@ -5,8 +5,8 @@ import BoxesDetail from './BoxesDetail'
 import ImageAnnoDisplay from './ImageAnnoDisplay'
 import { convertIdStrToInt } from '../utils/helpers'
 import ImageLabelDisplay from './ImageLabelDisplay'
-import Label from './Label'
-import BoxEdit from './BoxEdit'
+import {FaEdit, FaTrash } from 'react-icons/fa'
+
 
 function ImageDetail({ image, createMessage }) {
   const [drawBoxes, setDrawBoxes] = useState([])
@@ -16,16 +16,11 @@ function ImageDetail({ image, createMessage }) {
   const [scale, setScale] = useState(1)
   const [svgWidth, setSvgWidth] = useState(0)
   const [svgHeight, setSvgHeight] = useState(0)
-  const [newBox, setNewBox] = useState()
+  const [isAddBoundingBox, setIsAddBoundingBox] = React.useState(false)
+  const [newListDrawing, setNewListDrawing] = useState([])
+  const [isEdit, setEdit] = useState(false)
+	const [newLabel, setNewLabel] = useState(drawBoxes.label)
   const ref = useRef(null)
-
-  const callback = useCallback((drawBoxes) => {
-    setDrawBoxes(drawBoxes)
-  }, [])
-
-  const updateNewBox = useCallback((newBox) => {
-    setNewBox(newBox)
-  }, [])
 
   useEffect(() => {
     console.log(image)
@@ -42,56 +37,44 @@ function ImageDetail({ image, createMessage }) {
       setBoxes(image.boxes.sort((a, b) => a.id - b.id))
       setEditModes(Array(image.boxes.length).fill(false))
     }
+    // setBoxes([...boxes, ...newBoxes])
   }, [image, scale])
+
+  const callback = useCallback((drawBoxes) => {
+    setDrawBoxes(drawBoxes)
+  }, [])
+
+  const updateisAddBoundingBox = useCallback((isAddBoundingBox) => {
+    setIsAddBoundingBox(isAddBoundingBox)
+  }, [])
+
+  const updateNewListDrawing = useCallback((newListDrawing) => {
+    setNewListDrawing(newListDrawing)
+  }, [])
 
   if (typeof image === 'undefined') {
     return <div>Loading...</div>
   }
 
-  const updateBoxes = box => {
-    const otherBoxes = boxes.filter(originalBox => originalBox.id !== box.id)
-    const newBoxes = [...otherBoxes, box]
-    setBoxes(
-      newBoxes.sort((a, b) => convertIdStrToInt(a.id) - convertIdStrToInt(b.id))
-    )
-    setDrawBoxes(
-      drawBoxes.map(drawBox => {
-        if (drawBox.id === box.id) {
-          return box
-        }
-        return drawBox
-      })
-    )
+  const updateListBox = newListDrawing => {
+    newListDrawing.map((a, index) => {
+      setBoxes([...boxes, {
+        "id": 'id' + (new Date()).getTime(),
+        "label": null,
+        "x_min": a.startX / scale,
+        "x_max": (a.startX + a.width) / scale,
+        "y_min": a.startY / scale,
+        "y_max": (a.startY + a.height) / scale,
+      }])
+    });
   }
 
   const onAddBoxButtonClick = () => {
-    setAddBoxMode(true)
-    const newBox = {
-      id: Math.max(...boxes.map(box => convertIdStrToInt(box.id))) + 1,
-      label: '',
-      x_min: 0,
-      y_min: 0,
-      x_max: 10,
-      y_max: 10,
-    }
-    setBoxes([...boxes, newBox])
-    // setDrawBoxes([...drawBoxes, newBox])
-    setEditModes([...editModes, true])
-    // onImageClick(newBox)
+    setIsAddBoundingBox(!isAddBoundingBox)
+    updateListBox(newListDrawing)
+    // setDrawBoxes(null)
   }
 
-  const onImageClick = newBox => {
-    const otherBoxes = boxes.filter(box => box.id !== newBox.id)
-    // const otherDrawBoxes = drawBoxes.filter(box => box.id !== newBox.id)
-    newBox.id = `${newBox.id}_${new Date().getTime()}`
-    const newBoxes = [newBox, ...otherBoxes]
-    setBoxes(
-      newBoxes.sort((a, b) => convertIdStrToInt(a.id) - convertIdStrToInt(b.id))
-    )
-    // const newDrawBoxes = [newBox, ...otherDrawBoxes]
-    // setDrawBoxes(newDrawBoxes)
-    setDrawBoxes(drawBoxes)
-  }
 
   const downloadBoxesAsCSV = () => {
     const fields = ['label', 'x_min', 'y_min', 'x_max', 'y_max']
@@ -105,11 +88,84 @@ function ImageDetail({ image, createMessage }) {
     hiddenElement.click()
   }
 
-  const onClickLayout = () => {
-    setDrawBoxes(drawBoxes)
-    console.log("DrawBoxes", drawBoxes)
-  }
 
+	const toggleEditMode = (e) => {
+		setEdit(!isEdit)
+	}
+
+	const handleSave = (e) => {
+		setEdit(!isEdit)
+		const newBox = {
+			"id": drawBoxes.id,
+			"label": newLabel,
+			"x_min": drawBoxes.x_min,
+			"x_max": drawBoxes.x_max,
+			"y_min": drawBoxes.y_min,
+			"y_max": drawBoxes.y_max
+		}
+    const foundIndex = boxes.findIndex(x => x.id == newBox.id)
+    console.log("Index in array", foundIndex)
+    boxes[foundIndex] = newBox
+    setBoxes([...boxes])
+    // setDrawBoxes(newBox)
+	}
+
+	const handleTrashIconClick = (e) => {
+    const arr = boxes.filter((item) => {
+      return item.id !== drawBoxes.id
+    })
+    setBoxes([...arr])
+    alert("Đã xóa")
+  }
+	
+	const onLabelChange = (e) => {
+		setNewLabel(e.target.value)
+	}
+  const renderEdit = () => {
+    return (
+      <div >
+        {!isAddBoundingBox ? (
+          <>
+          <span className="box-label-first">Nhãn </span>
+          <input type="text" 
+          id="label"
+          key={drawBoxes.label}
+          defaultValue={drawBoxes.label}
+          disabled={!isEdit}
+          style={{fontSize: 20, width: "50px", height: "50px"}}
+          onChange={onLabelChange}
+          >
+          
+          </input>
+          {console.log("Updated label: ", drawBoxes.label)}
+          <button
+            className="circular button"
+            onClick={toggleEditMode}
+          >
+            <FaEdit />
+          </button>
+          <button
+            className="circular button"
+            onClick={handleTrashIconClick}
+          >
+            <FaTrash />
+          </button>
+          <button className="blue button" onClick={downloadBoxesAsCSV}>
+            Làm mịn chữ
+          </button>
+          {isEdit ?  (
+            <button
+            className="circular primary button"
+            onClick={handleSave}
+            >
+              Lưu
+            </button>
+          ) : null}
+          </>
+        ): null}
+      </div>
+    )
+  }
   return (
     <div className="row space-around">
       <div className="half-width-item text-center" ref={ref}>
@@ -122,28 +178,35 @@ function ImageDetail({ image, createMessage }) {
           boxes={boxes}
           drawBoxes={drawBoxes}
           filename={image.filename}
-          onImageClick={onImageClick}
-          createMessage={createMessage}
+          isDrawing={isAddBoundingBox}
           parrentCallback={callback}
+          updateNewListDrawing={updateNewListDrawing}
         />
-
-        <button className="primary button" onClick={downloadBoxesAsCSV}>
+        {console.log("DrawBoxes", drawBoxes)}
+        <button className="blue button" onClick={downloadBoxesAsCSV}>
           Tải xuống annotation
         </button>
 
-        <button className="primary button" onClick={downloadBoxesAsCSV}>
-          Làm mịn chữ
-        </button>
-
-        <button
-            className="primary button"
+        {!isAddBoundingBox ? (
+          <button
+            className="blue button"
             onClick={onAddBoxButtonClick}
           >
             Thêm 
-        </button>
+          </button>
+        ): (
+          <button
+            className="circular primary button"
+            onClick={onAddBoxButtonClick}
+          >
+            Lưu
+          </button>
+        )}
+
+        <br></br>
+        {renderEdit()}
       </div>
 
-      {console.log("DrawBoxes", drawBoxes)}
       <div className="half-width-item text-center">
         <ImageLabelDisplay
           svgWidth={svgWidth || 0}
@@ -151,14 +214,6 @@ function ImageDetail({ image, createMessage }) {
           scale={scale}
           boxes={boxes}
           drawBoxes={drawBoxes}
-          // onClick={onImageClick}
-          // createMessage={createMessage}
-        />
-
-        <BoxEdit 
-        box={drawBoxes}
-        label={drawBoxes.label}
-        parrentCallback={updateNewBox}
         />
       </div>
     </div>
