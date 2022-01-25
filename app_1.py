@@ -19,9 +19,11 @@ import uuid
 
 # Making a Connection with MongoClient
 client = MongoClient("mongodb://localhost:27017/")
+
 # database
 db = client["a"]
 fs = gridfs.GridFS(db)
+
 # collection
 user = db["User"]
 book = db['Book']
@@ -39,6 +41,7 @@ app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
+# Easy_OCR
 reader = easyocr.Reader(['ch_tra'])
 
 def allowed_file(filename):
@@ -95,31 +98,25 @@ def get_box_img(box, image):
     img = Image.open(io.BytesIO(image))
     width, height = img.size
     img = np.array(img)
-    # print("Image", img)
     b = np.array(box, dtype=np.int16)
     xmin = np.min(b[:, 0])
     ymin = np.min(b[:, 1])
-
     xmax = np.max(b[:, 0])
     ymax = np.max(b[:, 1])
-    print("Type", type(xmin))
     crop_img = img[ymin:ymax, xmin:xmax, :].copy()
 
     return crop_img, xmin, ymin, xmax, ymax, height, width
 
-
-
-
+# Example for using jwt 
 @app.route("/dashboard")
 @jwt_required()
 def dasboard():
-    return jsonify(message="Welcome! to the Data Science Learner")
+    return jsonify(message="Welcome! to the Dashboard!")
 
 
-@app.route("/user/signup", methods=["POST"])
+@app.route("api/user/signup", methods=["POST"])
 def signup():
     email = request.json["email"]
-    # test = User.query.filter_by(email=email).first()
     test = user.find_one({"email": email})
     if test:
         return jsonify(message="User Already Exist"), 409
@@ -132,7 +129,7 @@ def signup():
         return jsonify(message="User added sucessfully"), 201
 
 
-@app.route("/user/signin", methods=["POST"])
+@app.route("/api/user/signin", methods=["POST"])
 def signin():
     if request.is_json:
         email = request.json["email"]
@@ -153,7 +150,7 @@ def signin():
         return jsonify(message="Bad Email or Password"), 401
 
 
-@app.route('/user/logout/')
+@app.route('/api/user/logout/')
 def logout():
     if 'email' in session:
         sessions.pop('email', None)
@@ -223,12 +220,10 @@ def autolabel(img_id):
     img_ = fs.find_one({'filename': img_file})
     img = img_.read()
     bboxes = detect_single_image(img)['bbox']
-    # bboxes = current_book['annotation']
     detected_boxes = []
     for box in bboxes:
         print("Sample box: {}".format(box))
         img_box_crop, x_min, y_min, x_max, y_max, height, width  = get_box_img(box, img)
-        # x_min, y_min, x_max, y_max = x_min.item(), y_min.item(), x_max.item(), y_max.item()
         label_detect = detect_symbol(img_box_crop)
         current_box = {
             'id': uuid.uuid4(),
@@ -238,7 +233,6 @@ def autolabel(img_id):
             'x_max': x_max.item(),
             'y_max': y_max.item()
         }
-        # print(type(x_min))
         detected_boxes.append(current_box)
     
     book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": detected_boxes, "height": height, "width": width}})
