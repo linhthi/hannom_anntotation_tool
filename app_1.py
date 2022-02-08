@@ -1,196 +1,38 @@
-import pymongo
-from flask import Flask, jsonify, request, session, sessions, flash, send_file, url_for, send_from_directory
-from pymongo import message
-from werkzeug.security import check_password_hash, generate_password_hash
-from werkzeug.utils import secure_filename
-from flask_jwt_extended import JWTManager, jwt_required, create_access_token
-from pymongo import MongoClient
-from bson.objectid import ObjectId
+from flask import Flask, jsonify, request, session, sessions, flash, send_file, url_for, send_from_directory, redirect, render_template
 import os
-import gridfs
-from detectors.DB import *
-import easyocr
-import numpy as np
+import urllib.request
+from werkzeug.utils import secure_filename
+import json
 import cv2
 from PIL import Image
 import io
-import uuid
+import matplotlib.pyplot as plt
+import numpy as np
+import copy
+from tool import is_inside_polygon,smoothing_line, is_inside_contour_and_get_local_line,convert_color_img,show_line_with_diff_color
+from normalize import Normalize
+import base64
+from collections import defaultdict
 
-
-# Making a Connection with MongoClient
-client = MongoClient("mongodb://localhost:27017/")
-
-# database
-db = client["a"]
-fs = gridfs.GridFS(db)
-
-# collection
-user = db["User"]
-book = db['Book']
-box_img = db['Box']
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
 
 app = Flask(__name__)
-jwt = JWTManager(app)
 
-# JWT Config
-app.config["JWT_SECRET_KEY"] = "this-is-secret-key"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-
+app.config['UPLOAD_FOLDER_CHARACTER'] = 'static/characters'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
+normalize_obj = Normalize()
 
-# Easy_OCR
-reader = easyocr.Reader(['ch_tra'])
+@app.route('/')
+def home():
+    return "Hello World"
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
-def add_JSON_detect(d,box):
-    region = {
-        "shape_attributes": {
-          "name": "polygon",
-          "all_points_x": [
-            float(box[0][0]),
-            float(box[1][0]),
-            float(box[2][0]),
-            float(box[3][0])
-          ],
-          "all_points_y": [
-            float(box[0][1]),
-            float(box[1][1]),
-            float(box[2][1]),
-            float(box[3][1])
-          ]
-        },
-        "region_attributes": {
-          "name": d
-        }
-      }
-    return region
-
-def to_JSON(regions,img_name,size):
-
-
-    res = {
-        img_name: {
-            "filename": img_name,
-            "size": size,
-            "regions": regions,
-            "file_attributes": {}
-          }
-        }
-
-    return res
-
-def detect_symbol(filename):
-    detect = None
-    output = reader.readtext(filename)
-    if(output != []):
-        if(output[0][1] != ''):
-            detect = output[0][1]
-
-    return detect
-
-
-def get_box_img(box, image):
-    img = Image.open(io.BytesIO(image))
-    width, height = img.size
-    img = np.array(img)
-    b = np.array(box, dtype=np.int16)
-    xmin = np.min(b[:, 0])
-    ymin = np.min(b[:, 1])
-    xmax = np.max(b[:, 0])
-    ymax = np.max(b[:, 1])
-    crop_img = img[ymin:ymax, xmin:xmax, :].copy()
-
-    return crop_img, xmin, ymin, xmax, ymax, height, width
-
-# Example for using jwt 
-@app.route("/dashboard")
-@jwt_required()
-def dasboard():
-    return jsonify(message="Welcome! to the Dashboard!")
-
-
-@app.route("api/user/signup", methods=["POST"])
-def signup():
-    email = request.json["email"]
-    test = user.find_one({"email": email})
-    if test:
-        return jsonify(message="User Already Exist"), 409
-    else:
-        first_name = request.json["first_name"]
-        last_name = request.json["last_name"]
-        password = request.json["password"]
-        user_info = dict(first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(password))
-        user.insert_one(user_info)
-        return jsonify(message="User added sucessfully"), 201
-
-
-@app.route("/api/user/signin", methods=["POST"])
-def signin():
-    if request.is_json:
-        email = request.json["email"]
-        password = request.json["password"]
-    else:
-        email = request.form["email"]
-        password = request.form["password"]
-
-    test = user.find_one({"email": email})
-    if check_password_hash(test['password'], password):
-        access_token = create_access_token(identity=email)
-        return jsonify(message="Login Succeeded!", 
-        access_token=access_token,
-        email=email,
-        name=test['first_name'] + " " + test['last_name']
-        ), 201
-    else:
-        return jsonify(message="Bad Email or Password"), 401
-
-
-@app.route('/api/user/logout/')
-def logout():
-    if 'email' in session:
-        sessions.pop('email', None)
-    return jsonify({'message': 'You successfully logged'})
-
-
-@app.route('/api/images', methods=['GET'])
-def getAllBook():
-    books = book.find()
-    books_ = []
-    for item in books:
-        temp = {
-            "book_id": item.get("book_id"),
-            "user_id": item.get("user_id"),
-            "name": item.get("filename"),
-            "width": item.get("width"),
-            "height": item.get("height")
-        }
-        books_.append(temp)
-    print(books_)
-    return jsonify(message="successful", results=books_), 200
-
-
-
-@app.route('/api/images/upload', methods=['GET', 'POST'])
-def upload():
-    file = request.files['inputFile']
-    user_id = request.form['user_id']
-    title = request.form['title']
-    
-    contents = file.read()
-    book_id = str(uuid.uuid4())
-
-    book_info = dict(user_id=user_id,book_id=book_id, title=title, filename=file.filename, annotation=None)
-    book.insert_one(book_info)
-
-    fs.put(contents, filename=file.filename)
-    file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-    return jsonify({'message': 'Upload file successful'}), 201
-
+#### Linh
 @app.route('/api/images/uploads/<file_path>', methods=['GET'])
 def get_img(file_path):
     """Get image preview, return image"""
@@ -200,43 +42,179 @@ def get_img(file_path):
     return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=True)
 
 
-@app.route('/api/images/annotate/<book_id>', methods=['GET', 'POST'])
-def annotate(book_id):
-    img_id = book_id
-    img_file = book.find_one({"_id": ObjectId(str(img_id))})
+### Lam
+@app.route('/show_imgs/<target_img_name>')
+def show_img(target_img_name):
+    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], target_img_name)
+    img = cv2.imread(path,0)
+    normalized_pred_img = normalize_obj.preprocess_img(img)
+    img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', normalized_pred_img)[1]).decode()
+    mocban_data = {'filename':target_img_name,
+                'img':img_base64
+            }
+    return render_template('via.html', mocban_data=mocban_data)
 
-    img_ = fs.find_one({'filename': img_file['filename']})
-    img = img_.read()
-    bbox = detect_single_image(img)['bbox']
+@app.route('/imgs/<img_name>')
+def get_img_chacracter(img_name):
+    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'],img_name, as_attachment=False )
 
-    book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": bbox}})
 
-    return jsonify({'message': 'Get annotion successful'}, {"bbox": bbox}), 200
-
-@app.route('/api/images/autolabel/<img_id>', methods=['GET', 'POST'])
-def autolabel(img_id):
-    current_book = book.find_one({"_id": ObjectId(str(img_id))})
-    img_file = current_book['filename']
-    img_ = fs.find_one({'filename': img_file})
-    img = img_.read()
-    bboxes = detect_single_image(img)['bbox']
-    detected_boxes = []
-    for box in bboxes:
-        print("Sample box: {}".format(box))
-        img_box_crop, x_min, y_min, x_max, y_max, height, width  = get_box_img(box, img)
-        label_detect = detect_symbol(img_box_crop)
-        current_box = {
-            'id': uuid.uuid4(),
-            'label': label_detect,
-            'x_min': x_min.item(),
-            'y_min': y_min.item(),
-            'x_max': x_max.item(),
-            'y_max': y_max.item()
+""" Recieving the gaussian value and make the change on the local line
+    params:
+    --id_img: ID of target image
+    --region_id: ID of specific region in image
+    --highlight: whether just show image or make a change
+"""
+@app.route('/<highlight>/gaussian/<filename>/<id_img>/<region_id>', methods=['POST', 'GET'])
+def upload_image(id_img,region_id, filename, highlight):
+    effect = "gaussian" # may be change later
+    path = os.path.join(os.getcwd(), 'dataOfEffect.json')
+    content = {
+        id_img: {
+            effect: [
+                {
+                    "local_rate": 0,
+                    "only_x": "True",
+                    "only_y": "True",
+                }
+            ]
         }
-        detected_boxes.append(current_box)
-    
-    book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": detected_boxes, "height": height, "width": width}})
-    return jsonify({'message': 'Label successfull'})
+    }
+    if request.method == 'GET':
+        with open(path, 'r+') as jsonFile:
+            #check if file is empty
+            if os.path.getsize(path) == 0:
+
+                jsonFile.write(str(json.dumps(content,indent=2)))
+                return content[id_img][effect][0]
+            else:
+                all_data = json.loads(jsonFile.read())
+                if id_img not in all_data:
+                    all_data[id_img] = content[id_img]
+                    #print("all_data: ", all_data)
+                    jsonFile.seek(0)
+                    json.dump(all_data, jsonFile, indent=2)
+                    return jsonify(all_data[id_img][effect][int(region_id)])
+                array_of_region_data = all_data[id_img][effect]
+
+                if int(region_id) + 1 > len(all_data[id_img][effect]):
+                    array_of_region_data.append({"local_rate": 0,
+                                                 "only_x": "True",
+                                                 "only_y": "True",
+                                                 })
+                    jsonFile.seek(0)
+                    json.dump(all_data,jsonFile,indent=2)
+            return jsonify(array_of_region_data[int(region_id)])
+
+        return "Error reading file"
+
+    if request.method == 'POST':
+
+        #initialize value
+        request_data = request.get_json()
+        highlight = True if highlight.lower() == "true" else False
+        local = None
+        only_x = None
+        only_y = None
+        all_points_x = request_data['attr']['all_points_x']
+        all_points_y = request_data['attr']['all_points_y']
+
+        # with open(path, 'r+') as jsonFile:
+        #     all_data = json.loads(jsonFile.read())
+        #
+        #     # only show the highlight line
+        #     if not highlight:
+        #         array_of_region_data = all_data[id_img][effect]
+        #         data_of_region_id = array_of_region_data[int(region_id)]
+        #
+        #         # update data in json file
+        #         data_of_region_id['local_rate'] = request_data['local_rate']
+        #         data_of_region_id['only_x'] = request_data['only_x']
+        #         data_of_region_id['only_y'] = request_data['only_y']
+        #
+        #     jsonFile.seek(0)
+        #     json.dump(all_data, jsonFile, indent=2)
+        #     jsonFile.truncate()
+
+        #update in image
+        # Testing new feature without reading from a file
+        if not highlight:
+            local = int(request_data['local_rate'])
+            only_x = True if request_data['only_x'].lower() == "true" else False
+            only_y = True if request_data['only_y'].lower() == "true" else False
+
+        #correct
+        path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
+        all_contours,normalized_shape,_,_,_ = normalize_obj.get_attributes()
+        highlight_contour = []
+
+        for index_of_cnt in range(len(all_contours)):
+            r, mul_range = is_inside_contour_and_get_local_line(all_points_x,
+                                                                              all_points_y,
+                                                                              all_contours[index_of_cnt],
+                                                                              )
+            if r:
+                highlight_contour.append([index_of_cnt, mul_range])
+
+
+
+        print("highlight_contour",highlight_contour)
+        for hcnt in highlight_contour:
+            index, mul_range = hcnt
+            global_contours = all_contours[index].copy()
+            g_contours = smoothing_line(global_contours, mul_range, False,
+                                                          only_x,only_y,
+                                                          local,normalized_shape,highlight)
+
+
+        if not highlight:
+            normalize_obj.update(False, index,g_contours)
+
+        result_image = normalize_obj.convert_to_original_image()
+        cv2.imwrite(path, result_image)
+        return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
+
+@app.route('/revertImage/<filename>/', methods=['POST', 'GET'])
+def revert_image(filename):
+    normalize_obj.update(True, None, None)
+    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
+    result_img = normalize_obj.convert_to_original_image()
+    cv2.imwrite(path, result_img)
+    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
+
+@app.route('/show_diff/<filename>/', methods=['POST', 'GET'])
+def show_difference_between_images(filename):
+    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
+    cv_img = cv2.imread(path, 1)
+    # blank = np.zeros(cv_img.shape[:2], dtype=np.uint8)
+    blank2 = np.zeros(cv_img.shape[:3], dtype=np.uint8)
+    _,_,_,_,org_img,org_contours,_ = normalize_obj.get_attributes()
+    blank2 = cv2.drawContours(blank2, org_contours, -1, (255,255,0), 1)
+    #contours, hierarchy = cv2.findContours(cv_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+
+    #
+    # for i, contour_no in enumerate(hierarchy[0]):
+    #     # print("contour_no: ", contour_no)
+    #     if contour_no[3] == -1:  # do not have the parents
+    #         cv2.drawContours(blank, contours, i, 255, -1)
+    #     if contour_no[2] == -1:  # do not have the parents
+    #         cv2.drawContours(blank, contours, i, 0, -1)
+    #
+    # # # plt.imshow(blank, cmap='gray')
+    # # # plt.show()
+    # # # plt.imshow(original_image, cmap='gray')
+    # # # plt.show()
+    # bitwiseAnd = 255-(blank2 - blank)
+    # #bitwiseAnd = cv2.bitwise_and(bitwiseAnd, blank2)
+    #
+    # bitwiseAnd = 255-convert_color_img(bitwiseAnd, 'g')
+    # bitwiseAnd += convert_color_img(blank, 'x')
+    # #bitwiseAnd = 255-(convert_color_img(blank, 'g') + (255 - convert_color_img(bitwiseAnd, 'r')))
+    cv2.imwrite(path, cv_img+blank2)
+    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
+
+
+
 
 
 if __name__ == '__main__':
