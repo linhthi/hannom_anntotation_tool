@@ -9,14 +9,13 @@ import io
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
-from testing_contours import centerlize_contour_image, preprocess_img
-from tool2 import is_inside_polygon,smoothing_line, is_inside_contour_and_get_local_line,convert_color_img,show_line_with_diff_color
+from tool import is_inside_polygon,smoothing_line, is_inside_contour_and_get_local_line,convert_color_img,show_line_with_diff_color
 from normalize import Normalize
 import base64
 from collections import defaultdict
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'static/uploads/'
+UPLOAD_FOLDER = 'static/characters/'
 
 app.secret_key = "secret key"
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
