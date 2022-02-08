@@ -6925,12 +6925,7 @@
   "annotation": null,
   "boxes": [
     {
-      "id": {
-        "$binary": {
-          "base64": "6IbvkROvQLWzpMNfX6ekOA==",
-          "subType": "03"
-        }
-      },
+      "id": "5d632ca33e2b4beca467ed676e0c47f8",
       "label": "嘉",
       "x_min": 462,
       "y_min": 778,
@@ -6938,12 +6933,7 @@
       "y_max": 825
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "N5oRFH7RQ++ybTF2TDZ4TA==",
-          "subType": "03"
-        }
-      },
+      "id": "375a27c934ed4185b1868013e08aabbf",
       "label": null,
       "x_min": 43,
       "y_min": 780,
@@ -6951,12 +6941,7 @@
       "y_max": 818
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "fnNQwcM0QR6Xw4crakavfQ==",
-          "subType": "03"
-        }
-      },
+      "id": "e76e0937ae5b4eddb31e3144c52401d2",
       "label": null,
       "x_min": 815,
       "y_min": 779,
@@ -6964,12 +6949,7 @@
       "y_max": 817
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "X851aCjtStWw7hLaCkxkrw==",
-          "subType": "03"
-        }
-      },
+      "id": "0d11e0c6cb6a4477aa55d0ce3552e8b6",
       "label": null,
       "x_min": 671,
       "y_min": 778,
@@ -6977,12 +6957,7 @@
       "y_max": 812
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "UJBx4JZyR7uHnsM3T0LlaQ==",
-          "subType": "03"
-        }
-      },
+      "id": "fe8353190b17404eac831e9bda90d7c1",
       "label": "雄",
       "x_min": 391,
       "y_min": 778,
@@ -6990,12 +6965,7 @@
       "y_max": 820
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "V4sxpESPTWu+HD1PtyQygw==",
-          "subType": "03"
-        }
-      },
+      "id": "acdac2de07224256b3a5320a90820f6e",
       "label": null,
       "x_min": 175,
       "y_min": 776,
@@ -7003,12 +6973,7 @@
       "y_max": 821
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "sw9TqpBnRES5idOFiR30QA==",
-          "subType": "03"
-        }
-      },
+      "id": "b88587bee8ec4cc5bd3acb92b859df09",
       "label": null,
       "x_min": 252,
       "y_min": 739,
@@ -7016,12 +6981,7 @@
       "y_max": 779
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "STefW7uzQse/2ESyrcX/gg==",
-          "subType": "03"
-        }
-      },
+      "id": "d308a42f3fe842e792e82f163b034600",
       "label": "服",
       "x_min": 671,
       "y_min": 736,
@@ -7029,12 +6989,7 @@
       "y_max": 785
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "TblWn27ySjacbGXr46bS8Q==",
-          "subType": "03"
-        }
-      },
+      "id": "2d4148073c9946fe884ae8f8ebe84fc3",
       "label": null,
       "x_min": 44,
       "y_min": 736,
@@ -7042,12 +6997,7 @@
       "y_max": 782
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "eitMMXoiSC2jLy/VWfNt9g==",
-          "subType": "03"
-        }
-      },
+      "id": "5ca643d619e24f9eb022ef7b4d81199a",
       "label": "例",
       "x_min": 177,
       "y_min": 732,
@@ -7055,12 +7005,7 @@
       "y_max": 777
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "7An25/CHR0aNAi+4sr4Y+A==",
-          "subType": "03"
-        }
-      },
+      "id": "2196f72a66194a208a42da90ac0d7554",
       "label": null,
       "x_min": 462,
       "y_min": 732,
@@ -7068,12 +7013,7 @@
       "y_max": 781
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "2LBffJ0lTe+fL30WmJu48g==",
-          "subType": "03"
-        }
-      },
+      "id": "c5e2c5b16fb44431b3b141ed1c992e14",
       "label": null,
       "x_min": 393,
       "y_min": 729,
@@ -7081,12 +7021,7 @@
       "y_max": 780
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "nFoGa8kmToW9AqgQoHhcZA==",
-          "subType": "03"
-        }
-      },
+      "id": "fe6b7a3d6d3444e2990b5a611fc61c58",
       "label": "螽",
       "x_min": 808,
       "y_min": 690,
@@ -7094,12 +7029,7 @@
       "y_max": 786
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "IAiD5lnxQaSPNQwczYlQ6Q==",
-          "subType": "03"
-        }
-      },
+      "id": "f1397e4761514096b23576cc5a2c1f99",
       "label": null,
       "x_min": 674,
       "y_min": 696,
@@ -7107,12 +7037,7 @@
       "y_max": 736
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "niwN0SIXSaqHPULzUoJNQw==",
-          "subType": "03"
-        }
-      },
+      "id": "bed8e2fd1eaa4b95892ef2438a29ffaa",
       "label": null,
       "x_min": 466,
       "y_min": 696,
@@ -7120,12 +7045,7 @@
       "y_max": 734
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "RcvAu5qeRcqi9dGNyJiNXw==",
-          "subType": "03"
-        }
-      },
+      "id": "4908a39cdaee4c1bb005e3a378c3970d",
       "label": null,
       "x_min": 395,
       "y_min": 695,
@@ -7133,12 +7053,7 @@
       "y_max": 737
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "cDwRIw3kRnaLDgrLldR4jw==",
-          "subType": "03"
-        }
-      },
+      "id": "7a92e389381d407ea5ba365fe8bdc792",
       "label": null,
       "x_min": 255,
       "y_min": 695,
@@ -7146,12 +7061,7 @@
       "y_max": 739
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "zNrjhy9bTbugi1LcUws9sg==",
-          "subType": "03"
-        }
-      },
+      "id": "e3fda83f90274fac8bc7bf116c415560",
       "label": null,
       "x_min": 179,
       "y_min": 695,
@@ -7159,12 +7069,7 @@
       "y_max": 737
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "19db1IsiRLOeeKmZND5Isg==",
-          "subType": "03"
-        }
-      },
+      "id": "245f4051e6ee4526802b6eb1772977c7",
       "label": "城",
       "x_min": 43,
       "y_min": 695,
@@ -7172,12 +7077,7 @@
       "y_max": 739
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "uYRM561NQF+IJZnZ4yBi3Q==",
-          "subType": "03"
-        }
-      },
+      "id": "743813c3c80945da94110f71ab563f78",
       "label": "阮",
       "x_min": 811,
       "y_min": 657,
@@ -7185,12 +7085,7 @@
       "y_max": 702
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "UD8z4zziT+6wOHAsTdKOKg==",
-          "subType": "03"
-        }
-      },
+      "id": "58d24ab14d784065b8f7717b40351c06",
       "label": null,
       "x_min": 258,
       "y_min": 659,
@@ -7198,12 +7093,7 @@
       "y_max": 690
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "a4dbAHj/Rd6LFUmxp1RZ2w==",
-          "subType": "03"
-        }
-      },
+      "id": "f91f9ccfad724e3eb1a56f56ef98ec6b",
       "label": null,
       "x_min": 395,
       "y_min": 656,
@@ -7211,12 +7101,7 @@
       "y_max": 695
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "zKidaj2NTbW2K1ct7mT5uQ==",
-          "subType": "03"
-        }
-      },
+      "id": "c40de54838ec43aa954298ab373d1817",
       "label": null,
       "x_min": 671,
       "y_min": 652,
@@ -7224,12 +7109,7 @@
       "y_max": 702
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "dlzF58VtQlujUkGz8uHWlA==",
-          "subType": "03"
-        }
-      },
+      "id": "7417b482b65e4e0184fcab4e6ccecdd6",
       "label": null,
       "x_min": 459,
       "y_min": 650,
@@ -7237,12 +7117,7 @@
       "y_max": 700
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ecACPfvEQM6lIdVqq6GRUw==",
-          "subType": "03"
-        }
-      },
+      "id": "f997e80bcf704d0ea730e780baf00d41",
       "label": "催",
       "x_min": 179,
       "y_min": 652,
@@ -7250,12 +7125,7 @@
       "y_max": 699
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "c8ZtFBrpTiC85J2kdPAp4A==",
-          "subType": "03"
-        }
-      },
+      "id": "2ef37990b73b45ebae92d8700f636daf",
       "label": null,
       "x_min": 41,
       "y_min": 650,
@@ -7263,12 +7133,7 @@
       "y_max": 696
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "4FelyYpiS12KmmG9Wm1i5g==",
-          "subType": "03"
-        }
-      },
+      "id": "474491624995467caae708c718dd6196",
       "label": null,
       "x_min": 630,
       "y_min": 633,
@@ -7276,12 +7141,7 @@
       "y_max": 655
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "3+hMY72lRsW23S7ZSDI/pQ==",
-          "subType": "03"
-        }
-      },
+      "id": "5b66fca90aa34f418665a2883b4f2043",
       "label": null,
       "x_min": 675,
       "y_min": 620,
@@ -7289,12 +7149,7 @@
       "y_max": 661
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "5UTt6qaLRteCJCwwJSjKJw==",
-          "subType": "03"
-        }
-      },
+      "id": "6dca19dcd8104b44b5bd50f3804123c8",
       "label": null,
       "x_min": 183,
       "y_min": 618,
@@ -7302,12 +7157,7 @@
       "y_max": 662
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "wftJzGreSw6vmIbX5K3XFg==",
-          "subType": "03"
-        }
-      },
+      "id": "f443ebc9748840ada1eb3b1e919fd558",
       "label": "銀",
       "x_min": 251,
       "y_min": 616,
@@ -7315,12 +7165,7 @@
       "y_max": 661
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "lJg3pTbqRHqKJOYwQnEVXw==",
-          "subType": "03"
-        }
-      },
+      "id": "ac38f117632a4ff7a026495fb9103e21",
       "label": null,
       "x_min": 467,
       "y_min": 617,
@@ -7328,12 +7173,7 @@
       "y_max": 654
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "LF0NxpbJTZm8AgpHbMoBcQ==",
-          "subType": "03"
-        }
-      },
+      "id": "aba7229b079e44cfb1b31b1403f0582b",
       "label": null,
       "x_min": 814,
       "y_min": 614,
@@ -7341,12 +7181,7 @@
       "y_max": 664
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "b4gdgLMMQwKgzvImUGFc6w==",
-          "subType": "03"
-        }
-      },
+      "id": "e19f2187f6714793a5501e2ebfe6c4af",
       "label": "新",
       "x_min": 389,
       "y_min": 612,
@@ -7354,12 +7189,7 @@
       "y_max": 663
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "8UqRhlrTQ4KcYLcLE6UYkg==",
-          "subType": "03"
-        }
-      },
+      "id": "c6a68db4df4c492ea476e26ef215374a",
       "label": null,
       "x_min": 43,
       "y_min": 613,
@@ -7367,12 +7197,7 @@
       "y_max": 657
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "OTNNcvxASLKu/2UNCSLwTw==",
-          "subType": "03"
-        }
-      },
+      "id": "b96f7f1413894eaabf0fe23353bb09c6",
       "label": null,
       "x_min": 632,
       "y_min": 610,
@@ -7380,12 +7205,7 @@
       "y_max": 633
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "bBqR8wM5Q1+CS3YmRnBIig==",
-          "subType": "03"
-        }
-      },
+      "id": "8368335039f3442b97b0b89c8a1e8f48",
       "label": "仞",
       "x_min": 1163,
       "y_min": 586,
@@ -7393,12 +7213,7 @@
       "y_max": 627
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "DMLhR+pcTGiGPI1oLu45mw==",
-          "subType": "03"
-        }
-      },
+      "id": "1b2b655c32cb4562b50e1a3bde0f48c3",
       "label": "宋",
       "x_min": 466,
       "y_min": 578,
@@ -7406,12 +7221,7 @@
       "y_max": 624
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "MnX0b6sRSPiRbetRiMOriA==",
-          "subType": "03"
-        }
-      },
+      "id": "14bb637a96f746919b571c1588b0cfdc",
       "label": null,
       "x_min": 256,
       "y_min": 578,
@@ -7419,12 +7229,7 @@
       "y_max": 621
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "20TO7zn/TvCMwuOYgSIVqQ==",
-          "subType": "03"
-        }
-      },
+      "id": "7f34101d638c47f2b19eed8de1446aa9",
       "label": null,
       "x_min": 814,
       "y_min": 577,
@@ -7432,12 +7237,7 @@
       "y_max": 628
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "umPerjjyR6GjZS8UTuFfLQ==",
-          "subType": "03"
-        }
-      },
+      "id": "7210a9a346184fc0b3d61de2d8f067f8",
       "label": "在",
       "x_min": 671,
       "y_min": 576,
@@ -7445,12 +7245,7 @@
       "y_max": 623
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "9CfNDe/iTsKhnQht7AypLA==",
-          "subType": "03"
-        }
-      },
+      "id": "80073f809fef4af1afea14ed2ec4b74b",
       "label": null,
       "x_min": 181,
       "y_min": 577,
@@ -7458,12 +7253,7 @@
       "y_max": 620
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "YtLo+XMZRj+Y96vk8JNt8w==",
-          "subType": "03"
-        }
-      },
+      "id": "807aa0943b104ac69a9111889464ff32",
       "label": null,
       "x_min": 44,
       "y_min": 576,
@@ -7471,12 +7261,7 @@
       "y_max": 620
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "u6VR94xCQy2TzzYlQ3+6+w==",
-          "subType": "03"
-        }
-      },
+      "id": "6ea0df24a3ae42c9a3efe407f6b12c32",
       "label": null,
       "x_min": 700,
       "y_min": 555,
@@ -7484,12 +7269,7 @@
       "y_max": 569
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "9qqyKsIcT9WrtD52NXplkQ==",
-          "subType": "03"
-        }
-      },
+      "id": "cad4ff8754ee46428476f70caefd6e01",
       "label": null,
       "x_min": 1170,
       "y_min": 549,
@@ -7497,12 +7277,7 @@
       "y_max": 584
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "d4kjdI5ITuyjd14AcqY/JA==",
-          "subType": "03"
-        }
-      },
+      "id": "7dd3d88a24f144b4aa951cf6a5b2cf8c",
       "label": null,
       "x_min": 815,
       "y_min": 544,
@@ -7510,12 +7285,7 @@
       "y_max": 585
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "7UKamD72S/Cd6W8Py+aQMg==",
-          "subType": "03"
-        }
-      },
+      "id": "96746d13e3074ab683f083178907e8db",
       "label": "享",
       "x_min": 393,
       "y_min": 537,
@@ -7523,12 +7293,7 @@
       "y_max": 627
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "xpUeLPYLQWCQNoyG6OeZjg==",
-          "subType": "03"
-        }
-      },
+      "id": "18de10be04c54557ba31f5777bf6b989",
       "label": "如",
       "x_min": 179,
       "y_min": 539,
@@ -7536,12 +7301,7 @@
       "y_max": 585
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ag7FGE5zR/uyWN52bqAhMw==",
-          "subType": "03"
-        }
-      },
+      "id": "23cc97028153495995fba57eaa181ac6",
       "label": "獻",
       "x_min": 251,
       "y_min": 537,
@@ -7549,12 +7309,7 @@
       "y_max": 584
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "dlRuF8kORuSF71SQqEYvVQ==",
-          "subType": "03"
-        }
-      },
+      "id": "98b14755b473455faf1ce639e251800a",
       "label": "要",
       "x_min": 673,
       "y_min": 536,
@@ -7562,12 +7317,7 @@
       "y_max": 590
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ujv02X2dSiCREe9lYh2VUw==",
-          "subType": "03"
-        }
-      },
+      "id": "9a47d70c3b90429b821c1f64f3149d7c",
       "label": "守",
       "x_min": 464,
       "y_min": 534,
@@ -7575,12 +7325,7 @@
       "y_max": 583
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "v91pqdqZTWK5ocrgVRTZdQ==",
-          "subType": "03"
-        }
-      },
+      "id": "fde66ce56cfa498985b15f7737b7a21f",
       "label": "定",
       "x_min": 43,
       "y_min": 532,
@@ -7588,12 +7333,7 @@
       "y_max": 583
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "iUC6LXuxScOzN+/fro7Tqg==",
-          "subType": "03"
-        }
-      },
+      "id": "7e20175dadfb4a0391ec9e696905c5a7",
       "label": null,
       "x_min": 1168,
       "y_min": 509,
@@ -7601,12 +7341,7 @@
       "y_max": 547
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "hrcV2eqqTBSbPimLN+QRsQ==",
-          "subType": "03"
-        }
-      },
+      "id": "6651e292fed644648461221ee58f9a79",
       "label": null,
       "x_min": 674,
       "y_min": 507,
@@ -7614,12 +7349,7 @@
       "y_max": 546
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "vw3GBhPET7CgPrbwypZHeQ==",
-          "subType": "03"
-        }
-      },
+      "id": "d95c4943e2584899aa99bc4750194a25",
       "label": null,
       "x_min": 815,
       "y_min": 502,
@@ -7627,12 +7357,7 @@
       "y_max": 548
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "7InVHrHUQsCVALcOLG2Kcw==",
-          "subType": "03"
-        }
-      },
+      "id": "9994f92a0659489db9f0f89d76114431",
       "label": "按",
       "x_min": 467,
       "y_min": 500,
@@ -7640,12 +7365,7 @@
       "y_max": 549
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "44Tz7aaqSpqzuRRpx6BWwQ==",
-          "subType": "03"
-        }
-      },
+      "id": "c0666864b77741cab20760c9e7c8a3a1",
       "label": null,
       "x_min": 257,
       "y_min": 500,
@@ -7653,12 +7373,7 @@
       "y_max": 541
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "HmhSEq1uT/OK69ye/jd7pw==",
-          "subType": "03"
-        }
-      },
+      "id": "78d49ddf6e284091a6264e46d453cc9f",
       "label": "創",
       "x_min": 392,
       "y_min": 495,
@@ -7666,12 +7381,7 @@
       "y_max": 544
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "GslKr55VQ1KICOCNrt5H6g==",
-          "subType": "03"
-        }
-      },
+      "id": "7c4e58324ea241cfba23efdc44a59a63",
       "label": null,
       "x_min": 43,
       "y_min": 495,
@@ -7679,12 +7389,7 @@
       "y_max": 549
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "iV1YXfKAT5ed0uQgypGSEg==",
-          "subType": "03"
-        }
-      },
+      "id": "85ac4779f9894061ba217e958fa43ec8",
       "label": "有",
       "x_min": 1165,
       "y_min": 467,
@@ -7692,12 +7397,7 @@
       "y_max": 514
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "2ZNUXMLdTdqi6257lUm3LA==",
-          "subType": "03"
-        }
-      },
+      "id": "9e9f50f417eb4d3d867a11ed65d88099",
       "label": null,
       "x_min": 673,
       "y_min": 465,
@@ -7705,12 +7405,7 @@
       "y_max": 511
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "LlAFsbTGQIGUYNacBe/zFw==",
-          "subType": "03"
-        }
-      },
+      "id": "7ccdcead0b374f84b198f77652dc6608",
       "label": "病",
       "x_min": 813,
       "y_min": 463,
@@ -7718,12 +7413,7 @@
       "y_max": 511
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Sna8yJzgTm2bN9NDYO2yXA==",
-          "subType": "03"
-        }
-      },
+      "id": "94d46662bddb4974af6a394c4de7e2c2",
       "label": "稅",
       "x_min": 182,
       "y_min": 459,
@@ -7731,12 +7421,7 @@
       "y_max": 502
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "mtmplcLeSfeY3IT+xWA7tA==",
-          "subType": "03"
-        }
-      },
+      "id": "933863afaae64b1886179143f3f21b28",
       "label": "文",
       "x_min": 398,
       "y_min": 458,
@@ -7744,12 +7429,7 @@
       "y_max": 506
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "uI9Tl4aNRKyg9rDieep6pw==",
-          "subType": "03"
-        }
-      },
+      "id": "b030d74e06484b3186f8da72b416b73d",
       "label": null,
       "x_min": 256,
       "y_min": 458,
@@ -7757,12 +7437,7 @@
       "y_max": 502
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "LfQko/nES3OfXM9+W+pFBg==",
-          "subType": "03"
-        }
-      },
+      "id": "6dfefc5cacda4473944c1c84ef5764d8",
       "label": null,
       "x_min": 48,
       "y_min": 459,
@@ -7770,12 +7445,7 @@
       "y_max": 499
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "BtteD7P2SLmLiQuPlPHvEw==",
-          "subType": "03"
-        }
-      },
+      "id": "370ccf8824da43d3acda472358a0b576",
       "label": "鳶",
       "x_min": 1017,
       "y_min": 424,
@@ -7783,12 +7453,7 @@
       "y_max": 515
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "MgJk3V0DRoCxZ892/Pb3LA==",
-          "subType": "03"
-        }
-      },
+      "id": "91e3b3153f9145f69c1909c6a55deb14",
       "label": null,
       "x_min": 1164,
       "y_min": 426,
@@ -7796,12 +7461,7 @@
       "y_max": 475
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "xOvlGS5qSx2UROQLDbQ2zg==",
-          "subType": "03"
-        }
-      },
+      "id": "1bb78f23551a4e4ea335758c17eb6c61",
       "label": null,
       "x_min": 671,
       "y_min": 427,
@@ -7809,12 +7469,7 @@
       "y_max": 470
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "tapgPm2kSPyDbxPiYOGuWQ==",
-          "subType": "03"
-        }
-      },
+      "id": "ee981a5d86684fa1bd6235191d0d3b3d",
       "label": "霑",
       "x_min": 815,
       "y_min": 426,
@@ -7822,12 +7477,7 @@
       "y_max": 474
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "UOsnwRIJQ+ya0k6k5S0Mkg==",
-          "subType": "03"
-        }
-      },
+      "id": "dd6488f53a6648748643a8324edde07b",
       "label": "窒",
       "x_min": 464,
       "y_min": 423,
@@ -7835,12 +7485,7 @@
       "y_max": 508
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "C7glhSmKS/GYLGdkkpYIKQ==",
-          "subType": "03"
-        }
-      },
+      "id": "c504061ebe8a4a7da21ed484390c50fe",
       "label": "武",
       "x_min": 396,
       "y_min": 426,
@@ -7848,12 +7493,7 @@
       "y_max": 470
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "LBCJSnP3SY+taYxP4/RRVg==",
-          "subType": "03"
-        }
-      },
+      "id": "c3d765116fd84c0d950890c2d60da99d",
       "label": null,
       "x_min": 45,
       "y_min": 421,
@@ -7861,12 +7501,7 @@
       "y_max": 466
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "TPNjK4N+Q/q+NMoFl8ZzWA==",
-          "subType": "03"
-        }
-      },
+      "id": "4ceead84de7a4f04870a99bc6873be1e",
       "label": "黃",
       "x_min": 260,
       "y_min": 421,
@@ -7874,12 +7509,7 @@
       "y_max": 464
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "RymUcVIeQ1Kys6DLUGyKSQ==",
-          "subType": "03"
-        }
-      },
+      "id": "4bc2d241c36b4204b111368925b58fa5",
       "label": null,
       "x_min": 181,
       "y_min": 415,
@@ -7887,12 +7517,7 @@
       "y_max": 465
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "XDq9XXCKSf+n+F+45KaKZQ==",
-          "subType": "03"
-        }
-      },
+      "id": "e8cbfc2eef42497d9ce7ed9271185016",
       "label": "凡",
       "x_min": 1171,
       "y_min": 395,
@@ -7900,12 +7525,7 @@
       "y_max": 432
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "1wCyhW28QBuD60WWxS/pVA==",
-          "subType": "03"
-        }
-      },
+      "id": "85fc75e594984004bb7ce6d2585a7b47",
       "label": "皆",
       "x_min": 1023,
       "y_min": 388,
@@ -7913,12 +7533,7 @@
       "y_max": 439
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "LltrbJP+RVqGx+EgBETMRg==",
-          "subType": "03"
-        }
-      },
+      "id": "0206c6dd7f1f4b7a9eb028c39dc8c280",
       "label": "臉",
       "x_min": 674,
       "y_min": 387,
@@ -7926,12 +7541,7 @@
       "y_max": 431
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ow9lCVeaTLC2B2cOx4sDlA==",
-          "subType": "03"
-        }
-      },
+      "id": "3edc182fc6aa4d3ca0e0f522275680a4",
       "label": "胡",
       "x_min": 468,
       "y_min": 387,
@@ -7939,12 +7549,7 @@
       "y_max": 428
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "WeFA2wODQ5SP/vnu43LYhA==",
-          "subType": "03"
-        }
-      },
+      "id": "5e04529f614f4e48bb76249b0352f7ac",
       "label": null,
       "x_min": 815,
       "y_min": 385,
@@ -7952,12 +7557,7 @@
       "y_max": 432
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "hHL78s/jTV6hcRe2bdmLgQ==",
-          "subType": "03"
-        }
-      },
+      "id": "ac6903707809464ba0b54e960870b141",
       "label": "納",
       "x_min": 182,
       "y_min": 385,
@@ -7965,12 +7565,7 @@
       "y_max": 428
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ziryRvCzR0CbgGsibwHXaQ==",
-          "subType": "03"
-        }
-      },
+      "id": "14472a4f39414588a683a3eae3aabb4c",
       "label": "以",
       "x_min": 258,
       "y_min": 385,
@@ -7978,12 +7573,7 @@
       "y_max": 424
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "eIPGlrk5QLGAmaPvw0OMjg==",
-          "subType": "03"
-        }
-      },
+      "id": "e4f49771c9fe47e1ad44fe7daaf239ff",
       "label": null,
       "x_min": 398,
       "y_min": 382,
@@ -7991,12 +7581,7 @@
       "y_max": 428
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "QcR59JyYREejdOz4GYuEew==",
-          "subType": "03"
-        }
-      },
+      "id": "855b0d25aabf41ea99fd1d8f2fb360a1",
       "label": "致",
       "x_min": 44,
       "y_min": 381,
@@ -8004,12 +7589,7 @@
       "y_max": 426
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "V1panX7CQ9eYW4B+jqAIcA==",
-          "subType": "03"
-        }
-      },
+      "id": "e583ef8712af4930a315ab9da642dfcb",
       "label": null,
       "x_min": 602,
       "y_min": 373,
@@ -8017,12 +7597,7 @@
       "y_max": 431
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "iSPxmW/RSPGLBRgZiS6LPA==",
-          "subType": "03"
-        }
-      },
+      "id": "367ccfccb4394da4a65f6359c4929c07",
       "label": "清",
       "x_min": 1166,
       "y_min": 353,
@@ -8030,12 +7605,7 @@
       "y_max": 400
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "A/6ueG+6T6So1w28LTUVBA==",
-          "subType": "03"
-        }
-      },
+      "id": "0bb91546a3cb422eb4a3c4240274bcb6",
       "label": null,
       "x_min": 1028,
       "y_min": 353,
@@ -8043,12 +7613,7 @@
       "y_max": 393
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Le7QPf5ITHWyYDc7Vdcatg==",
-          "subType": "03"
-        }
-      },
+      "id": "4a89ef929fc847da94fb037e4770c385",
       "label": "阮",
       "x_min": 814,
       "y_min": 350,
@@ -8056,12 +7621,7 @@
       "y_max": 394
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "oK/mTr1ETQiDtQ/IWrtPEw==",
-          "subType": "03"
-        }
-      },
+      "id": "e9b239abe7874002bb28344c9cdf8e5f",
       "label": null,
       "x_min": 1097,
       "y_min": 349,
@@ -8069,12 +7629,7 @@
       "y_max": 392
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "aSEtxjHFR3afhDNyKxhFqw==",
-          "subType": "03"
-        }
-      },
+      "id": "93a7f89d7b8b4541944e8318bd94b100",
       "label": null,
       "x_min": 677,
       "y_min": 350,
@@ -8082,12 +7637,7 @@
       "y_max": 387
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ObuAcrfqTHKD7djG2w09tw==",
-          "subType": "03"
-        }
-      },
+      "id": "9e0e16c723a04ca089956b77f1b61e02",
       "label": "屯",
       "x_min": 469,
       "y_min": 350,
@@ -8095,12 +7645,7 @@
       "y_max": 389
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "dHIYQT8UQE+160vjNvlkKg==",
-          "subType": "03"
-        }
-      },
+      "id": "01e6a42ed98541e4bdb3f90de264ac6b",
       "label": null,
       "x_min": 395,
       "y_min": 345,
@@ -8108,12 +7653,7 @@
       "y_max": 388
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "KyQKKuRhQOuosNYZoUHZqA==",
-          "subType": "03"
-        }
-      },
+      "id": "7d28ff4f5bbd481c8026f85da2b8f3b4",
       "label": null,
       "x_min": 255,
       "y_min": 343,
@@ -8121,12 +7661,7 @@
       "y_max": 392
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "r6Ak6K4LTCuPtdBN+K9CEA==",
-          "subType": "03"
-        }
-      },
+      "id": "a992eac9622f43d49254109e951a76f4",
       "label": "別",
       "x_min": 183,
       "y_min": 344,
@@ -8134,12 +7669,7 @@
       "y_max": 389
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "S30kOtYOS9Wc2V0Iqx70tQ==",
-          "subType": "03"
-        }
-      },
+      "id": "d4cc1c6242d64095b648e369d2469aa9",
       "label": null,
       "x_min": 44,
       "y_min": 344,
@@ -8147,12 +7677,7 @@
       "y_max": 386
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "dRsRQ21uQKmSTJqdkFW1pg==",
-          "subType": "03"
-        }
-      },
+      "id": "2045f4c5941d495a856e577c581cdf29",
       "label": "丘",
       "x_min": 604,
       "y_min": 341,
@@ -8160,12 +7685,7 @@
       "y_max": 382
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "9UWdkQB8QfGOQzO8Fpdt1g==",
-          "subType": "03"
-        }
-      },
+      "id": "bf163991d07c487b97601870cc892431",
       "label": "回",
       "x_min": 1169,
       "y_min": 319,
@@ -8173,12 +7693,7 @@
       "y_max": 354
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "CDxBYTbmScyfOD+KB68YLg==",
-          "subType": "03"
-        }
-      },
+      "id": "6d7b8ba480b341dc8dc7df4ce01cfa0e",
       "label": null,
       "x_min": 1100,
       "y_min": 315,
@@ -8186,12 +7701,7 @@
       "y_max": 353
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "d7HqplzkREaennXN32C07A==",
-          "subType": "03"
-        }
-      },
+      "id": "ecf428efea284f9199ef01244b99ba06",
       "label": null,
       "x_min": 1026,
       "y_min": 312,
@@ -8199,12 +7709,7 @@
       "y_max": 357
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "NCadLwABT1e5oZfbJSQIzQ==",
-          "subType": "03"
-        }
-      },
+      "id": "791ec1656c264a1c8d5d729117da5ae9",
       "label": "界",
       "x_min": 675,
       "y_min": 309,
@@ -8212,12 +7717,7 @@
       "y_max": 354
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Od2b8YGVQmmOtpEvqkbwAw==",
-          "subType": "03"
-        }
-      },
+      "id": "b7b4dee8b86c49a5a13cbb98d409273d",
       "label": null,
       "x_min": 808,
       "y_min": 301,
@@ -8225,12 +7725,7 @@
       "y_max": 360
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "IgqnCIh2S6uSqCfurA3Vzw==",
-          "subType": "03"
-        }
-      },
+      "id": "2904d049989a47bfbdd57ae84c952161",
       "label": "遠",
       "x_min": 463,
       "y_min": 305,
@@ -8238,12 +7733,7 @@
       "y_max": 355
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "SwBXvP2eQRWiwzyQyV3ONQ==",
-          "subType": "03"
-        }
-      },
+      "id": "b49a5fe58ccc451287a0f44dee6ce070",
       "label": "差",
       "x_min": 396,
       "y_min": 307,
@@ -8251,12 +7741,7 @@
       "y_max": 352
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "5WH4lC04QTGtVAHqsZpO3g==",
-          "subType": "03"
-        }
-      },
+      "id": "d50077c7513b4fd6a4383dae4115ea37",
       "label": "沱",
       "x_min": 254,
       "y_min": 305,
@@ -8264,12 +7749,7 @@
       "y_max": 354
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "svM2jUVcSkSEXwIS8jRMyw==",
-          "subType": "03"
-        }
-      },
+      "id": "34def43c481a44eeb8d1b8eed05b1cb2",
       "label": null,
       "x_min": 600,
       "y_min": 304,
@@ -8277,12 +7757,7 @@
       "y_max": 353
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "nNbgqzGWTvuFJWFBpxEthg==",
-          "subType": "03"
-        }
-      },
+      "id": "451cba447b9e4fee90767d07e41ae9ec",
       "label": null,
       "x_min": 45,
       "y_min": 303,
@@ -8290,12 +7765,7 @@
       "y_max": 345
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "5CUdP5MBRQKrwd7Unw/5hQ==",
-          "subType": "03"
-        }
-      },
+      "id": "d04e342369a54a8bb34324529976dc91",
       "label": "渚",
       "x_min": 1166,
       "y_min": 275,
@@ -8303,12 +7773,7 @@
       "y_max": 326
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "P3viU0ytT5qYsaqQuVQ2vA==",
-          "subType": "03"
-        }
-      },
+      "id": "6c387dff063043bf98f6b0286a0d40b5",
       "label": null,
       "x_min": 1098,
       "y_min": 275,
@@ -8316,12 +7781,7 @@
       "y_max": 319
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "RFrufl2ES8muEHkS68m+zQ==",
-          "subType": "03"
-        }
-      },
+      "id": "284379eaada649e4a4d73318e7138488",
       "label": "地",
       "x_min": 677,
       "y_min": 276,
@@ -8329,12 +7789,7 @@
       "y_max": 315
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "cNmhSG0QT1SpF7pS9IC11w==",
-          "subType": "03"
-        }
-      },
+      "id": "538c4cedcb6645b1b2af68c3ee85b798",
       "label": "鎮",
       "x_min": 815,
       "y_min": 274,
@@ -8342,12 +7797,7 @@
       "y_max": 317
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "0h6DVMsaTmeujfPDvqbAcw==",
-          "subType": "03"
-        }
-      },
+      "id": "6c5ccb175151441c9caea383d9951099",
       "label": "復",
       "x_min": 1022,
       "y_min": 272,
@@ -8355,12 +7805,7 @@
       "y_max": 321
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "jR+wEUCUSPSNygZGwZJx6A==",
-          "subType": "03"
-        }
-      },
+      "id": "1d2dac07256f4342979e5cf13c93145d",
       "label": "威",
       "x_min": 468,
       "y_min": 272,
@@ -8368,12 +7813,7 @@
       "y_max": 312
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "+qOYIGH0TtiBacb/+OGcuw==",
-          "subType": "03"
-        }
-      },
+      "id": "3a49fd2ac56f40ffad6ae503056b4dd4",
       "label": "欽",
       "x_min": 395,
       "y_min": 269,
@@ -8381,12 +7821,7 @@
       "y_max": 314
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "iFqpRNsRS22aMKifj7lzZg==",
-          "subType": "03"
-        }
-      },
+      "id": "f6bc8a7db15c48f49ffe16f799090e77",
       "label": null,
       "x_min": 249,
       "y_min": 265,
@@ -8394,12 +7829,7 @@
       "y_max": 316
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "EZcSVFSURwSOagyLynXFOg==",
-          "subType": "03"
-        }
-      },
+      "id": "12dd528d524744c3a47f6ca33a8aa5e7",
       "label": null,
       "x_min": 746,
       "y_min": 266,
@@ -8407,12 +7837,7 @@
       "y_max": 310
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "jpNpmErTR0eoXvcScURziA==",
-          "subType": "03"
-        }
-      },
+      "id": "a0b215ced09f44378f2958836f5d8e91",
       "label": "勢",
       "x_min": 182,
       "y_min": 266,
@@ -8420,12 +7845,7 @@
       "y_max": 349
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ur9gKlgfRv6R+hy6nwxadg==",
-          "subType": "03"
-        }
-      },
+      "id": "38ee5217dd5d4f989f1e8409d77b61ce",
       "label": null,
       "x_min": 45,
       "y_min": 268,
@@ -8433,12 +7853,7 @@
       "y_max": 310
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "wKvQDOqYTJmU6pgGJ1l6cQ==",
-          "subType": "03"
-        }
-      },
+      "id": "04d7375887924cc0a63f2c5bb4b4f962",
       "label": "牛",
       "x_min": 1166,
       "y_min": 238,
@@ -8446,12 +7861,7 @@
       "y_max": 283
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "M6Tf5sg7SVKnBbu+oUxrlQ==",
-          "subType": "03"
-        }
-      },
+      "id": "044a6dd097f140cabd25b383004e66d0",
       "label": "呵",
       "x_min": 1100,
       "y_min": 240,
@@ -8459,12 +7869,7 @@
       "y_max": 276
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "oml0hPLqSra0d0RFG6/JgA==",
-          "subType": "03"
-        }
-      },
+      "id": "ce9e8b4bb25740bc8f85764edb244814",
       "label": null,
       "x_min": 596,
       "y_min": 235,
@@ -8472,12 +7877,7 @@
       "y_max": 284
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "dc/R2gcPSFS47DgCK/rCow==",
-          "subType": "03"
-        }
-      },
+      "id": "d8b7bedd0dd14d7b938e352022e1ba68",
       "label": "河",
       "x_min": 1025,
       "y_min": 237,
@@ -8485,12 +7885,7 @@
       "y_max": 279
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ip5c3gFmSsqiNzYb4ysDEA==",
-          "subType": "03"
-        }
-      },
+      "id": "4d2556bb650449ccaee1597abd79e1ba",
       "label": null,
       "x_min": 816,
       "y_min": 237,
@@ -8498,12 +7893,7 @@
       "y_max": 277
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "MeIYq8rRQYCSAhNVcwxKAA==",
-          "subType": "03"
-        }
-      },
+      "id": "c902dc7826b748a897f67a0c43ff1bf1",
       "label": null,
       "x_min": 747,
       "y_min": 234,
@@ -8511,12 +7901,7 @@
       "y_max": 279
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "wYwddJPvRlefHem0ILPnGg==",
-          "subType": "03"
-        }
-      },
+      "id": "600d15ba6ac34573a8307f12e4e6c2eb",
       "label": "清",
       "x_min": 677,
       "y_min": 232,
@@ -8524,12 +7909,7 @@
       "y_max": 279
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "lhdBzOWWTE2kxW6bGEBIiA==",
-          "subType": "03"
-        }
-      },
+      "id": "de3315a5901348f69de37e5dbcd47bf4",
       "label": "管",
       "x_min": 467,
       "y_min": 227,
@@ -8537,12 +7917,7 @@
       "y_max": 273
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "957ke9/3Qr2FBA7Lyn5YxQ==",
-          "subType": "03"
-        }
-      },
+      "id": "f8951a011a2545e999c3960167774c14",
       "label": null,
       "x_min": 186,
       "y_min": 227,
@@ -8550,12 +7925,7 @@
       "y_max": 273
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "3CDv9CYuTAKitGdVQS4QEw==",
-          "subType": "03"
-        }
-      },
+      "id": "f744f1307e934bd797fc07d0efa197ed",
       "label": "船",
       "x_min": 254,
       "y_min": 225,
@@ -8563,12 +7933,7 @@
       "y_max": 272
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Uax1kKbPQEWqr94Dcp2+Sw==",
-          "subType": "03"
-        }
-      },
+      "id": "53a9267f7d3b4cfb9879fd6b746393dc",
       "label": null,
       "x_min": 47,
       "y_min": 226,
@@ -8576,12 +7941,7 @@
       "y_max": 267
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "0yda/k7XRQaGVjGy754Avg==",
-          "subType": "03"
-        }
-      },
+      "id": "b514d81259174ca5b734faac49cba072",
       "label": "道",
       "x_min": 325,
       "y_min": 221,
@@ -8589,12 +7949,7 @@
       "y_max": 270
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "WZHAgMPkS6+PkzVFIXu6Og==",
-          "subType": "03"
-        }
-      },
+      "id": "50ba538f444640b4b0cf9a7992d40fd3",
       "label": null,
       "x_min": 1124,
       "y_min": 206,
@@ -8602,12 +7957,7 @@
       "y_max": 219
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "r2B0QgLDSkyfjX9f6WZa8A==",
-          "subType": "03"
-        }
-      },
+      "id": "1b0bc2bb69a64f6bbc75ca3c513beb66",
       "label": "定",
       "x_min": 1166,
       "y_min": 197,
@@ -8615,12 +7965,7 @@
       "y_max": 244
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "maCEMiISQne94RDLNy2YwA==",
-          "subType": "03"
-        }
-      },
+      "id": "ab1f195e686e45728ab730089bb4c50a",
       "label": "永",
       "x_min": 810,
       "y_min": 194,
@@ -8628,12 +7973,7 @@
       "y_max": 239
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "+aSbQ5MOQj2nWCIpuoAxaA==",
-          "subType": "03"
-        }
-      },
+      "id": "8aedba7dc96544fc8b1811a052252efb",
       "label": "婦",
       "x_min": 745,
       "y_min": 197,
@@ -8641,12 +7981,7 @@
       "y_max": 239
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "q/eTL6MZRV2O0/omABTUeg==",
-          "subType": "03"
-        }
-      },
+      "id": "990b150cbb96486989dbdb0cf5a67dd5",
       "label": null,
       "x_min": 603,
       "y_min": 196,
@@ -8654,12 +7989,7 @@
       "y_max": 238
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "kHkBpbiLSRi9Mz14LQcsSg==",
-          "subType": "03"
-        }
-      },
+      "id": "a25d4960749d400183d750e102f82841",
       "label": "立",
       "x_min": 1027,
       "y_min": 194,
@@ -8667,12 +7997,7 @@
       "y_max": 244
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ujYO/b/lQNKdw73HkFvukg==",
-          "subType": "03"
-        }
-      },
+      "id": "3447abfe8476453c91bd19ebea78b937",
       "label": null,
       "x_min": 672,
       "y_min": 189,
@@ -8680,12 +8005,7 @@
       "y_max": 235
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ijYvzehmQK+jf2GLLEw0MQ==",
-          "subType": "03"
-        }
-      },
+      "id": "8104e4547fea42c0aefc97a77d3a171e",
       "label": "壽",
       "x_min": 393,
       "y_min": 189,
@@ -8693,12 +8013,7 @@
       "y_max": 276
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "uztmF+LkRzOzNxUfzigd+g==",
-          "subType": "03"
-        }
-      },
+      "id": "b588585373344549b031e66785bb2e7f",
       "label": "定",
       "x_min": 183,
       "y_min": 192,
@@ -8706,12 +8021,7 @@
       "y_max": 235
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "IOE9BNb8S++Ad5a43gtbdg==",
-          "subType": "03"
-        }
-      },
+      "id": "434806cf5b7f4b91a4ac00c5accc5069",
       "label": null,
       "x_min": 335,
       "y_min": 195,
@@ -8719,12 +8029,7 @@
       "y_max": 223
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "NoFqKQIpQjuqgsfQnGSXBA==",
-          "subType": "03"
-        }
-      },
+      "id": "22f5c7bb33fa406398dc3f598b22c082",
       "label": "琉",
       "x_min": 254,
       "y_min": 185,
@@ -8732,12 +8037,7 @@
       "y_max": 232
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "cgP9RwJoRXeEai7pOQvBew==",
-          "subType": "03"
-        }
-      },
+      "id": "5110af803a864f0cb3184213fdb74717",
       "label": null,
       "x_min": 43,
       "y_min": 182,
@@ -8745,12 +8045,7 @@
       "y_max": 232
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "tLjf4JfKQg6X96BvweTmFA==",
-          "subType": "03"
-        }
-      },
+      "id": "b6acc053d3874a84842d856d467d2118",
       "label": null,
       "x_min": 600,
       "y_min": 167,
@@ -8758,12 +8053,7 @@
       "y_max": 208
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "I4uyQm5lRieBaGbsGz4dgA==",
-          "subType": "03"
-        }
-      },
+      "id": "7bc79066fd17443887f001a5af448e43",
       "label": "初",
       "x_min": 1025,
       "y_min": 160,
@@ -8771,12 +8061,7 @@
       "y_max": 208
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "p5l4esk4Q66cNJtD5Ma+0A==",
-          "subType": "03"
-        }
-      },
+      "id": "2cb8246adf96470d8e57c4474ba6c42f",
       "label": null,
       "x_min": 882,
       "y_min": 158,
@@ -8784,12 +8069,7 @@
       "y_max": 204
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "L7GliQBKRFSDy39qWH82yQ==",
-          "subType": "03"
-        }
-      },
+      "id": "fe886be6615b499292478c15657c2f6e",
       "label": null,
       "x_min": 1169,
       "y_min": 160,
@@ -8797,12 +8077,7 @@
       "y_max": 209
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "U2p10BBIQEu60230J1uIjQ==",
-          "subType": "03"
-        }
-      },
+      "id": "db3d5f3e4f5e45618f800788199825e9",
       "label": "蹇",
       "x_min": 1095,
       "y_min": 155,
@@ -8810,12 +8085,7 @@
       "y_max": 247
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "ffJzrUDXQ4OhpRnsaCdKQA==",
-          "subType": "03"
-        }
-      },
+      "id": "36e9f413018c483db5e4d748aaf95e82",
       "label": null,
       "x_min": 680,
       "y_min": 155,
@@ -8823,12 +8093,7 @@
       "y_max": 192
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "i6fu1KP9SHCQtdvKPlF5WQ==",
-          "subType": "03"
-        }
-      },
+      "id": "6cb55534bee34ebabcc14e1511913e7e",
       "label": null,
       "x_min": 618,
       "y_min": 161,
@@ -8836,12 +8101,7 @@
       "y_max": 169
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "0GtmpgG+T8CjwWOouEUURw==",
-          "subType": "03"
-        }
-      },
+      "id": "673572fbfd3743ae9076d45ba0caefb0",
       "label": null,
       "x_min": 817,
       "y_min": 154,
@@ -8849,12 +8109,7 @@
       "y_max": 195
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "3cg1lkLxTCC6s3s9f0ufAg==",
-          "subType": "03"
-        }
-      },
+      "id": "9cf7290695ac441ab43fa76b9eed94ba",
       "label": null,
       "x_min": 746,
       "y_min": 153,
@@ -8862,12 +8117,7 @@
       "y_max": 197
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "6sSVjCxhSRKHr7FVwpruPg==",
-          "subType": "03"
-        }
-      },
+      "id": "fdbabfa20cdb429899fb2b9f78a42383",
       "label": null,
       "x_min": 542,
       "y_min": 153,
@@ -8875,12 +8125,7 @@
       "y_max": 188
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "+1uHLdhhS4mgzNsm8YIgjQ==",
-          "subType": "03"
-        }
-      },
+      "id": "37fc69166b6c41468a74218f6ff1a560",
       "label": "勇",
       "x_min": 399,
       "y_min": 150,
@@ -8888,12 +8133,7 @@
       "y_max": 196
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "q5jizGi4STqMfA9SkY0oQw==",
-          "subType": "03"
-        }
-      },
+      "id": "57a17d6d114f4505adcf05789c266b18",
       "label": null,
       "x_min": 257,
       "y_min": 150,
@@ -8901,12 +8141,7 @@
       "y_max": 192
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "GEZekpr3QTSO9XwsKh4V2g==",
-          "subType": "03"
-        }
-      },
+      "id": "c5607595487442c3acc2521b2cac4539",
       "label": "侖",
       "x_min": 462,
       "y_min": 144,
@@ -8914,12 +8149,7 @@
       "y_max": 237
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "aXqRuAqMQAWaVXIITrh8Sw==",
-          "subType": "03"
-        }
-      },
+      "id": "687a07a35b424416bf73932d0ce9b01c",
       "label": "禦",
       "x_min": 323,
       "y_min": 145,
@@ -8927,12 +8157,7 @@
       "y_max": 201
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "uWQeQ6KUSFKBdBmGNJ2Dgg==",
-          "subType": "03"
-        }
-      },
+      "id": "f729697ad652430ba56c94a3fb5d439f",
       "label": null,
       "x_min": 182,
       "y_min": 145,
@@ -8940,12 +8165,7 @@
       "y_max": 192
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "u7mmxHMnQsqtzliXJuXYfA==",
-          "subType": "03"
-        }
-      },
+      "id": "e0268d69b3f746628631d4e1a82bc88f",
       "label": null,
       "x_min": 118,
       "y_min": 144,
@@ -8953,12 +8173,7 @@
       "y_max": 186
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "xQsmHtUbR+ytneyHBUjKAw==",
-          "subType": "03"
-        }
-      },
+      "id": "e878abf199a74d38a4071b2d835cecd1",
       "label": "真",
       "x_min": 47,
       "y_min": 145,
@@ -8966,12 +8181,7 @@
       "y_max": 194
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "FIVaOcEgRiOboEKTkTkl+Q==",
-          "subType": "03"
-        }
-      },
+      "id": "c25184307b7b407485859dca8bf8927b",
       "label": "筱",
       "x_min": 1098,
       "y_min": 120,
@@ -8979,12 +8189,7 @@
       "y_max": 163
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "LZdxCRP9QGaJw5n9dkeUyw==",
-          "subType": "03"
-        }
-      },
+      "id": "09de59bcde2644329b68c85863e387c1",
       "label": null,
       "x_min": 817,
       "y_min": 118,
@@ -8992,12 +8197,7 @@
       "y_max": 161
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "aK84EfGrSJi+wwiG+DwsKg==",
-          "subType": "03"
-        }
-      },
+      "id": "9d850796a1754fe68a0609840a5c27ec",
       "label": null,
       "x_min": 1019,
       "y_min": 107,
@@ -9005,12 +8205,7 @@
       "y_max": 169
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "sinKtegHSHq+POqgRWizrQ==",
-          "subType": "03"
-        }
-      },
+      "id": "c3d4fed1db2f44568cfc453395a28e17",
       "label": null,
       "x_min": 675,
       "y_min": 113,
@@ -9018,12 +8213,7 @@
       "y_max": 159
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Ch2Ur0QTSNyFbxSieWpNUA==",
-          "subType": "03"
-        }
-      },
+      "id": "3caa7d3da9944f8385a3502f5dbe5c48",
       "label": null,
       "x_min": 605,
       "y_min": 117,
@@ -9031,12 +8221,7 @@
       "y_max": 154
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "GID8WyIsSAOoxqVYGH/bbw==",
-          "subType": "03"
-        }
-      },
+      "id": "57d56fc28dd84149b99df357abf54174",
       "label": null,
       "x_min": 887,
       "y_min": 114,
@@ -9044,12 +8229,7 @@
       "y_max": 160
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Uz2RVlV/R4+eChrRNrW0Ow==",
-          "subType": "03"
-        }
-      },
+      "id": "6d968b79837741d78aaa2d93ad671065",
       "label": "勉",
       "x_min": 539,
       "y_min": 111,
@@ -9057,12 +8237,7 @@
       "y_max": 156
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "u+hElC5gRoSxjMBft3UNrA==",
-          "subType": "03"
-        }
-      },
+      "id": "85dbbfdf895244bf9afc3be99148d10f",
       "label": "克",
       "x_min": 1101,
       "y_min": 82,
@@ -9070,12 +8245,7 @@
       "y_max": 127
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "vGFYj7FLQ62//hRll6byBQ==",
-          "subType": "03"
-        }
-      },
+      "id": "35208d796e8d47ce98c28ce87d4a5839",
       "label": null,
       "x_min": 959,
       "y_min": 80,
@@ -9083,12 +8253,7 @@
       "y_max": 122
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "E6YOngtbRxiscauc0WCwBw==",
-          "subType": "03"
-        }
-      },
+      "id": "be40b97bcf694f859c09a5c1676a6c83",
       "label": "礪",
       "x_min": 679,
       "y_min": 79,
@@ -9096,12 +8261,7 @@
       "y_max": 121
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "0gDE9L8NTS2Ti9ApKX/uAg==",
-          "subType": "03"
-        }
-      },
+      "id": "6fc703c6af7b4dd68d30e7fdd2df8d9c",
       "label": null,
       "x_min": 1030,
       "y_min": 77,
@@ -9109,12 +8269,7 @@
       "y_max": 126
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "VLRPPhLAToyQ+qHRhl8C/w==",
-          "subType": "03"
-        }
-      },
+      "id": "f793ddd616a64ff38ae7c39f37699d62",
       "label": null,
       "x_min": 887,
       "y_min": 75,
@@ -9122,12 +8277,7 @@
       "y_max": 126
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "BF9GgIJBStqGTiNMdx5ahA==",
-          "subType": "03"
-        }
-      },
+      "id": "0590fc5ea97b4299903cf9fed60e022e",
       "label": "共",
       "x_min": 538,
       "y_min": 75,
@@ -9135,12 +8285,7 @@
       "y_max": 120
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "YpKRukWkRC2bJm28VOJMcQ==",
-          "subType": "03"
-        }
-      },
+      "id": "c5b475422e5e464c852b90db3bce2c9d",
       "label": null,
       "x_min": 957,
       "y_min": 42,
@@ -9148,12 +8293,7 @@
       "y_max": 91
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "Mp8vUlSuRCG9Mf0FDaWRDw==",
-          "subType": "03"
-        }
-      },
+      "id": "038ed414da414cb0b58cbfd947e3d7c4",
       "label": null,
       "x_min": 886,
       "y_min": 42,
@@ -9161,12 +8301,7 @@
       "y_max": 93
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "+0ZME/G5Trm9BBHSob/gaw==",
-          "subType": "03"
-        }
-      },
+      "id": "71ee4fc268f64ec8b4619fd9b1ca49f5",
       "label": null,
       "x_min": 1100,
       "y_min": 42,
@@ -9174,12 +8309,7 @@
       "y_max": 87
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "fMvZbWvzR6y3VsUY5KH6zQ==",
-          "subType": "03"
-        }
-      },
+      "id": "7c3f89cf4bd441b9886e6720a5950ea7",
       "label": null,
       "x_min": 1029,
       "y_min": 36,
@@ -9187,12 +8317,7 @@
       "y_max": 94
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "5UG8p56vQ1CfRfbhdrUzqQ==",
-          "subType": "03"
-        }
-      },
+      "id": "915821681a2a454d873c9efdb88eb72a",
       "label": "糞",
       "x_min": 595,
       "y_min": 29,
@@ -9200,12 +8325,7 @@
       "y_max": 138
     },
     {
-      "id": {
-        "$binary": {
-          "base64": "lBTaFOe8RgSvhQfMAxmiGA==",
-          "subType": "03"
-        }
-      },
+      "id": "8f7df7ded32e4ffb9df10fa11523cfad",
       "label": null,
       "x_min": 674,
       "y_min": 36,
