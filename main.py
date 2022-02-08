@@ -15,10 +15,8 @@ import base64
 from collections import defaultdict
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'static/characters/'
-
 app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['CHARACTERS'] = 'static/characters/'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 normalize_obj = Normalize()
 
@@ -37,7 +35,7 @@ def home():
 
 @app.route('/show_imgs/<target_img_name>')
 def show_img(target_img_name):
-    path = os.path.join(app.config['UPLOAD_FOLDER'], target_img_name)
+    path = os.path.join(app.config['CHARACTERS'], target_img_name)
     img = cv2.imread(path,0)
     normalized_pred_img = normalize_obj.preprocess_img(img)
     img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', normalized_pred_img)[1]).decode()
@@ -48,7 +46,7 @@ def show_img(target_img_name):
 
 @app.route('/imgs/<img_name>')
 def get_img(img_name):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=False )
+    return send_from_directory(app.config['CHARACTERS'],img_name, as_attachment=False )
 
 
 """ Recieving the gaussian value and make the change on the local line
@@ -136,7 +134,7 @@ def upload_image(id_img,region_id, filename, highlight):
             only_y = True if request_data['only_y'].lower() == "true" else False
 
         #correct
-        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        path = os.path.join(app.config['CHARACTERS'], filename)
         all_contours,normalized_shape,_,_,_ = normalize_obj.get_attributes()
         highlight_contour = []
 
@@ -164,7 +162,7 @@ def upload_image(id_img,region_id, filename, highlight):
 
         result_image = normalize_obj.convert_to_original_image()
         cv2.imwrite(path, result_image)
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
+        return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
 
 
@@ -173,14 +171,14 @@ def upload_image(id_img,region_id, filename, highlight):
 @app.route('/revertImage/<filename>/', methods=['POST', 'GET'])
 def revert_image(filename):
     normalize_obj.update(True, None, None)
-    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    path = os.path.join(app.config['CHARACTERS'], filename)
     result_img = normalize_obj.convert_to_original_image()
     cv2.imwrite(path, result_img)
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
+    return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
 @app.route('/show_diff/<filename>/', methods=['POST', 'GET'])
 def show_difference_between_images(filename):
-    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    path = os.path.join(app.config['CHARACTERS'], filename)
     cv_img = cv2.imread(path, 1)
     # blank = np.zeros(cv_img.shape[:2], dtype=np.uint8)
     blank2 = np.zeros(cv_img.shape[:3], dtype=np.uint8)
@@ -207,7 +205,7 @@ def show_difference_between_images(filename):
     # bitwiseAnd += convert_color_img(blank, 'x')
     # #bitwiseAnd = 255-(convert_color_img(blank, 'g') + (255 - convert_color_img(bitwiseAnd, 'r')))
     cv2.imwrite(path, cv_img+blank2)
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
+    return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
 
 

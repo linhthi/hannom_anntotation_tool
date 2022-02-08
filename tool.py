@@ -3,8 +3,6 @@ import matplotlib.pyplot as plt
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
 
-from testing_contours import list_contours
-
 """This comment is for two function below
         Two functions below will check whether the coordinate (px, py)
         is inside the polygon which is defined by set of two coordinates
@@ -227,8 +225,13 @@ def convert_color_img(img, color):
     return np_rgb_color
 
 
-def convert_img_to_orginial_form(img):
-    print("cxz")
+def list_contours(self, contours):
+    list = []
+    max_len = 0
+    for cnt in contours:
+        for p in cnt:
+            list.append(p)
+    return list
 
 
 
