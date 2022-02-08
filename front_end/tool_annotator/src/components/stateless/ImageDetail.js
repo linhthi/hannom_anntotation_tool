@@ -6,6 +6,7 @@ import ImageAnnoDisplay from './ImageAnnoDisplay'
 import { convertIdStrToInt } from '../utils/helpers'
 import ImageLabelDisplay from './ImageLabelDisplay'
 import {FaEdit, FaTrash } from 'react-icons/fa'
+import { Link } from 'react-router-dom'
 
 
 function ImageDetail({ image, createMessage }) {
@@ -72,7 +73,16 @@ function ImageDetail({ image, createMessage }) {
   const onAddBoxButtonClick = () => {
     setIsAddBoundingBox(!isAddBoundingBox)
     updateListBox(newListDrawing)
-    // setDrawBoxes(null)
+    // if (newListDrawing.length > 0) {
+    //   setDrawBoxes({
+    //     "id": 'id' + (new Date()).getTime(),
+    //     "label": null,
+    //     "x_min": newListDrawing[0].startX / scale,
+    //     "x_max": (newListDrawing[0].startX + newListDrawing[0].width) / scale,
+    //     "y_min": newListDrawing[0].startY / scale,
+    //     "y_max": (newListDrawing[0].startY + newListDrawing[0].height) / scale,
+    //   })
+    // }
   }
 
 
@@ -123,7 +133,7 @@ function ImageDetail({ image, createMessage }) {
 	}
   const renderEdit = () => {
     return (
-      <div >
+      <div className='gray'>
         {!isAddBoundingBox ? (
           <>
           <span className="box-label-first">Nhãn </span>
@@ -150,9 +160,12 @@ function ImageDetail({ image, createMessage }) {
           >
             <FaTrash />
           </button>
-          <button className="blue button" onClick={downloadBoxesAsCSV}>
+          <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
+          <button className="button"
+          onClick={()=> window.location.href = `http://localhost:5000/show_imgs/img_${drawBoxes.id}.png`}>
             Làm mịn chữ
           </button>
+          </Link>
           {isEdit ?  (
             <button
             className="circular primary button"
@@ -182,7 +195,7 @@ function ImageDetail({ image, createMessage }) {
           parrentCallback={callback}
           updateNewListDrawing={updateNewListDrawing}
         />
-        {console.log("DrawBoxes", drawBoxes)}
+        {console.log("DrawBoxes_id", drawBoxes.id)}
         <button className="blue button" onClick={downloadBoxesAsCSV}>
           Tải xuống annotation
         </button>

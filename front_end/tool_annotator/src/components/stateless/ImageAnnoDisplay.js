@@ -210,7 +210,7 @@ function ImageAnnoDisplay(props) {
                 y={box.y_min * scale}
                 width={(box.x_max - box.x_min) * scale}
                 height={(box.y_max - box.y_min) * scale}
-                style={{ fill: 'none', stroke: 'lime', strokeWidth: '0.5' }}
+                style={{ fill: 'none', stroke: 'lime', strokeWidth: '1' }}
 
             />
             </g>

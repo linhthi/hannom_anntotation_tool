@@ -32,12 +32,13 @@ class App extends React.Component {
   }
 
   getImages() {
-    axios.get('/api/images').then(
-      (res) => {
-        this.setState({ images: images, isLoading: false })
-      // return res.data.results;
-      }
-    )
+    this.setState({ images: images, isLoading: false })
+    // axios.get('/api/images').then(
+    //   (res) => {
+    //     this.setState({ images: images, isLoading: false })
+    //   // return res.data.results;
+    //   }
+    // )
     // fetch(`http://localhost:5000/api/images`)
     //   .then(res => res.json())
     //   .then(res => this.setState({ images: images, isLoading: false }));
