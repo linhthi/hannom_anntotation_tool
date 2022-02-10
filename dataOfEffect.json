@@ -1,0 +1,11 @@
+{
+  "0": {
+    "gaussian": [
+      {
+        "local_rate": 0,
+        "only_x": "True",
+        "only_y": "True"
+      }
+    ]
+  }
+}

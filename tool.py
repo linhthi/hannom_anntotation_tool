@@ -225,7 +225,7 @@ def convert_color_img(img, color):
     return np_rgb_color
 
 
-def list_contours(self, contours):
+def list_contours(contours):
     list = []
     max_len = 0
     for cnt in contours:
