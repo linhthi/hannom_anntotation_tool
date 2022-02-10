@@ -136,8 +136,20 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5em 0.5em; width:100%; text-align:left; border:0; outline:none; }
 button.leftsidebar_accordion:focus { outline: none; }
 button.leftsidebar_accordion.active, button.leftsidebar_accordion:hover { background-color: #e6e6e6; }
-button.leftsidebar_accordion:after { content:'\02795'; color:#4d4d4d; float:right; }
-button.leftsidebar_accordion.active:after { content: '\2796'; }
+
+
+
+
+/* Modified by Nguyen Trong Lam
+
+button.leftsidebar_accordion.active:after {}
+button.leftsidebar_accordion:after {color:#4d4d4d; float:right; }
+
+/* Remove " content: '\2796'; "  in button.leftsidebar_accordion.active:after */
+/* Remove " content: '\02795'; "  in button.leftsidebar_accordion:after  */
+
+/* Ended by Nguyen Trong Lam */
+
 .leftsidebar_accordion_panel { display:none; padding:0 0.5em; font-size:small; border-right:2px solid #f2f2f2; border-bottom:2px solid #f2f2f2; }
 .leftsidebar_accordion_panel.show { display:block; }
 
@@ -804,65 +816,6 @@ input:checked + .slider:after
           <span class="text_button" onclick="leftsidebar_toggle()" title="Show/hide this toolbar panel">&ltrif;</span>
         </div>
 
-        <button class="leftsidebar_accordion active" >Ảnh ban đầu</button>
-        <div class="leftsidebar_accordion_panel">
-          <ul class="region_shape">
-            <li id="region_shape_rect"  onclick="select_region_shape('rect')" title="Rectangle (Shortcut key 1)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_rectangle"></use></svg></li>
-            <li id="region_shape_circle" onclick="select_region_shape('circle')" title="Circle (Shortcut key 2)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_circle"></use></svg></li>
-            <li id="region_shape_ellipse" onclick="select_region_shape('ellipse')" title="Ellipse (Shortcut key 3)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_ellipse"></use></svg></li>
-            <li id="region_shape_polygon" class="selected" onclick="select_region_shape('polygon')" title="Polygon (Shortcut key 4)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_polygon"></use></svg></li>
-            <li id="region_shape_point" onclick="select_region_shape('point')" title="Point (Shortcut key 5)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_point"></use></svg></li>
-            <li id="region_shape_polyline" onclick="select_region_shape('polyline')" title="Polyline (Shortcut key 6)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_polyline"></use></svg></li>
-          </ul>
-          <div id="region_info" class="display_none">&nbsp;</div>
-        </div>
-
-        <!-- Project -->
-        <button class="leftsidebar_accordion active disappear" id="project_panel_title">Original Imageg</button>
-        <div class="leftsidebar_accordion_panel" id="img_fn_list_panel" style="display:None">
-          <div id="project_info_panel">
-            <div class="row">
-              <span class="col"><label for="project_name">Name: </label></span>
-              <span class="col"><input type="text" value="" onchange="project_on_name_update(this)" id="project_name" title="VIA project name"></span>
-            </div>
-          </div>
-          <div id="project_tools_panel">
-            <div class="button_panel" style="margin:0.1rem 0;display:None" >
-              <select style="width:48%" id="filelist_preset_filters_list" onchange="img_fn_list_onpresetfilter_select()" title="Filter file list using predefined filters">
-                <option value="all">All files</option>
-                <option value="files_without_region">Show files without regions</option>
-                <option value="files_missing_region_annotations">Show files missing region annotations</option>
-                <option value="files_missing_file_annotations">Show files missing file annotations</option>
-                <option value="files_error_loading">Files that could not be loaded</option>
-                <option value="regex">Regular Expression</option>
-              </select>
-              <input style="width:50%" type="text" placeholder="regular expression" oninput="img_fn_list_onregex()" id="img_fn_list_regex" title="Filter using regular expression">
-            </div>
-          </div>
-          <div id="img_fn_list"></div>
-          <p>
-            <div class="button_panel" style="display:None">
-              <span class="button" onclick="sel_local_images()" title="Add new file from local disk">Add Files</span>
-              <span class="button" onclick="project_file_add_url_with_input()" title="Add new file using URL">Add URL</span>
-              <span class="button" onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project">Remove</span>
-            </div>
-          </p>
-        </div>
-
-        <!-- Added by Nguyen Trong Lam, show original image -->
-        <div class="leftsidebar_accordion" id="show_original_img">
-          <div class="leftsidebar_accordion_panel show">
-            <img id="org_img" alt="Original" style="display:None">
-            <canvas id="canvas_original_img" width = "inherit"
-                    style="height: inherit; width:inherit">
-              Your browser does not support the HTML canvas tag.
-            </canvas>
-
-          </div>
-
-        </div>
-        <!-- Ended by Nguyen Trong Lam -->
-
         <!-- Attributes -->
         <!-- Has been modified by Lam, display:None -->
         <button class="leftsidebar_accordion" style="display:None" id="attributes_editor_panel_title">Attributes</button>
@@ -889,7 +842,7 @@ input:checked + .slider:after
         </div>
         <!-- Has been modified by Lam, display: None -->
         <button class="leftsidebar_accordion" style="">Phím tắt</button>
-        <div class="leftsidebar_accordion_panel">
+        <div class="leftsidebar_accordion_panel show">
           <div style="display:block; text-align:center; padding:1rem;">Phím tắt sau khi chọn vùng</div>
           <table>
             <tr>
@@ -944,6 +897,69 @@ input:checked + .slider:after
 
           </table>
         </div>
+
+        <button class="leftsidebar_accordion active" >Ảnh ban đầu</button>
+        <div class="leftsidebar_accordion_panel">
+          <ul class="region_shape">
+            <li id="region_shape_rect"  onclick="select_region_shape('rect')" title="Rectangle (Shortcut key 1)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_rectangle"></use></svg></li>
+            <li id="region_shape_circle" onclick="select_region_shape('circle')" title="Circle (Shortcut key 2)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_circle"></use></svg></li>
+            <li id="region_shape_ellipse" onclick="select_region_shape('ellipse')" title="Ellipse (Shortcut key 3)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_ellipse"></use></svg></li>
+            <li id="region_shape_polygon" class="selected" onclick="select_region_shape('polygon')" title="Polygon (Shortcut key 4)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_polygon"></use></svg></li>
+            <li id="region_shape_point" onclick="select_region_shape('point')" title="Point (Shortcut key 5)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_point"></use></svg></li>
+            <li id="region_shape_polyline" onclick="select_region_shape('polyline')" title="Polyline (Shortcut key 6)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_polyline"></use></svg></li>
+          </ul>
+          <div id="region_info" class="display_none">&nbsp;</div>
+        </div>
+
+
+
+        <!-- Project -->
+        <button class="leftsidebar_accordion active disappear" id="project_panel_title">Original Imageg</button>
+        <div class="leftsidebar_accordion_panel" id="img_fn_list_panel" style="display:None">
+          <div id="project_info_panel">
+            <div class="row">
+              <span class="col"><label for="project_name">Name: </label></span>
+              <span class="col"><input type="text" value="" onchange="project_on_name_update(this)" id="project_name" title="VIA project name"></span>
+            </div>
+          </div>
+          <div id="project_tools_panel">
+            <div class="button_panel" style="margin:0.1rem 0;display:None" >
+              <select style="width:48%" id="filelist_preset_filters_list" onchange="img_fn_list_onpresetfilter_select()" title="Filter file list using predefined filters">
+                <option value="all">All files</option>
+                <option value="files_without_region">Show files without regions</option>
+                <option value="files_missing_region_annotations">Show files missing region annotations</option>
+                <option value="files_missing_file_annotations">Show files missing file annotations</option>
+                <option value="files_error_loading">Files that could not be loaded</option>
+                <option value="regex">Regular Expression</option>
+              </select>
+              <input style="width:50%" type="text" placeholder="regular expression" oninput="img_fn_list_onregex()" id="img_fn_list_regex" title="Filter using regular expression">
+            </div>
+          </div>
+          <div id="img_fn_list"></div>
+          <p>
+            <div class="button_panel" style="display:None">
+              <span class="button" onclick="sel_local_images()" title="Add new file from local disk">Add Files</span>
+              <span class="button" onclick="project_file_add_url_with_input()" title="Add new file using URL">Add URL</span>
+              <span class="button" onclick="project_file_remove_with_confirm()" title="Remove selected file (i.e. file currently being shown) from project">Remove</span>
+            </div>
+          </p>
+        </div>
+
+        <!-- Added by Nguyen Trong Lam, show original image -->
+        <div class="leftsidebar_accordion" id="show_original_img">
+          <div class="leftsidebar_accordion_panel show">
+            <img id="org_img" alt="Original" style="display:None">
+            <canvas id="canvas_original_img" width = "inherit"
+                    style="height: inherit; width:inherit">
+              Your browser does not support the HTML canvas tag.
+            </canvas>
+
+          </div>
+
+        </div>
+        <!-- Ended by Nguyen Trong Lam -->
+
+
 
       </div> <!-- end of leftsidebar -->
 
