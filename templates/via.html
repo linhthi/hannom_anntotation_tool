@@ -412,8 +412,6 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 
 
 #back_img{
-  background-color: #f76462;
-  color:#ffffff;
   visibility: hidden;
 }
 #back_img:active{
@@ -475,6 +473,10 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 .button-7:active {
   background-color: #0064bd;
   box-shadow: none;
+}
+
+#back_img.button-7--undo{
+    background: #f0ad4e;
 }
 
 .org_img_container span{
@@ -1290,13 +1292,10 @@ POSSIBILITY OF SUCH DAMAGE.
           <div class="button-container">
             <button class="button-3" style="visibility:hidden">Just to hold some space</button>
           </div>
+
           <div class="button-container">
             <div class="button-3" role="button"><a href="http://localhost:3000/{{"images"}}" style="color:#fff">Hoàn Thành</a></div>
-          </div>
 
-
-          <div class="button-container">
-            <button class="button-3" id = "back_img" role="button" onclick="revertImage()">Quay Lại</button>
           </div>
           <div class="slidetable" id ="table_content">
             <!-- More row will apper later -->
@@ -3317,9 +3316,11 @@ function _via_reg_canvas_mousedown_handler(e) {
                           </div>
 
                        `;
-                      li += `<button class="button-7" role="button" id="smoothing_img" onclick="sendGaussAtr(`
+                      li += `<button class="button-7" role="button" id="smoothing_img" onclick="send_gauss_value(`
                       li += region_id.toString()
                       li += `)">Làm Mượt</button>`
+                      li += `<button class="button-7" id = "finish_edit_region" role="button" onclick="finish_edit_region()">Xong</button>`
+                      li += `<button class="button-7 button-7--undo" id = "back_img" role="button" onclick="undo_img()">Quay Lại</button>`
           // Ended by Nguyen Trong Lam
           // Display result
           document.getElementById("table_content").innerHTML = li;
@@ -3353,18 +3354,29 @@ function enableCheck(e){
 }
 
 
-function revertImage(){
+function undo_img(){
     let current_id = _via_image_index;
     let current_name_of_file =_via_image_filename_list[current_id];
-    let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
     fetch(mocban_server_path+"/revertImage/"+current_name_of_file).then(response => response.blob()).then(function(res){
-          _via_current_image_filename.src = URL.createObjectURL(res);
-      })
+          let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
+          bimg0.src = URL.createObjectURL(res);
+      }).catch(function(reason) {
+        console.log("there is smt wrong with the undo image");
+
+  });
     let back_Image = document.getElementById('back_img');
     back_Image.style.visibility = "hidden";
 }
 
-function sendGaussAtr(region_id){
+function finish_edit_region(){
+    if ( _via_is_region_selected ||
+           _via_is_all_region_selected ) {
+        del_sel_regions();
+        document.getElementById("table_content").style.display = "None";
+    }
+}
+
+function send_gauss_value(region_id){
   let localRate = document.getElementById('localRate');
   let back_Image = document.getElementById('back_img');
   let onlyX = document.getElementById('onlyX');
@@ -3398,7 +3410,6 @@ function sendGaussAtr(region_id){
   })
 
   back_Image.style.visibility = "visible";
-  document.getElementById("table_content").style.visibility = "hidden";
   }
 
 // implements the following functionalities:
@@ -3706,15 +3717,20 @@ function _via_reg_canvas_mouseup_handler(e) {
           case VIA_REGION_SHAPE.POLYGON:
             // user has clicked on the first point in a new polygon
             // see also event 'mouseup' for _via_is_user_moving_region=true
-            _via_is_user_drawing_polygon = true;
+            //Added by Nguyen Trong Lam
+            //Only allow single polygon
+            if (Object.keys(_via_canvas_regions).length <1 ) {
+              //Ended by Nguyen Trong Lam
+              _via_is_user_drawing_polygon = true;
 
-            var canvas_polygon_region = new file_region();
-            canvas_polygon_region.shape_attributes['name'] = _via_current_shape;
-            canvas_polygon_region.shape_attributes['all_points_x'] = [ Math.round(_via_click_x0) ];
-            canvas_polygon_region.shape_attributes['all_points_y'] = [ Math.round(_via_click_y0)] ;
+              var canvas_polygon_region = new file_region();
+              canvas_polygon_region.shape_attributes['name'] = _via_current_shape;
+              canvas_polygon_region.shape_attributes['all_points_x'] = [ Math.round(_via_click_x0) ];
+              canvas_polygon_region.shape_attributes['all_points_y'] = [ Math.round(_via_click_y0)] ;
 
-            var new_length = _via_canvas_regions.push(canvas_polygon_region);
-            _via_current_polygon_region_id = new_length - 1;
+              var new_length = _via_canvas_regions.push(canvas_polygon_region);
+              _via_current_polygon_region_id = new_length - 1;
+            }
             break;
 
           case VIA_REGION_SHAPE.POINT:
