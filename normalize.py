@@ -10,6 +10,7 @@ class Normalize:
         self.no_of_contour = None
         self.hierarchy = None
         self.previous_cnt = None
+        self.original_contours= None
 
     def set_attributes(self, cnt, shape, hierarchy):
         self.contours = list(cnt)
@@ -27,8 +28,8 @@ class Normalize:
             self.previous_cnt = self.contours.copy()
             self.contours[index_cnt] = new_cnt_of_int
         else:
-            self.contours = self.previous_cnt
-
+            #self.contours = self.previous_cnt
+            self.original_contours = self.contours.copy()
 
     def shift_image(self,img, x, y):
         """

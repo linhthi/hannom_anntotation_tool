@@ -126,14 +126,13 @@ def upload_image(id_img,region_id, filename, highlight):
 
         #correct
         path = os.path.join(app.config['CHARACTERS'], filename)
-        all_contours,normalized_shape,_,_,_ = normalize_obj.get_attributes()
+        _,normalized_shape,_,all_contours,_ = normalize_obj.get_attributes()
         highlight_contour = []
 
         for index_of_cnt in range(len(all_contours)):
             r, mul_range = is_inside_contour_and_get_local_line(all_points_x,
-                                                                              all_points_y,
-                                                                              all_contours[index_of_cnt],
-                                                                              )
+                                                                all_points_y,
+                                                                all_contours[index_of_cnt])
             if r:
                 highlight_contour.append([index_of_cnt, mul_range])
 
@@ -147,7 +146,6 @@ def upload_image(id_img,region_id, filename, highlight):
                                                           only_x,only_y,
                                                           local,normalized_shape,highlight)
 
-
         if not highlight:
             normalize_obj.update(False, index,g_contours)
 
@@ -159,6 +157,14 @@ def upload_image(id_img,region_id, filename, highlight):
 
 @app.route('/revertImage/<filename>/', methods=['POST', 'GET'])
 def revert_image(filename):
+    normalize_obj.update(True, None, None)
+    path = os.path.join(app.config['CHARACTERS'], filename)
+    result_img = normalize_obj.convert_to_original_image()
+    cv2.imwrite(path, result_img)
+    return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
+
+@app.route('/finishEdit/<filename>/', methods=['POST', 'GET'])
+def finish_edit(filename):
     normalize_obj.update(True, None, None)
     path = os.path.join(app.config['CHARACTERS'], filename)
     result_img = normalize_obj.convert_to_original_image()

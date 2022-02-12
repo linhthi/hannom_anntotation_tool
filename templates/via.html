@@ -390,7 +390,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 }
 
 .button-3:hover {
-  background-color: #de2444;
+  opacity: 0.5;
 }
 
 .button-3:focus {
@@ -408,6 +408,10 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 .button-3:active {
   background-color: #298e46;
   box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
+}
+div.button-3--transparent {
+  background-color: #212121;
+  padding:0px 0px 0px 5px;
 }
 
 
@@ -459,6 +463,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   touch-action: manipulation;
   vertical-align: baseline;
   white-space: nowrap;
+  width: 5rem;
 }
 
 .button-7:hover,
@@ -706,6 +711,7 @@ input:checked + .slider:after
     <div class="top_panel" id="ui_top_panel">
       <!-- menu bar -->
       <div class="menubar">
+        <div class="button-3 button-3--transparent" role="button"><a href="http://localhost:3000/{{"images"}}" style="color:#fff">Hoàn Thành</a></div>
         <ul class="unnecessary">
           <li onclick="show_home_panel()" style="cursor:pointer;">Home</li>
           <li>Project
@@ -983,15 +989,20 @@ input:checked + .slider:after
           </div>
           <div id ="final_img_container">
 
-            <canvas id = "canvas_final_img" class="img_properties">
-                    Your browser does not support the HTML canvas tag.
-            </canvas>
-            <canvas  id = "canvas_final_small_img" class="img_properties">
-                    Your browser does not support the HTML canvas tag.
-            </canvas>
+
             <canvas id = "canvas_final_smaller_img" class="img_properties">
                     Your browser does not support the HTML canvas tag.
             </canvas>
+
+            <canvas  id = "canvas_final_small_img" class="img_properties">
+                    Your browser does not support the HTML canvas tag.
+            </canvas>
+
+            <canvas id = "canvas_final_img" class="img_properties">
+                    Your browser does not support the HTML canvas tag.
+            </canvas>
+
+
           </div>
 
         </div>
@@ -1294,7 +1305,6 @@ POSSIBILITY OF SUCH DAMAGE.
           </div>
 
           <div class="button-container">
-            <div class="button-3" role="button"><a href="http://localhost:3000/{{"images"}}" style="color:#fff">Hoàn Thành</a></div>
 
           </div>
           <div class="slidetable" id ="table_content">
@@ -3318,9 +3328,9 @@ function _via_reg_canvas_mousedown_handler(e) {
                        `;
                       li += `<button class="button-7" role="button" id="smoothing_img" onclick="send_gauss_value(`
                       li += region_id.toString()
-                      li += `)">Làm Mượt</button>`
+                      li += `)">Làm Mịn</button>`
                       li += `<button class="button-7" id = "finish_edit_region" role="button" onclick="finish_edit_region()">Xong</button>`
-                      li += `<button class="button-7 button-7--undo" id = "back_img" role="button" onclick="undo_img()">Quay Lại</button>`
+                      //li += `<button class="button-7 button-7--undo" id = "back_img" role="button" onclick="undo_img()">Quay Lại</button>`
           // Ended by Nguyen Trong Lam
           // Display result
           document.getElementById("table_content").innerHTML = li;
@@ -3371,8 +3381,18 @@ function undo_img(){
 function finish_edit_region(){
     if ( _via_is_region_selected ||
            _via_is_all_region_selected ) {
-        del_sel_regions();
-        document.getElementById("table_content").style.display = "None";
+         del_sel_regions();
+         document.getElementById("table_content").style.display = "None";
+
+         let current_id = _via_image_index;
+         let current_name_of_file =_via_image_filename_list[current_id];
+         fetch(mocban_server_path+"/finishEdit/"+current_name_of_file).then(response => response.blob()).then(function(res){
+            let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
+            bimg0.src = URL.createObjectURL(res);
+            }).catch(function(reason) {
+                console.log("there is smt wrong with the undo image");
+
+            });
     }
 }
 
