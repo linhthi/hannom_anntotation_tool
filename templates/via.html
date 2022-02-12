@@ -415,13 +415,7 @@ div.button-3--transparent {
 }
 
 
-#back_img{
-  visibility: hidden;
-}
-#back_img:active{
-  background-color: #201d1d;
-  color:#ffffff;
-}
+
 
 #show_diff_img{
   background-color: #2ea44f;
@@ -480,9 +474,7 @@ div.button-3--transparent {
   box-shadow: none;
 }
 
-#back_img.button-7--undo{
-    background: #f0ad4e;
-}
+
 
 .org_img_container span{
   display: inline;
@@ -3330,7 +3322,6 @@ function _via_reg_canvas_mousedown_handler(e) {
                       li += region_id.toString()
                       li += `)">Làm Mịn</button>`
                       li += `<button class="button-7" id = "finish_edit_region" role="button" onclick="finish_edit_region()">Xong</button>`
-                      //li += `<button class="button-7 button-7--undo" id = "back_img" role="button" onclick="undo_img()">Quay Lại</button>`
           // Ended by Nguyen Trong Lam
           // Display result
           document.getElementById("table_content").innerHTML = li;
@@ -3364,41 +3355,9 @@ function enableCheck(e){
 }
 
 
-function undo_img(){
-    let current_id = _via_image_index;
-    let current_name_of_file =_via_image_filename_list[current_id];
-    fetch(mocban_server_path+"/revertImage/"+current_name_of_file).then(response => response.blob()).then(function(res){
-          let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
-          bimg0.src = URL.createObjectURL(res);
-      }).catch(function(reason) {
-        console.log("there is smt wrong with the undo image");
-
-  });
-    let back_Image = document.getElementById('back_img');
-    back_Image.style.visibility = "hidden";
-}
-
-function finish_edit_region(){
-    if ( _via_is_region_selected ||
-           _via_is_all_region_selected ) {
-         del_sel_regions();
-         document.getElementById("table_content").style.display = "None";
-
-         let current_id = _via_image_index;
-         let current_name_of_file =_via_image_filename_list[current_id];
-         fetch(mocban_server_path+"/finishEdit/"+current_name_of_file).then(response => response.blob()).then(function(res){
-            let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
-            bimg0.src = URL.createObjectURL(res);
-            }).catch(function(reason) {
-                console.log("there is smt wrong with the undo image");
-
-            });
-    }
-}
 
 function send_gauss_value(region_id){
   let localRate = document.getElementById('localRate');
-  let back_Image = document.getElementById('back_img');
   let onlyX = document.getElementById('onlyX');
   let onlyY = document.getElementById('onlyY');
   let current_id = _via_image_index;
@@ -4435,9 +4394,14 @@ function _via_redraw_reg_canvas() {
       if (_via_is_region_boundary_visible) {
         draw_all_regions();
       }
+      /*
+      Modified by Nguyen Trong Lam
+      Purpose: Remove id bounding box near the shape
       if (_via_is_region_id_visible) {
         draw_all_region_id();
       }
+      Ended by Nguyen Trong Lam
+      */
     }
   }
 }
