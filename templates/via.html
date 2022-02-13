@@ -75,14 +75,15 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 .menubar a:link { color:#eeeeee; text-decoration:none; }
 .menubar a:visited { color:#eeeeee; text-decoration:none; }
 .menubar ul { display:block; padding:0; margin:0; }
-.menubar li { display:inline; float:left; padding:0.45rem 1rem; }
-.menubar li:hover { background-color:#616161; cursor:default; }
+.menubar li { display:inline; float:left; padding:0.45rem 1rem; margin-left: 0.05rem}
+.menubar li:hover { background-color:#616161; cursor:default; opacity: 0.5}
 
 .menubar li ul { display:none; background-color:#212121; border:1px solid #616161; min-width:10rem; position:absolute; z-index:100; margin:0.4rem -1rem;}
 .menubar li ul li { display:block; float:none; color:#eeeeee; margin:0; padding:0.6rem 1rem; }
 .menubar li ul li:hover { cursor:pointer; }
 .menubar li ul li.submenu_divider { margin:0 0.4rem; padding:0; height:1px; border-bottom:1px solid #424242; }
 .menubar li:hover ul { display:block; }
+
 
 /* toolbar containing small icons for tools */
 .toolbar { display:inline-block; margin-left:1rem; }
@@ -133,7 +134,7 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 #leftsidebar_show_button:hover { color:red; cursor: pointer; }
 
 /* Left sidebar accordion */
-button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5em 0.5em; width:100%; text-align:left; border:0; outline:none; }
+button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5rem 0.5rem; width:100%; text-align:left; border:0; outline:none; }
 button.leftsidebar_accordion:focus { outline: none; }
 button.leftsidebar_accordion.active, button.leftsidebar_accordion:hover { background-color: #e6e6e6; }
 
@@ -150,7 +151,7 @@ button.leftsidebar_accordion:after {color:#4d4d4d; float:right; }
 
 /* Ended by Nguyen Trong Lam */
 
-.leftsidebar_accordion_panel { display:none; padding:0 0.5em; font-size:small; border-right:2px solid #f2f2f2; border-bottom:2px solid #f2f2f2; }
+.leftsidebar_accordion_panel { display:none; padding:0 0.5em; font-size:small; }
 .leftsidebar_accordion_panel.show { display:block; }
 
 /* Keyboard shortcut panel */
@@ -295,9 +296,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 }
 
 .img_properties{
-  width: 30%;
-  height: 30%;
-  border: 1px;
+  width: 32.5%;
   display: inline-block;
 }
 
@@ -354,6 +353,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   background: #04AA6D;
   cursor: pointer;
 }
+
 /*Button  Added by Nguyen Trong Lam*/
 /* CSS */
 
@@ -701,13 +701,24 @@ input:checked + .slider:after
     </div>
 
     <div class="top_panel" id="ui_top_panel">
+      <!-- Added by Nguyen Trong Lam -->
+       <div class="menubar">
+        <ul>
+            <li onclick="()" style="cursor:pointer; background: #DC4530; ">Hoàn Thành</li>
+        </ul>
+       </div>
+      <!-- Ended by Nguyen Trong Lam -->
       <!-- menu bar -->
       <div class="menubar">
-        <div class="button-3 button-3--transparent" role="button"><a href="http://localhost:3000/{{"images"}}" style="color:#fff">Hoàn Thành</a></div>
+        <!-- Added by Nguyen Trong Lam -->
+
+        <!-- Ended by Nguyen Trong Lam -->
         <ul class="unnecessary">
+
           <li onclick="show_home_panel()" style="cursor:pointer;">Home</li>
           <li>Project
             <ul>
+
               <li onclick="project_open_select_project_file()" title="Load a VIA project (from a JSON file)">Load</li>
               <li onclick="project_save_with_confirm()" title="Save this VIA project (as a JSON file)">Save</li>
               <li onclick="settings_panel_toggle()" title="Show/edit project settings">Settings</li>
@@ -798,6 +809,7 @@ input:checked + .slider:after
         <svg onclick="del_sel_regions_with_confirm()" viewbox="0 0 24 24"><use xlink:href="#icon_pasteundo"></use><title>Undo Regions Pasted in Multiple Images</title></svg>
         <svg onclick="del_sel_regions()" viewbox="0 0 24 24"><use xlink:href="#icon_close"></use><title>Delete Region</title></svg>
       </div>
+
       <!-- end of shortcut toolbar -->
       <input type="file" id="invisible_file_input" name="files[]" style="display:none">
     </div> <!-- endof #top_panel -->
@@ -841,8 +853,10 @@ input:checked + .slider:after
           </div>
         </div>
         <!-- Has been modified by Lam, display: None -->
-        <button class="leftsidebar_accordion" style="">Phím tắt</button>
-        <div class="leftsidebar_accordion_panel show">
+
+        <button class="leftsidebar_accordion" style="" id="shortcut_button">Phím tắt</button>
+        <div class="leftsidebar_accordion_panel show" id="shortcut_panel">
+
           <div style="display:block; text-align:center; padding:1rem;">Phím tắt sau khi chọn vùng</div>
           <table>
             <tr>
@@ -898,7 +912,7 @@ input:checked + .slider:after
           </table>
         </div>
 
-        <button class="leftsidebar_accordion active" >Ảnh ban đầu</button>
+        <button class="leftsidebar_accordion active" id="org_button">Ảnh ban đầu</button>
         <div class="leftsidebar_accordion_panel">
           <ul class="region_shape">
             <li id="region_shape_rect"  onclick="select_region_shape('rect')" title="Rectangle (Shortcut key 1)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_rectangle"></use></svg></li>
@@ -975,8 +989,8 @@ input:checked + .slider:after
         </div>
 
         <!-- Show final result after modifying -->
-        <div id="final_result_container" style="border: 1px solid #e6e6e6;">
-          <div style="padding: 8px; background:#e6e6e6; color:black">
+        <div id="final_result_container">
+          <div style="padding: 0.5rem 0.5rem; background:#e6e6e6; color:black; font-size:large" id ="final_img_button">
             Ảnh đầu ra với nhiều kích cỡ khác nhau
           </div>
           <div id ="final_img_container">
@@ -993,7 +1007,6 @@ input:checked + .slider:after
             <canvas id = "canvas_final_img" class="img_properties">
                     Your browser does not support the HTML canvas tag.
             </canvas>
-
 
           </div>
 
@@ -1671,9 +1684,28 @@ function file_region() {
 //
 // Added by Nguyen Trong Lam
 //
+var list_of_diff_size_img = document.getElementsByClassName("img_properties");
+list_of_diff_size_img.style.height = list_of_diff_size_img.style.width;
+
+
 
 function show_original_image(){
   let org_img = document.getElementById("bim0");
+  let id_of_needed_layout = ["bim0", "shortcut_button", "shortcut_panel"]
+  let height_in_middle = 0;
+  let height_left_panel = 0;
+  for (let i = 0; i < id_of_needed_layout.length; i++){
+      if ( i < 1){
+        height_in_middle += document.getElementById(id_of_needed_layout[i]).offsetHeight;
+      }
+      else{
+        height_left_panel += document.getElementById(id_of_needed_layout[i]).offsetHeight;
+      }
+      console.log(document.getElementById(id_of_needed_layout[i]));
+  }
+  let distance = Math.abs(height_left_panel - height_in_middle).toString() + "px";
+  document.getElementById("org_button").style.margin = distance + " 0px 0px 0px";
+  console.log("height_in_middle", height_in_middle, "height_left_panel",height_left_panel);
   drawImageScaled(org_img, _via_ctx_org_img, 2);
 }
 
@@ -1708,7 +1740,6 @@ function dataURLtoFile(dataurl, filename) {
 
 function drawImageScaled(img, ctx, additional_ratio) {
    var canvas = ctx.canvas ;
-   console.log("canvas.width: ",canvas.width, "canvas.height", canvas.height);
    console.log("img.width: ",img.width, "img.height", img.height);
    var hRatio = canvas.width  / img.width    ;
    var vRatio =  canvas.height / img.height  ;
@@ -3272,8 +3303,6 @@ function _via_reg_canvas_mousedown_handler(e) {
       let current_id = _via_image_index;
       let current_name_of_file = _via_image_filename_list[current_id];
 
-      console.log("_via_image_filename_list[moc_ban_current_id]",_via_image_filename_list[current_id]);
-      console.log("current_name_of_file",current_name_of_file,", moc_ban_current_id: ", current_id);
       document.getElementById("table_content").style.visibility = "visible";
       let path_to_get_effect = (
                       mocban_server_path
@@ -3283,7 +3312,6 @@ function _via_reg_canvas_mousedown_handler(e) {
                       +"/" + current_id + "/"
                       + region_id.toString()
                       );
-      console.log("path_to_get_effect: ", path_to_get_effect);
       fetch(path_to_get_effect)
                   .then(response => response.json())
                   .then(data => {
@@ -3321,13 +3349,13 @@ function _via_reg_canvas_mousedown_handler(e) {
                       li += `<button class="button-7" role="button" id="smoothing_img" onclick="send_gauss_value(`
                       li += region_id.toString()
                       li += `)">Làm Mịn</button>`
-                      li += `<button class="button-7" id = "finish_edit_region" role="button" onclick="finish_edit_region()">Xong</button>`
-          // Ended by Nguyen Trong Lam
-          // Display result
+                      li += `<button class="button-7" id = "finish_edit" role="button" onclick="finish_edit_region()">Xong</button>`
+
           document.getElementById("table_content").innerHTML = li;
           document.getElementById("table_content").style.display = "block";
       });
-
+    // Ended by Nguyen Trong Lam
+    // Display result
 
     }
   }
@@ -3356,6 +3384,26 @@ function enableCheck(e){
 
 
 
+//send request after smoothening the region
+function finish_edit_region(){
+    if ( _via_is_region_selected ||
+           _via_is_all_region_selected ) {
+         del_sel_regions();
+         document.getElementById("table_content").style.display = "None";
+
+         let current_id = _via_image_index;
+         let current_name_of_file =_via_image_filename_list[current_id];
+         fetch(mocban_server_path+"/finishEdit/"+current_name_of_file).then(response => response.blob()).then(function(res){
+            let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
+            bimg0.src = URL.createObjectURL(res);
+            }).catch(function(reason) {
+                console.log("there is smt wrong with the undo image");
+
+            });
+    }
+}
+
+
 function send_gauss_value(region_id){
   let localRate = document.getElementById('localRate');
   let onlyX = document.getElementById('onlyX');
@@ -3364,7 +3412,7 @@ function send_gauss_value(region_id){
   let attr = _via_canvas_regions[region_id].shape_attributes;
   let input = document.getElementById('invisible_file_input');
   let current_name_of_file = _via_image_filename_list[current_id];
-
+  console.log("attr: ", attr);
   let set_new_value_gauss = (mocban_server_path
   + "False" + "/"
   + "gaussian"+ "/"
@@ -3387,8 +3435,6 @@ function send_gauss_value(region_id){
       bimg0.src = url_path;
 
   })
-
-  back_Image.style.visibility = "visible";
   }
 
 // implements the following functionalities:
@@ -3413,6 +3459,7 @@ function _via_reg_canvas_mouseup_handler(e) {
         Math.abs(move_y) > VIA_MOUSE_CLICK_TOL) {
       // move all selected regions
       _via_move_selected_regions(move_x, move_y);
+      //document.getElementById("table_content").style.display = "None";
     } else {
       // indicates a user click on an already selected region
       // this could indicate the user's intention to select another

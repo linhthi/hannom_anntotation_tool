@@ -130,27 +130,30 @@ def upload_image(id_img,region_id, filename, highlight):
         highlight_contour = []
 
         for index_of_cnt in range(len(all_contours)):
-            r, mul_range = is_inside_contour_and_get_local_line(all_points_x,
+            is_inside, mul_range = is_inside_contour_and_get_local_line(all_points_x,
                                                                 all_points_y,
                                                                 all_contours[index_of_cnt])
-            if r:
+            if is_inside:
                 highlight_contour.append([index_of_cnt, mul_range])
 
 
+        #check whether has contours in the highlight_contour
+        #if not, indicates that the polygon region is in background or inside the character
+        if len(highlight_contour) > 0:
+            #make change on the image via contour
+            for hcnt in highlight_contour:
+                index, mul_range = hcnt
+                global_contours = all_contours[index].copy()
+                g_contours = smoothing_line(global_contours, mul_range, False,
+                                                              only_x,only_y,
+                                                              local,normalized_shape,highlight)
 
-        print("highlight_contour",highlight_contour)
-        for hcnt in highlight_contour:
-            index, mul_range = hcnt
-            global_contours = all_contours[index].copy()
-            g_contours = smoothing_line(global_contours, mul_range, False,
-                                                          only_x,only_y,
-                                                          local,normalized_shape,highlight)
+            if not highlight:
+                normalize_obj.update(False, index,g_contours)
 
-        if not highlight:
-            normalize_obj.update(False, index,g_contours)
+            result_image = normalize_obj.convert_to_original_image()
+            cv2.imwrite(path, result_image)
 
-        result_image = normalize_obj.convert_to_original_image()
-        cv2.imwrite(path, result_image)
         return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
 
