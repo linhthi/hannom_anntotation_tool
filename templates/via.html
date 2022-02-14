@@ -296,7 +296,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 }
 
 .img_properties{
-  width: 32.5%;
+
   display: inline-block;
 }
 
@@ -353,6 +353,27 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   background: #04AA6D;
   cursor: pointer;
 }
+
+.div-table {
+  display: table;
+}
+
+.div-table-row {
+  display: table-row;
+  width: auto;
+  clear: both;
+
+}
+.div-table-col {
+  float: left; /* fix for  buggy browsers */
+  display: table-column;
+  width: 32.5%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-weight: bold;
+}
+
 
 /*Button  Added by Nguyen Trong Lam*/
 /* CSS */
@@ -993,22 +1014,35 @@ input:checked + .slider:after
           <div style="padding: 0.5rem 0.5rem; background:#e6e6e6; color:black; font-size:large" id ="final_img_button">
             Ảnh đầu ra với nhiều kích cỡ khác nhau
           </div>
-          <div id ="final_img_container">
-
-
-            <canvas id = "canvas_final_smaller_img" class="img_properties">
+           <div class="div-table" id ="final_img_container">
+             <div class="div-table-row">
+                <div class="div-table-col img_properties" align="center">
+                  <canvas id = "canvas_final_smaller_img" >
                     Your browser does not support the HTML canvas tag.
-            </canvas>
+                  </canvas>
+                </div>
 
-            <canvas  id = "canvas_final_small_img" class="img_properties">
+                <div  class="div-table-col img_properties">
+
+                  <canvas  id = "canvas_final_small_img">
                     Your browser does not support the HTML canvas tag.
-            </canvas>
+                  </canvas>
 
-            <canvas id = "canvas_final_img" class="img_properties">
+                </div>
+                <div  class="div-table-col img_properties">
+                   <canvas id = "canvas_final_img">
                     Your browser does not support the HTML canvas tag.
-            </canvas>
+                    </canvas>
+                </div>
+             </div>
+            <div class="div-table-row">
+                  <div class="div-table-col img_properties">0.5x</div>
+                <div class="div-table-col img_properties">1.x</div>
+                <div class="div-table-col img_properties">1.5x</div>
+            </div>
 
-          </div>
+
+      </div>
 
         </div>
 
