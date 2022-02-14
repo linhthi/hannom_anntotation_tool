@@ -1839,7 +1839,6 @@ function _via_init_keyboard_handlers() {
 
 // handles drawing of regions over image by the user
 function _via_init_mouse_handlers() {
-  _via_reg_canvas.addEventListener('dblclick', _via_reg_canvas_dblclick_handler, false);
   _via_reg_canvas.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
   _via_reg_canvas.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
   _via_reg_canvas.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
@@ -3485,6 +3484,9 @@ function _via_reg_canvas_mouseup_handler(e) {
       } else {
         // user clicking inside an already selected region
         // indicates that the user intends to draw a nested region
+        // Modified by Nguyen Trong Lam
+        // Purpose: Do not allow to create nested region
+        /*
         toggle_all_regions_selection(false);
         _via_is_region_selected = false;
 
@@ -3518,7 +3520,8 @@ function _via_reg_canvas_mouseup_handler(e) {
           _via_canvas_regions.push(canvas_point_region);
           break;
         }
-        annotation_editor_update_content();
+        annotation_editor_update_content();*/
+        //Ended by Nguyen Trong Lam
       }
     }
     _via_redraw_reg_canvas();
