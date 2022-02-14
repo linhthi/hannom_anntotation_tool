@@ -1,5 +1,6 @@
 import React, { useState, useEffect} from 'react'
 import PropTypes from 'prop-types'
+import {ReactSVGPanZoom, TOOL_NONE, TOOL_AUTO, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT} from 'react-svg-pan-zoom';
 
 const initMouse = {
   lastMoveX:0,
@@ -176,6 +177,11 @@ function ImageAnnoDisplay(props) {
   }
 
   return (
+  // <div>
+  // <ReactSVGPanZoom
+  // width={500} height={400}
+  // tool='zoom-in'
+  // >
     <div
       id="svgWrapper"
       onMouseLeave={leave}
@@ -247,6 +253,8 @@ function ImageAnnoDisplay(props) {
           {renderManual()}
       </svg>
     </div>
+    // </ReactSVGPanZoom>
+    // </div>
   )
 }
 

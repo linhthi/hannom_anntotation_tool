@@ -14,26 +14,27 @@ function ImageDetail({ image, createMessage }) {
   const [boxes, setBoxes] = useState([])
   const [editModes, setEditModes] = useState([])
   const [addBoxMode, setAddBoxMode] = useState(false)
-  const [scale, setScale] = useState(1)
+  const [scale, setScale] = useState(0.45)
   const [svgWidth, setSvgWidth] = useState(0)
   const [svgHeight, setSvgHeight] = useState(0)
   const [isAddBoundingBox, setIsAddBoundingBox] = React.useState(false)
   const [newListDrawing, setNewListDrawing] = useState([])
   const [isEdit, setEdit] = useState(false)
 	const [newLabel, setNewLabel] = useState(drawBoxes.label)
+  const [isFullScreen, setIsFullScreen] = useState(false)
   const ref = useRef(null)
 
   useEffect(() => {
     console.log(image)
     if (typeof image === 'undefined') return
-    if (ref.current && ref.current.offsetWidth < image.width) {
-      setScale(ref.current.offsetWidth / image.width)
-      setSvgWidth(ref.current.offsetWidth)
-      setSvgHeight(scale * image.height)
-    } else {
-      setSvgWidth(image.width)
-      setSvgHeight(image.height)
-    }
+    // if (ref.current && ref.current.offsetWidth < image.width) {
+    //   setScale(ref.current.offsetWidth / image.width)
+    //   setSvgWidth(ref.current.offsetWidth)
+    //   setSvgHeight(scale * image.height)
+    // } else {
+      setSvgWidth(image.width *scale)
+      setSvgHeight(image.height *scale)
+    // }
     if (image.boxes) {
       setBoxes(image.boxes.sort((a, b) => a.id - b.id))
       setEditModes(Array(image.boxes.length).fill(false))
@@ -127,6 +128,15 @@ function ImageDetail({ image, createMessage }) {
     setBoxes([...arr])
     alert("Đã xóa")
   }
+
+  const handleZoom = (e) => {
+    setIsFullScreen(!isFullScreen)
+    if (isFullScreen) {
+      setScale(0.45)
+    } else {
+      setScale(0.65)
+    }
+  }
 	
 	const onLabelChange = (e) => {
 		setNewLabel(e.target.value)
@@ -163,7 +173,7 @@ function ImageDetail({ image, createMessage }) {
           <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
           onClick={()=> window.location.href = `http://localhost:5000/show_imgs/img_${drawBoxes.id}.png`}>
-            Làm mịn chữ
+            Làm mịn nét chữ
           </button>
           </Link>
           {isEdit ?  (
@@ -181,7 +191,7 @@ function ImageDetail({ image, createMessage }) {
   }
   return (
     <div className="row space-around">
-      <div className="half-width-item text-center" ref={ref}>
+      <div className="text-center" ref={ref}>
         <ImageAnnoDisplay
           svgWidth={svgWidth || 0}
           svgHeight={svgHeight || 0}
@@ -196,8 +206,22 @@ function ImageDetail({ image, createMessage }) {
           updateNewListDrawing={updateNewListDrawing}
         />
         {console.log("DrawBoxes_id", drawBoxes.id)}
+        <button
+            className="blue button"
+            onClick={handleZoom}
+        >
+            Zoom
+        </button>
+
         <button className="blue button" onClick={downloadBoxesAsCSV}>
-          Tải xuống annotation
+          Tải xuống văn bản
+        </button>
+
+        <button
+            className="blue button"
+            onClick={onAddBoxButtonClick}
+          >
+            Lưu trang
         </button>
 
         {!isAddBoundingBox ? (
@@ -219,7 +243,7 @@ function ImageDetail({ image, createMessage }) {
         <br></br>
         {renderEdit()}
       </div>
-
+      {!isFullScreen ? (
       <div className="half-width-item text-center">
         <ImageLabelDisplay
           svgWidth={svgWidth || 0}
@@ -229,6 +253,7 @@ function ImageDetail({ image, createMessage }) {
           drawBoxes={drawBoxes}
         />
       </div>
+      ): (<></>)}
     </div>
   )
 }
