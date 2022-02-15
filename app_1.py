@@ -25,7 +25,7 @@ app.config['UPLOAD_FOLDER_CHARACTER'] = 'static/characters'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 normalize_obj = Normalize()
 
-@app.route('/')
+@app.route('/home')
 def home():
     return "Hello World"
 
@@ -39,8 +39,18 @@ def get_img(file_path):
     if (os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], file_path))):
         print("File has existed")
 
-    return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=True)
+    return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=False)
 
+@app.route('/api/images/crop', methods=['GET'])
+def crop_character():
+    box = request.json['box']
+    image_filename = request.json['filename']
+    path = os.path.join(app.config['UPLOAD_FOLDER'], image_filename)
+    img = cv2.imread(path)
+    crop_image = img[box['y_min']: box['y_max'], box['x_min']: box['x_max']]
+    cv2.imwrite(f'static/characters/img_{box["id"]}.png', crop_image)
+    print("Croped!")
+    return jsonify({'message': 'Crop successfull'})
 
 ### Lam
 @app.route('/show_imgs/<target_img_name>')
@@ -56,7 +66,7 @@ def show_img(target_img_name):
 
 @app.route('/imgs/<img_name>')
 def get_img_chacracter(img_name):
-    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'],img_name, as_attachment=False )
+    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], img_name, as_attachment=False )
 
 
 """ Recieving the gaussian value and make the change on the local line
