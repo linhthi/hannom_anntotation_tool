@@ -75,14 +75,15 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 .menubar a:link { color:#eeeeee; text-decoration:none; }
 .menubar a:visited { color:#eeeeee; text-decoration:none; }
 .menubar ul { display:block; padding:0; margin:0; }
-.menubar li { display:inline; float:left; padding:0.45rem 1rem; }
-.menubar li:hover { background-color:#616161; cursor:default; }
+.menubar li { display:inline; float:left; padding:0.45rem 1rem; margin-left: 0.05rem}
+.menubar li:hover { background-color:#616161; cursor:default; opacity: 0.5}
 
 .menubar li ul { display:none; background-color:#212121; border:1px solid #616161; min-width:10rem; position:absolute; z-index:100; margin:0.4rem -1rem;}
 .menubar li ul li { display:block; float:none; color:#eeeeee; margin:0; padding:0.6rem 1rem; }
 .menubar li ul li:hover { cursor:pointer; }
 .menubar li ul li.submenu_divider { margin:0 0.4rem; padding:0; height:1px; border-bottom:1px solid #424242; }
 .menubar li:hover ul { display:block; }
+
 
 /* toolbar containing small icons for tools */
 .toolbar { display:inline-block; margin-left:1rem; }
@@ -133,7 +134,7 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 #leftsidebar_show_button:hover { color:red; cursor: pointer; }
 
 /* Left sidebar accordion */
-button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5em 0.5em; width:100%; text-align:left; border:0; outline:none; }
+button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5rem 0.5rem; width:100%; text-align:left; border:0; outline:none; }
 button.leftsidebar_accordion:focus { outline: none; }
 button.leftsidebar_accordion.active, button.leftsidebar_accordion:hover { background-color: #e6e6e6; }
 
@@ -150,7 +151,7 @@ button.leftsidebar_accordion:after {color:#4d4d4d; float:right; }
 
 /* Ended by Nguyen Trong Lam */
 
-.leftsidebar_accordion_panel { display:none; padding:0 0.5em; font-size:small; border-right:2px solid #f2f2f2; border-bottom:2px solid #f2f2f2; }
+.leftsidebar_accordion_panel { display:none; padding:0 0.5em; font-size:small; }
 .leftsidebar_accordion_panel.show { display:block; }
 
 /* Keyboard shortcut panel */
@@ -295,9 +296,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 }
 
 .img_properties{
-  width: 30%;
-  height: 30%;
-  border: 1px;
+
   display: inline-block;
 }
 
@@ -354,6 +353,34 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   background: #04AA6D;
   cursor: pointer;
 }
+
+.div-table {
+  display: table;
+}
+
+.div-table-row {
+  display: table-row;
+  width: auto;
+  clear: both;
+
+}
+.div-table-col {
+  float: left; /* fix for  buggy browsers */
+  display: table-column;
+  width: 32.5%;
+  margin-left: auto;
+  margin-right: auto;
+  text-align: center;
+  font-weight: bold;
+}
+
+.div-table-col ::before{
+  content: '   ';
+  white-space: pre;
+
+}
+
+
 /*Button  Added by Nguyen Trong Lam*/
 /* CSS */
 
@@ -390,7 +417,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
 }
 
 .button-3:hover {
-  background-color: #de2444;
+  opacity: 0.5;
 }
 
 .button-3:focus {
@@ -409,15 +436,13 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   background-color: #298e46;
   box-shadow: rgba(20, 70, 32, .2) 0 1px 0 inset;
 }
+div.button-3--transparent {
+  background-color: #212121;
+  padding:0px 0px 0px 5px;
+}
 
 
-#back_img{
-  visibility: hidden;
-}
-#back_img:active{
-  background-color: #201d1d;
-  color:#ffffff;
-}
+
 
 #show_diff_img{
   background-color: #2ea44f;
@@ -459,6 +484,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   touch-action: manipulation;
   vertical-align: baseline;
   white-space: nowrap;
+  width: 5rem;
 }
 
 .button-7:hover,
@@ -475,9 +501,7 @@ ul.region_shape .selected { fill:#ffffff; stroke:#ff0000; }
   box-shadow: none;
 }
 
-#back_img.button-7--undo{
-    background: #f0ad4e;
-}
+
 
 .org_img_container span{
   display: inline;
@@ -704,12 +728,24 @@ input:checked + .slider:after
     </div>
 
     <div class="top_panel" id="ui_top_panel">
+      <!-- Added by Nguyen Trong Lam -->
+       <div class="menubar">
+        <ul>
+            <li onclick="()" style="cursor:pointer; background: #DC4530; ">Hoàn Thành</li>
+        </ul>
+       </div>
+      <!-- Ended by Nguyen Trong Lam -->
       <!-- menu bar -->
       <div class="menubar">
+        <!-- Added by Nguyen Trong Lam -->
+
+        <!-- Ended by Nguyen Trong Lam -->
         <ul class="unnecessary">
+
           <li onclick="show_home_panel()" style="cursor:pointer;">Home</li>
           <li>Project
             <ul>
+
               <li onclick="project_open_select_project_file()" title="Load a VIA project (from a JSON file)">Load</li>
               <li onclick="project_save_with_confirm()" title="Save this VIA project (as a JSON file)">Save</li>
               <li onclick="settings_panel_toggle()" title="Show/edit project settings">Settings</li>
@@ -800,6 +836,7 @@ input:checked + .slider:after
         <svg onclick="del_sel_regions_with_confirm()" viewbox="0 0 24 24"><use xlink:href="#icon_pasteundo"></use><title>Undo Regions Pasted in Multiple Images</title></svg>
         <svg onclick="del_sel_regions()" viewbox="0 0 24 24"><use xlink:href="#icon_close"></use><title>Delete Region</title></svg>
       </div>
+
       <!-- end of shortcut toolbar -->
       <input type="file" id="invisible_file_input" name="files[]" style="display:none">
     </div> <!-- endof #top_panel -->
@@ -843,8 +880,10 @@ input:checked + .slider:after
           </div>
         </div>
         <!-- Has been modified by Lam, display: None -->
-        <button class="leftsidebar_accordion" style="">Phím tắt</button>
-        <div class="leftsidebar_accordion_panel show">
+
+        <button class="leftsidebar_accordion" style="" id="shortcut_button">Phím tắt</button>
+        <div class="leftsidebar_accordion_panel show" id="shortcut_panel">
+
           <div style="display:block; text-align:center; padding:1rem;">Phím tắt sau khi chọn vùng</div>
           <table>
             <tr>
@@ -900,7 +939,7 @@ input:checked + .slider:after
           </table>
         </div>
 
-        <button class="leftsidebar_accordion active" >Ảnh ban đầu</button>
+        <button class="leftsidebar_accordion active" id="org_button">Ảnh ban đầu</button>
         <div class="leftsidebar_accordion_panel">
           <ul class="region_shape">
             <li id="region_shape_rect"  onclick="select_region_shape('rect')" title="Rectangle (Shortcut key 1)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_rectangle"></use></svg></li>
@@ -977,22 +1016,50 @@ input:checked + .slider:after
         </div>
 
         <!-- Show final result after modifying -->
-        <div id="final_result_container" style="border: 1px solid #e6e6e6;">
-          <div style="padding: 8px; background:#e6e6e6; color:black">
+        <div id="final_result_container">
+          <div style="padding: 0.5rem 0.5rem; background:#e6e6e6; color:black; font-size:large" id ="final_img_button">
             Ảnh đầu ra với nhiều kích cỡ khác nhau
           </div>
-          <div id ="final_img_container">
+           <div class="div-table" id ="final_img_container">
 
-            <canvas id = "canvas_final_img" class="img_properties">
+
+
+             <div class="div-table-row">
+                <div class="div-table-col img_properties" align="center">
+
+                  <canvas id = "canvas_final_smaller_img" >
                     Your browser does not support the HTML canvas tag.
-            </canvas>
-            <canvas  id = "canvas_final_small_img" class="img_properties">
+                  </canvas>
+                </div>
+
+                <div  class="div-table-col img_properties">
+
+                  <canvas  id = "canvas_final_small_img">
                     Your browser does not support the HTML canvas tag.
-            </canvas>
-            <canvas id = "canvas_final_smaller_img" class="img_properties">
+                  </canvas>
+
+                </div>
+                <div  class="div-table-col img_properties">
+                   <canvas id = "canvas_final_img">
                     Your browser does not support the HTML canvas tag.
-            </canvas>
-          </div>
+                    </canvas>
+                </div>
+             </div>
+             <div class="div-table-row">
+               <div class="div-table-col img_properties">Kích thước 1x</div>
+                <div class="div-table-col img_properties">Kích thước 1.5x</div>
+                <div class="div-table-col img_properties">Kích thước 2x</div>
+            </div>
+
+             <div class="div-table-row">
+                  <div class="div-table-col img_properties"> </div>
+                <div class="div-table-col img_properties"> </div>
+                <div class="div-table-col img_properties"> </div>
+            </div>
+
+
+
+      </div>
 
         </div>
 
@@ -1294,7 +1361,6 @@ POSSIBILITY OF SUCH DAMAGE.
           </div>
 
           <div class="button-container">
-            <div class="button-3" role="button"><a href="http://localhost:3000/{{"images"}}" style="color:#fff">Hoàn Thành</a></div>
 
           </div>
           <div class="slidetable" id ="table_content">
@@ -1669,9 +1735,28 @@ function file_region() {
 //
 // Added by Nguyen Trong Lam
 //
+var list_of_diff_size_img = document.getElementsByClassName("img_properties");
+list_of_diff_size_img.style.height = list_of_diff_size_img.style.width;
+
+
 
 function show_original_image(){
   let org_img = document.getElementById("bim0");
+  let id_of_needed_layout = ["bim0", "shortcut_button", "shortcut_panel"]
+  let height_in_middle = 0;
+  let height_left_panel = 0;
+  for (let i = 0; i < id_of_needed_layout.length; i++){
+      if ( i < 1){
+        height_in_middle += document.getElementById(id_of_needed_layout[i]).offsetHeight;
+      }
+      else{
+        height_left_panel += document.getElementById(id_of_needed_layout[i]).offsetHeight;
+      }
+      console.log(document.getElementById(id_of_needed_layout[i]));
+  }
+  let distance = Math.abs(height_left_panel - height_in_middle).toString() + "px";
+  document.getElementById("org_button").style.margin = distance + " 0px 0px 0px";
+  console.log("height_in_middle", height_in_middle, "height_left_panel",height_left_panel);
   drawImageScaled(org_img, _via_ctx_org_img, 2);
 }
 
@@ -1706,7 +1791,6 @@ function dataURLtoFile(dataurl, filename) {
 
 function drawImageScaled(img, ctx, additional_ratio) {
    var canvas = ctx.canvas ;
-   console.log("canvas.width: ",canvas.width, "canvas.height", canvas.height);
    console.log("img.width: ",img.width, "img.height", img.height);
    var hRatio = canvas.width  / img.width    ;
    var vRatio =  canvas.height / img.height  ;
@@ -1806,7 +1890,6 @@ function _via_init_keyboard_handlers() {
 
 // handles drawing of regions over image by the user
 function _via_init_mouse_handlers() {
-  _via_reg_canvas.addEventListener('dblclick', _via_reg_canvas_dblclick_handler, false);
   _via_reg_canvas.addEventListener('mousedown', _via_reg_canvas_mousedown_handler, false);
   _via_reg_canvas.addEventListener('mouseup', _via_reg_canvas_mouseup_handler, false);
   _via_reg_canvas.addEventListener('mouseover', _via_reg_canvas_mouseover_handler, false);
@@ -3270,8 +3353,6 @@ function _via_reg_canvas_mousedown_handler(e) {
       let current_id = _via_image_index;
       let current_name_of_file = _via_image_filename_list[current_id];
 
-      console.log("_via_image_filename_list[moc_ban_current_id]",_via_image_filename_list[current_id]);
-      console.log("current_name_of_file",current_name_of_file,", moc_ban_current_id: ", current_id);
       document.getElementById("table_content").style.visibility = "visible";
       let path_to_get_effect = (
                       mocban_server_path
@@ -3281,7 +3362,6 @@ function _via_reg_canvas_mousedown_handler(e) {
                       +"/" + current_id + "/"
                       + region_id.toString()
                       );
-      console.log("path_to_get_effect: ", path_to_get_effect);
       fetch(path_to_get_effect)
                   .then(response => response.json())
                   .then(data => {
@@ -3318,15 +3398,14 @@ function _via_reg_canvas_mousedown_handler(e) {
                        `;
                       li += `<button class="button-7" role="button" id="smoothing_img" onclick="send_gauss_value(`
                       li += region_id.toString()
-                      li += `)">Làm Mượt</button>`
-                      li += `<button class="button-7" id = "finish_edit_region" role="button" onclick="finish_edit_region()">Xong</button>`
-                      li += `<button class="button-7 button-7--undo" id = "back_img" role="button" onclick="undo_img()">Quay Lại</button>`
-          // Ended by Nguyen Trong Lam
-          // Display result
+                      li += `)">Làm Mịn</button>`
+                      li += `<button class="button-7" id = "finish_edit" role="button" onclick="finish_edit_region()">Xong</button>`
+                      li += `<p>Lưu ý: Thao tác sẽ không được lưu nếu không nhấn nút "xong"</p>`
           document.getElementById("table_content").innerHTML = li;
           document.getElementById("table_content").style.display = "block";
       });
-
+    // Ended by Nguyen Trong Lam
+    // Display result
 
     }
   }
@@ -3354,38 +3433,36 @@ function enableCheck(e){
 }
 
 
-function undo_img(){
-    let current_id = _via_image_index;
-    let current_name_of_file =_via_image_filename_list[current_id];
-    fetch(mocban_server_path+"/revertImage/"+current_name_of_file).then(response => response.blob()).then(function(res){
-          let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
-          bimg0.src = URL.createObjectURL(res);
-      }).catch(function(reason) {
-        console.log("there is smt wrong with the undo image");
 
-  });
-    let back_Image = document.getElementById('back_img');
-    back_Image.style.visibility = "hidden";
-}
-
+//send request after smoothening the region
 function finish_edit_region(){
     if ( _via_is_region_selected ||
            _via_is_all_region_selected ) {
-        del_sel_regions();
-        document.getElementById("table_content").style.display = "None";
+         del_sel_regions();
+         document.getElementById("table_content").style.display = "None";
+
+         let current_id = _via_image_index;
+         let current_name_of_file =_via_image_filename_list[current_id];
+         fetch(mocban_server_path+"/finishEdit/"+current_name_of_file).then(response => response.blob()).then(function(res){
+            let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
+            bimg0.src = URL.createObjectURL(res);
+            }).catch(function(reason) {
+                console.log("there is smt wrong with the undo image");
+
+            });
     }
 }
 
+
 function send_gauss_value(region_id){
   let localRate = document.getElementById('localRate');
-  let back_Image = document.getElementById('back_img');
   let onlyX = document.getElementById('onlyX');
   let onlyY = document.getElementById('onlyY');
   let current_id = _via_image_index;
   let attr = _via_canvas_regions[region_id].shape_attributes;
   let input = document.getElementById('invisible_file_input');
   let current_name_of_file = _via_image_filename_list[current_id];
-
+  console.log("attr: ", attr);
   let set_new_value_gauss = (mocban_server_path
   + "False" + "/"
   + "gaussian"+ "/"
@@ -3408,8 +3485,6 @@ function send_gauss_value(region_id){
       bimg0.src = url_path;
 
   })
-
-  back_Image.style.visibility = "visible";
   }
 
 // implements the following functionalities:
@@ -3434,6 +3509,7 @@ function _via_reg_canvas_mouseup_handler(e) {
         Math.abs(move_y) > VIA_MOUSE_CLICK_TOL) {
       // move all selected regions
       _via_move_selected_regions(move_x, move_y);
+      //document.getElementById("table_content").style.display = "None";
     } else {
       // indicates a user click on an already selected region
       // this could indicate the user's intention to select another
@@ -3459,6 +3535,9 @@ function _via_reg_canvas_mouseup_handler(e) {
       } else {
         // user clicking inside an already selected region
         // indicates that the user intends to draw a nested region
+        // Modified by Nguyen Trong Lam
+        // Purpose: Do not allow to create nested region
+        /*
         toggle_all_regions_selection(false);
         _via_is_region_selected = false;
 
@@ -3492,7 +3571,8 @@ function _via_reg_canvas_mouseup_handler(e) {
           _via_canvas_regions.push(canvas_point_region);
           break;
         }
-        annotation_editor_update_content();
+        annotation_editor_update_content();*/
+        //Ended by Nguyen Trong Lam
       }
     }
     _via_redraw_reg_canvas();
@@ -3703,7 +3783,6 @@ function _via_reg_canvas_mouseup_handler(e) {
           }
         }
 
-        show_message('Region selected. If you intended to draw a region, click again inside the selected region to start drawing a region.')
       } else {
         if ( _via_is_user_drawing_region ) {
           // clear all region selection
@@ -3978,7 +4057,6 @@ function _via_reg_canvas_mousemove_handler(e) {
         if (_via_region_edge[1] >= VIA_POLYGON_RESIZE_VERTEX_OFFSET) {
           // indicates mouse over polygon vertex
           _via_reg_canvas.style.cursor = "crosshair";
-          show_message('To move vertex, simply drag the vertex. To add vertex, press [Ctrl] key and click on the edge. To delete vertex, press [Ctrl] (or [Command]) key and click on vertex.');
         }
       } else {
         var yes = is_inside_this_region(_via_current_x,
@@ -4415,9 +4493,14 @@ function _via_redraw_reg_canvas() {
       if (_via_is_region_boundary_visible) {
         draw_all_regions();
       }
+      /*
+      Modified by Nguyen Trong Lam
+      Purpose: Remove id bounding box near the shape
       if (_via_is_region_id_visible) {
         draw_all_region_id();
       }
+      Ended by Nguyen Trong Lam
+      */
     }
   }
 }
@@ -5967,8 +6050,6 @@ function del_sel_regions_confirmed(input) {
     total_deleted_region_count += delete_regions( intersect[i] );
   }
 
-  show_message('Deleted [' + total_deleted_region_count + '] regions ' +
-               'in ' + intersect.length + ' images');
 
   if ( intersect.includes(_via_image_index) ) {
     _via_load_canvas_regions();
