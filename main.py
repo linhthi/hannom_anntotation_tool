@@ -9,17 +9,14 @@ import io
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
-from testing_contours import centerlize_contour_image, preprocess_img
-from tool2 import is_inside_polygon,smoothing_line, is_inside_contour_and_get_local_line,convert_color_img,show_line_with_diff_color
+from tool import is_inside_polygon,smoothing_line, is_inside_contour_and_get_local_line,convert_color_img,show_line_with_diff_color
 from normalize import Normalize
 import base64
 from collections import defaultdict
 app = Flask(__name__)
 
-UPLOAD_FOLDER = 'static/uploads/'
-
 app.secret_key = "secret key"
-app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
+app.config['CHARACTERS'] = 'static/characters/'
 app.config['MAX_CONTENT_LENGTH'] = 16 * 1024 * 1024
 normalize_obj = Normalize()
 
@@ -27,18 +24,9 @@ normalize_obj = Normalize()
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
-
-
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
-
-@app.route('/')
-def home():
-    return "Hello World"
-
 @app.route('/show_imgs/<target_img_name>')
 def show_img(target_img_name):
-    path = os.path.join(app.config['UPLOAD_FOLDER'], target_img_name)
+    path = os.path.join(app.config['CHARACTERS'], target_img_name)
     img = cv2.imread(path,0)
     normalized_pred_img = normalize_obj.preprocess_img(img)
     img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', normalized_pred_img)[1]).decode()
@@ -49,7 +37,7 @@ def show_img(target_img_name):
 
 @app.route('/imgs/<img_name>')
 def get_img(img_name):
-    return send_from_directory(app.config['UPLOAD_FOLDER'],img_name, as_attachment=False )
+    return send_from_directory(app.config['CHARACTERS'],img_name, as_attachment=False )
 
 
 """ Recieving the gaussian value and make the change on the local line
@@ -137,7 +125,7 @@ def upload_image(id_img,region_id, filename, highlight):
             only_y = True if request_data['only_y'].lower() == "true" else False
 
         #correct
-        path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+        path = os.path.join(app.config['CHARACTERS'], filename)
         all_contours,normalized_shape,_,_,_ = normalize_obj.get_attributes()
         highlight_contour = []
 
@@ -165,50 +153,19 @@ def upload_image(id_img,region_id, filename, highlight):
 
         result_image = normalize_obj.convert_to_original_image()
         cv2.imwrite(path, result_image)
-        return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
-
-
+        return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
 
 
 @app.route('/revertImage/<filename>/', methods=['POST', 'GET'])
 def revert_image(filename):
     normalize_obj.update(True, None, None)
-    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
+    path = os.path.join(app.config['CHARACTERS'], filename)
     result_img = normalize_obj.convert_to_original_image()
     cv2.imwrite(path, result_img)
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
+    return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
-@app.route('/show_diff/<filename>/', methods=['POST', 'GET'])
-def show_difference_between_images(filename):
-    path = os.path.join(app.config['UPLOAD_FOLDER'], filename)
-    cv_img = cv2.imread(path, 1)
-    # blank = np.zeros(cv_img.shape[:2], dtype=np.uint8)
-    blank2 = np.zeros(cv_img.shape[:3], dtype=np.uint8)
-    _,_,_,_,org_img,org_contours,_ = normalize_obj.get_attributes()
-    blank2 = cv2.drawContours(blank2, org_contours, -1, (255,255,0), 1)
-    #contours, hierarchy = cv2.findContours(cv_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
 
-    #
-    # for i, contour_no in enumerate(hierarchy[0]):
-    #     # print("contour_no: ", contour_no)
-    #     if contour_no[3] == -1:  # do not have the parents
-    #         cv2.drawContours(blank, contours, i, 255, -1)
-    #     if contour_no[2] == -1:  # do not have the parents
-    #         cv2.drawContours(blank, contours, i, 0, -1)
-    #
-    # # # plt.imshow(blank, cmap='gray')
-    # # # plt.show()
-    # # # plt.imshow(original_image, cmap='gray')
-    # # # plt.show()
-    # bitwiseAnd = 255-(blank2 - blank)
-    # #bitwiseAnd = cv2.bitwise_and(bitwiseAnd, blank2)
-    #
-    # bitwiseAnd = 255-convert_color_img(bitwiseAnd, 'g')
-    # bitwiseAnd += convert_color_img(blank, 'x')
-    # #bitwiseAnd = 255-(convert_color_img(blank, 'g') + (255 - convert_color_img(bitwiseAnd, 'r')))
-    cv2.imwrite(path, cv_img+blank2)
-    return send_from_directory(app.config['UPLOAD_FOLDER'], filename, as_attachment=False)
 
 
 

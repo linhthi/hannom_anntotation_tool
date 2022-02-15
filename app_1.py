@@ -29,8 +29,6 @@ normalize_obj = Normalize()
 def home():
     return "Hello World"
 
-def allowed_file(filename):
-    return '.' in filename and filename.rsplit('.', 1)[1].lower() in ALLOWED_EXTENSIONS
 
 #### Linh
 @app.route('/api/images/uploads/<file_path>', methods=['GET'])
@@ -190,37 +188,6 @@ def revert_image(filename):
     path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
     result_img = normalize_obj.convert_to_original_image()
     cv2.imwrite(path, result_img)
-    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
-
-@app.route('/show_diff/<filename>/', methods=['POST', 'GET'])
-def show_difference_between_images(filename):
-    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
-    cv_img = cv2.imread(path, 1)
-    # blank = np.zeros(cv_img.shape[:2], dtype=np.uint8)
-    blank2 = np.zeros(cv_img.shape[:3], dtype=np.uint8)
-    _,_,_,_,org_img,org_contours,_ = normalize_obj.get_attributes()
-    blank2 = cv2.drawContours(blank2, org_contours, -1, (255,255,0), 1)
-    #contours, hierarchy = cv2.findContours(cv_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-
-    #
-    # for i, contour_no in enumerate(hierarchy[0]):
-    #     # print("contour_no: ", contour_no)
-    #     if contour_no[3] == -1:  # do not have the parents
-    #         cv2.drawContours(blank, contours, i, 255, -1)
-    #     if contour_no[2] == -1:  # do not have the parents
-    #         cv2.drawContours(blank, contours, i, 0, -1)
-    #
-    # # # plt.imshow(blank, cmap='gray')
-    # # # plt.show()
-    # # # plt.imshow(original_image, cmap='gray')
-    # # # plt.show()
-    # bitwiseAnd = 255-(blank2 - blank)
-    # #bitwiseAnd = cv2.bitwise_and(bitwiseAnd, blank2)
-    #
-    # bitwiseAnd = 255-convert_color_img(bitwiseAnd, 'g')
-    # bitwiseAnd += convert_color_img(blank, 'x')
-    # #bitwiseAnd = 255-(convert_color_img(blank, 'g') + (255 - convert_color_img(bitwiseAnd, 'r')))
-    cv2.imwrite(path, cv_img+blank2)
     return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
 
 
