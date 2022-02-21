@@ -1535,6 +1535,8 @@ var _via_ctx_final_small_img;
 var _via_ctx_final_smaller_img;
 var _via_img_original_link;
 var _via_moc_ban_files_list;
+
+
 var moc_ban_data = {{mocban_data|tojson|safe}}
 //Ended by Nguyen Trong Lam
 
@@ -5876,7 +5878,6 @@ function del_sel_regions() {
   _via_reg_canvas.focus();
   annotation_editor_show();
 
-  show_message('Deleted ' + del_region_count + ' selected regions');
 }
 
 function sel_all_regions() {
@@ -6317,7 +6318,7 @@ function zoom_in() {
   }
 
   if (_via_canvas_zoom_level_index === (VIA_CANVAS_ZOOM_LEVELS.length-1)) {
-    show_message('Further zoom-in not possible');
+    show_message('Không thể zoom thể zoom vào nữa');
   } else {
     var new_zoom_level_index = _via_canvas_zoom_level_index + 1;
     set_zoom( new_zoom_level_index );
@@ -6493,8 +6494,10 @@ function init_leftsidebar_accordion() {
   for ( i = 0; i < acc.length; ++i ) {
     acc[i].addEventListener('click', function() {
       update_vertical_space();
-      this.classList.toggle('active');
-      this.nextElementSibling.classList.toggle('show');
+      // Modified by Nguyen Trong Lam
+      //Purpose: Don't need show toggle
+      /* this.classList.toggle('active');
+      this.nextElementSibling.classList.toggle('show');*/
 
       switch( this.innerHTML ) {
       case 'Attributes':
@@ -7436,7 +7439,6 @@ function delete_existing_attribute_confirmed(input) {
   var attr_id   = input.attr_id.value;
   delete_existing_attribute(attr_type, attr_id);
   document.getElementById('user_input_attribute_id').value = '';
-  show_message('Deleted ' + attr_type + ' attribute [' + attr_id + ']');
   user_input_default_cancel_handler();
 }
 
@@ -9152,7 +9154,6 @@ function project_file_add_local() {
     if ( discarded_file_count ) {
       status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
     }
-    show_message(status_msg);
 
     if ( new_img_index_list.length ) {
       // show first of newly added image
