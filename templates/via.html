@@ -3460,9 +3460,14 @@ function send_gauss_value(region_id){
   let attr = _via_canvas_regions[region_id].shape_attributes;
   let input = document.getElementById('invisible_file_input');
   let current_name_of_file = _via_image_filename_list[current_id];
-  document.getElementById("smoothing_img").disabled = true;
-  document.getElementById("smoothing_img").style.background = "gray";
-  document.getElementById("finish_edit").style.background = "gray";
+  let smooth_button = document.getElementById("smoothing_img");
+  let finish_button = document.getElementById("finish_edit");
+  // Ngan can nguoi dung nhan lien tuc vao nut
+  smooth_button.disabled = true;
+  smooth_button.style.background = "gray";
+  finish_button.style.background = "gray";
+  finish_button.disabled = true;
+
   document.body.style.cursor = "wait";
   let set_new_value_gauss = (mocban_server_path
   + "False" + "/"
