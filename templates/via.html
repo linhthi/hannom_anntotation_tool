@@ -134,7 +134,7 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 #leftsidebar_show_button:hover { color:red; cursor: pointer; }
 
 /* Left sidebar accordion */
-button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5rem 0.5rem; width:100%; text-align:left; border:0; outline:none; }
+button.leftsidebar_accordion { font-size:large; padding:0.5rem 0.5rem; width:100%; text-align:left; border:0; outline:none; }
 button.leftsidebar_accordion:focus { outline: none; }
 button.leftsidebar_accordion.active, button.leftsidebar_accordion:hover { background-color: #e6e6e6; }
 
@@ -1738,7 +1738,6 @@ function file_region() {
 // Added by Nguyen Trong Lam
 //
 var list_of_diff_size_img = document.getElementsByClassName("img_properties");
-list_of_diff_size_img.style.height = list_of_diff_size_img.style.width;
 
 
 
@@ -1758,7 +1757,6 @@ function show_original_image(){
   }
   let distance = Math.abs(height_left_panel - height_in_middle).toString() + "px";
   document.getElementById("org_button").style.margin = distance + " 0px 0px 0px";
-  console.log("height_in_middle", height_in_middle, "height_left_panel",height_left_panel);
   drawImageScaled(org_img, _via_ctx_org_img, 2);
 }
 
@@ -1793,7 +1791,6 @@ function dataURLtoFile(dataurl, filename) {
 
 function drawImageScaled(img, ctx, additional_ratio) {
    var canvas = ctx.canvas ;
-   console.log("img.width: ",img.width, "img.height", img.height);
    var hRatio = canvas.width  / img.width    ;
    var vRatio =  canvas.height / img.height  ;
    var ratio  = Math.min ( hRatio, vRatio ) / additional_ratio;
@@ -1830,8 +1827,7 @@ const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
 //
 function _via_init() {
   console.log(VIA_NAME);
-  show_message(VIA_NAME + ' (' + VIA_SHORT_NAME + ') version ' + VIA_VERSION +
-               '. Ready !', 2*VIA_THEME_MESSAGE_TIMEOUT_MS);
+  show_message("Chao mung den voi HMI moc ban");
 
   if ( _via_is_debug_mode ) {
     document.getElementById('ui_top_panel').innerHTML += '<span>DEBUG MODE</span>';
@@ -3464,7 +3460,10 @@ function send_gauss_value(region_id){
   let attr = _via_canvas_regions[region_id].shape_attributes;
   let input = document.getElementById('invisible_file_input');
   let current_name_of_file = _via_image_filename_list[current_id];
-  console.log("attr: ", attr);
+  document.getElementById("smoothing_img").disabled = true;
+  document.getElementById("smoothing_img").style.background = "gray";
+  document.getElementById("finish_edit").style.background = "gray";
+  document.body.style.cursor = "wait";
   let set_new_value_gauss = (mocban_server_path
   + "False" + "/"
   + "gaussian"+ "/"
@@ -3485,7 +3484,6 @@ function send_gauss_value(region_id){
       let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
       let url_path = URL.createObjectURL(res);
       bimg0.src = url_path;
-
   })
   }
 
@@ -10994,7 +10992,17 @@ function _via_img_buffer_add_image(img_index) {
         _via_buffer_img_index_list.push(img_index);
         _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
         ok_callback(img_index);
+        //Added by Nguyen Trong Lam
         show_final_image();
+        let smooth_button = document.getElementById("smoothing_img");
+        let finish_button = document.getElementById("finish_edit");
+        if (smooth_button !== 'undefined'){
+            smooth_button.disabled = false;
+            smooth_button.style.background = "#0095ff";
+            finish_button.style.background = "#0095ff";
+            document.body.style.cursor = "default";
+        }
+        //Ended by Nguyen Trong Lam
       });
       return;
     }
