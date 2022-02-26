@@ -376,12 +376,15 @@ def getAllImages():
             images.append(temp)
     return jsonify(message="successful", data=images), 200
 
-
 ### Lam
 @app.route('/smooth/<img_folder>/<target_img_name>')
 def show_img(target_img_name, img_folder):
     path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
-    # model.test(model.gen, model.val_loader, path
+    # model.config['TEST_DIR'] = path
+    # model.val_dataset = model.MapDataset(root_dir=model.config['TEST_DIR'],augmentation=model.eval_augmentation)
+    # model.val_loader = model.DataLoader(model.val_dataset, batch_size=1, shuffle=False)
+
+    # model.test(model.gen, model.val_loader, path)
     file_path = os.path.join(path, f'{target_img_name}.png')
     img = cv2.imread(file_path,0)
     normalized_pred_img = normalize_obj.preprocess_img(img)
@@ -403,8 +406,8 @@ def get_img_chacracter(img_name):
     --region_id: ID of specific region in image
     --highlight: whether just show image or make a change
 """
-@app.route('/<highlight>/gaussian/<filename>/<id_img>/<region_id>', methods=['POST', 'GET'])
-def upload_image(id_img,region_id, filename, highlight):
+@app.route('/<highlight>/gaussian/<img_folder>/<target_img_name>/<id_img>/<region_id>', methods=['POST', 'GET'])
+def upload_image(id_img,region_id, target_img_name, highlight, img_folder):
     effect = "gaussian" # may be change later
     path = os.path.join(os.getcwd(), 'dataOfEffect.json')
     content = {
@@ -482,7 +485,7 @@ def upload_image(id_img,region_id, filename, highlight):
             only_y = True if request_data['only_y'].lower() == "true" else False
 
         #correct
-        path = os.path.join(app.config['CHARACTERS'], filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
         _,normalized_shape,_,all_contours,_ = normalize_obj.get_attributes()
         highlight_contour = []
 
@@ -508,7 +511,7 @@ def upload_image(id_img,region_id, filename, highlight):
 
         result_image = normalize_obj.convert_to_original_image()
         cv2.imwrite(path, result_image)
-        return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
+        return send_from_directory(app.config['UPLOAD_FOLDER'],  f'{img_folder}/characters/{target_img_name}', as_attachment=False)
 
 
 
@@ -520,13 +523,6 @@ def finish_edit(filename):
     cv2.imwrite(path, result_img)
     return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
 
-
-
-
-
-if __name__ == '__main__':
-    app.run(host="localhost", debug=True)
-    
 
 if __name__ == '__main__':
     app.run(host="localhost", debug=True)
