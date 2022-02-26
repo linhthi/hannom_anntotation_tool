@@ -219,7 +219,7 @@ function ImageDetail({ image, createMessage }) {
           </button>
           <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
-          onClick={()=> window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}.png`}>
+          onClick={()=> window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}`}>
             Làm mịn nét chữ
           </button>
           </Link>
