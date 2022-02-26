@@ -32,6 +32,7 @@ from normalize import Normalize
 import base64
 from collections import defaultdict
 import json
+import mocban_pix2pix as model
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -298,7 +299,7 @@ def save_annotation_and_label(image_file):
         }
         detected_boxes.append(current_box)
         img_box_crop = cv2.resize(img_box_crop, (512, 512), interpolation = cv2.INTER_AREA)
-        characters_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{image_file}/characters')
+        characters_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{image_file}/characters/img_{current_box["id"]}')
         if os.path.isdir(characters_path) == False:
             os.mkdir(characters_path)
         cv2.imwrite(os.path.join(characters_path, f'img_{current_box["id"]}.png'), img_box_crop)
@@ -379,6 +380,8 @@ def getAllImages():
 @app.route('/smooth/<img_folder>/<target_img_name>')
 def show_img(target_img_name, img_folder):
     path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
+    model.test(model.gen, model.val_loader, path
+    file_path = os.path.join(path, f'{target_img_name}.png')
     img = cv2.imread(path,0)
     normalized_pred_img = normalize_obj.preprocess_img(img)
     img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', normalized_pred_img)[1]).decode()
