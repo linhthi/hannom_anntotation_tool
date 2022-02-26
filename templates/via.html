@@ -731,8 +731,7 @@ input:checked + .slider:after
       <!-- Added by Nguyen Trong Lam -->
        <div class="menubar">
         <ul>
-            <!-- <li onclick="()" style="cursor:pointer; background: #DC4530; ">Hoàn Thành</li> -->
-            <<div class="button-3"  role="button"><a href="http://localhost:3000/images/{{mocban_data.img_folder}}">Hoàn Thành</a></div>
+            <li onclick="()" style="cursor:pointer; background: #DC4530; ">Hoàn Thành</li>
         </ul>
        </div>
       <!-- Ended by Nguyen Trong Lam -->
@@ -1710,7 +1709,7 @@ var VIA_POLYGON_SEGMENT_SUBTENDED_ANGLE   = 5;   // in degree (used to approxima
 var VIA_FLOAT_PRECISION = 3; // number of decimal places to include in float values
 
 //Added by Nguyen Trong Lam
-var mocban_server_path = 'http://127.0.0.1:5000/';
+var mocban_server_path = 'http://localhost:5000/';
 var mocban_current_id = _via_image_index;
 var original_image_url =""; // initialize after choose image
 //Ended by Nguyen Trong Lam
@@ -3351,14 +3350,15 @@ function _via_reg_canvas_mousedown_handler(e) {
       let input = document.getElementById('invisible_file_input');
       let current_id = _via_image_index;
       let current_name_of_file = _via_image_filename_list[current_id];
-
+      console.log("current_name_of_file: ",current_name_of_file,"   ",moc_ban_data.img_folder);
       document.getElementById("table_content").style.visibility = "visible";
       let path_to_get_effect = (
                       mocban_server_path
                       + "False" + "/"
                       + "gaussian" + "/"
+                      + moc_ban_data.img_folder + "/"
                       + current_name_of_file + "/"
-                      +"/" + current_id + "/"
+                      + current_id + "/"
                       + region_id.toString()
                       );
       fetch(path_to_get_effect)
@@ -3402,7 +3402,9 @@ function _via_reg_canvas_mousedown_handler(e) {
                       li += `<p>Lưu ý: Thao tác sẽ không được lưu nếu không nhấn nút "xong"</p>`
           document.getElementById("table_content").innerHTML = li;
           document.getElementById("table_content").style.display = "block";
-      });
+      }).catch((e) => {
+          console.log('Error: with the fetch',e);
+    });
     // Ended by Nguyen Trong Lam
     // Display result
 
@@ -11002,7 +11004,7 @@ function _via_img_buffer_add_image(img_index) {
         show_final_image();
         let smooth_button = document.getElementById("smoothing_img");
         let finish_button = document.getElementById("finish_edit");
-        if (smooth_button !== 'undefined'){
+        if (smooth_button !== 'undefined' && smooth_button !== null){
             smooth_button.disabled = false;
             smooth_button.style.background = "#0095ff";
             finish_button.style.background = "#0095ff";

@@ -408,46 +408,13 @@ def get_img_chacracter(img_name):
 """
 @app.route('/<highlight>/gaussian/<img_folder>/<target_img_name>/<id_img>/<region_id>', methods=['POST', 'GET'])
 def upload_image(id_img,region_id, target_img_name, highlight, img_folder):
-    effect = "gaussian" # may be change later
-    path = os.path.join(os.getcwd(), 'dataOfEffect.json')
-    content = {
-        id_img: {
-            effect: [
-                {
-                    "local_rate": 0,
-                    "only_x": "True",
-                    "only_y": "True",
-                }
-            ]
-        }
-    }
     if request.method == 'GET':
-        with open(path, 'r+') as jsonFile:
-            #check if file is empty
-            if os.path.getsize(path) == 0:
-
-                jsonFile.write(str(json.dumps(content,indent=2)))
-                return content[id_img][effect][0]
-            else:
-                all_data = json.loads(jsonFile.read())
-                if id_img not in all_data:
-                    all_data[id_img] = content[id_img]
-                    #print("all_data: ", all_data)
-                    jsonFile.seek(0)
-                    json.dump(all_data, jsonFile, indent=2)
-                    return jsonify(all_data[id_img][effect][int(region_id)])
-                array_of_region_data = all_data[id_img][effect]
-
-                if int(region_id) + 1 > len(all_data[id_img][effect]):
-                    array_of_region_data.append({"local_rate": 0,
-                                                 "only_x": "True",
-                                                 "only_y": "True",
-                                                 })
-                    jsonFile.seek(0)
-                    json.dump(all_data,jsonFile,indent=2)
-            return jsonify(array_of_region_data[int(region_id)])
-
-        return "Error reading file"
+        print("------------------GET-------------")
+        return {
+            "local_rate": 0,
+            "only_x": "True",
+            "only_y": "True",
+        }
 
     if request.method == 'POST':
 
@@ -460,22 +427,6 @@ def upload_image(id_img,region_id, target_img_name, highlight, img_folder):
         all_points_x = request_data['attr']['all_points_x']
         all_points_y = request_data['attr']['all_points_y']
 
-        # with open(path, 'r+') as jsonFile:
-        #     all_data = json.loads(jsonFile.read())
-        #
-        #     # only show the highlight line
-        #     if not highlight:
-        #         array_of_region_data = all_data[id_img][effect]
-        #         data_of_region_id = array_of_region_data[int(region_id)]
-        #
-        #         # update data in json file
-        #         data_of_region_id['local_rate'] = request_data['local_rate']
-        #         data_of_region_id['only_x'] = request_data['only_x']
-        #         data_of_region_id['only_y'] = request_data['only_y']
-        #
-        #     jsonFile.seek(0)
-        #     json.dump(all_data, jsonFile, indent=2)
-        #     jsonFile.truncate()
 
         #update in image
         # Testing new feature without reading from a file
