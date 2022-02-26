@@ -167,7 +167,6 @@ function ImageDetail({ image, createMessage }) {
   const handleTrashIconClick = () => {
 
     confirmAlert({
-      title: 'Confirm to delete',
       message: 'Xác nhận xóa bouding box của ô!',
       buttons: [
         {
@@ -176,6 +175,7 @@ function ImageDetail({ image, createMessage }) {
             const arr = boxes.filter((item) => {
               return item.id !== drawBoxes.id
             })
+            setDrawBoxes({})
             setBoxes([...arr])
             alert("Đã xóa!")
           }
