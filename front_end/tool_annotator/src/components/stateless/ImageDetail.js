@@ -7,6 +7,9 @@ import { convertIdStrToInt } from '../utils/helpers'
 import ImageLabelDisplay from './ImageLabelDisplay'
 import {FaEdit, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
+import { confirmAlert } from 'react-confirm-alert'
+import 'react-confirm-alert/src/react-confirm-alert.css'
+import axios from 'axios'
 
 
 function ImageDetail({ image, createMessage }) {
@@ -22,25 +25,44 @@ function ImageDetail({ image, createMessage }) {
   const [isEdit, setEdit] = useState(false)
 	const [newLabel, setNewLabel] = useState(drawBoxes.label)
   const [isFullScreen, setIsFullScreen] = useState(false)
+  const [page, setPage] = useState({})
+  const [loading, setLoading] = useState(true)
   const ref = useRef(null)
 
-  useEffect(() => {
-    console.log(image)
-    if (typeof image === 'undefined') return
-    // if (ref.current && ref.current.offsetWidth < image.width) {
-    //   setScale(ref.current.offsetWidth / image.width)
-    //   setSvgWidth(ref.current.offsetWidth)
-    //   setSvgHeight(scale * image.height)
-    // } else {
-      setSvgWidth(image.width *scale)
-      setSvgHeight(image.height *scale)
-    // }
-    if (image.boxes) {
-      setBoxes(image.boxes.sort((a, b) => a.id - b.id))
-      setEditModes(Array(image.boxes.length).fill(false))
+
+  const fetchMyAPI = async () => {
+    let response = await axios(`/api/image/getlabel/${image.filename}`)
+    let res = await response.data.data
+    console.log("Respone", res)
+    setPage(res)
+
+    if (res.bboxes) {
+      setBoxes(res.bboxes.sort((a, b) => a.id - b.id))
+      setEditModes(Array(res.bboxes.length).fill(false))
     }
-    // setBoxes([...boxes, ...newBoxes])
-  }, [image, scale])
+    setSvgWidth(res.width *scale)
+    setSvgHeight(res.height *scale)
+
+  }
+
+  useEffect(()=> {
+    fetchMyAPI()
+    console.log("Page", page)
+    
+    setLoading(false)
+    console.log("load",loading)
+    console.log("Hello")
+  }, [])
+
+  console.log("Pageeeee", loading)
+
+  useEffect(() => {
+    // if (typeof image === 'undefined') return
+
+    setSvgWidth(page.width *scale)
+    setSvgHeight(page.height *scale)
+    console.log("Image", image)
+  }, [scale])
 
   const callback = useCallback((drawBoxes) => {
     setDrawBoxes(drawBoxes)
@@ -54,9 +76,9 @@ function ImageDetail({ image, createMessage }) {
     setNewListDrawing(newListDrawing)
   }, [])
 
-  if (typeof image === 'undefined') {
-    return <div>Loading...</div>
-  }
+  // if (typeof page === 'undefined') {
+  //   return <div>Loading...</div>
+  // }
 
   const updateListBox = newListDrawing => {
     newListDrawing.map((a, index) => {
@@ -95,7 +117,7 @@ function ImageDetail({ image, createMessage }) {
     const hiddenElement = document.createElement('a')
     hiddenElement.setAttribute('href', encodeURI(csv))
     hiddenElement.setAttribute('target', '_blank')
-    hiddenElement.setAttribute('download', image.filename.replace('jpg', 'csv'))
+    hiddenElement.setAttribute('download', page.filename.replace('jpg', 'csv'))
     hiddenElement.click()
   }
 
@@ -121,13 +143,13 @@ function ImageDetail({ image, createMessage }) {
     // setDrawBoxes(newBox)
 	}
 
-	const handleTrashIconClick = (e) => {
-    const arr = boxes.filter((item) => {
-      return item.id !== drawBoxes.id
-    })
-    setBoxes([...arr])
-    alert("Đã xóa")
-  }
+	// const handleTrashIconClick = (e) => {
+  //   const arr = boxes.filter((item) => {
+  //     return item.id !== drawBoxes.id
+  //   })
+  //   setBoxes([...arr])
+  //   alert("Đã xóa")
+  // }
 
   const handleZoom = (e) => {
     setIsFullScreen(!isFullScreen)
@@ -141,6 +163,31 @@ function ImageDetail({ image, createMessage }) {
 	const onLabelChange = (e) => {
 		setNewLabel(e.target.value)
 	}
+
+  const handleTrashIconClick = () => {
+
+    confirmAlert({
+      title: 'Confirm to delete',
+      message: 'Xác nhận xóa bouding box của ô!',
+      buttons: [
+        {
+          label: 'Có',
+          onClick: () => {
+            const arr = boxes.filter((item) => {
+              return item.id !== drawBoxes.id
+            })
+            setBoxes([...arr])
+            alert("Đã xóa!")
+          }
+        },
+        {
+          label: 'Không',
+          onClick: () => {}
+        }
+      ]
+    })
+  }
+
   const renderEdit = () => {
     return (
       <div className='gray'>
@@ -172,7 +219,7 @@ function ImageDetail({ image, createMessage }) {
           </button>
           <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
-          onClick={()=> window.location.href = `http://localhost:5000/show_imgs/img_${drawBoxes.id}.png`}>
+          onClick={()=> window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}.png`}>
             Làm mịn nét chữ
           </button>
           </Link>
@@ -190,13 +237,15 @@ function ImageDetail({ image, createMessage }) {
     )
   }
   return (
+
     <div className="row space-around">
       <div className="text-center" ref={ref}>
+        {console.log("Page 2", image)}
         <ImageAnnoDisplay
           svgWidth={svgWidth || 0}
           svgHeight={svgHeight || 0}
-          imageWidth={image.width}
-          imageHeight={image.height}
+          imageWidth={page.width}
+          imageHeight={page.height}
           scale={scale}
           boxes={boxes}
           drawBoxes={drawBoxes}
@@ -205,24 +254,21 @@ function ImageDetail({ image, createMessage }) {
           parrentCallback={callback}
           updateNewListDrawing={updateNewListDrawing}
         />
-        {console.log("DrawBoxes_id", drawBoxes.id)}
-        <button
-            className="blue button"
-            onClick={handleZoom}
-        >
-            Zoom
-        </button>
-
-        <button className="blue button" onClick={downloadBoxesAsCSV}>
-          Tải xuống văn bản
-        </button>
-
-        <button
-            className="blue button"
-            onClick={onAddBoxButtonClick}
+        {!isFullScreen ? (
+          <button
+          className="blue button"
+          onClick={handleZoom}
           >
-            Lưu trang
-        </button>
+            Phóng to
+          </button>
+        ): (
+          <button
+          className="blue button"
+          onClick={handleZoom}
+          >
+            Thu nhỏ
+          </button>
+        )}
 
         {!isAddBoundingBox ? (
           <button
@@ -240,6 +286,13 @@ function ImageDetail({ image, createMessage }) {
           </button>
         )}
 
+        <button
+          className="blue button"
+          onClick={onAddBoxButtonClick}
+        >
+          Lưu trang
+        </button>
+
         <br></br>
         {renderEdit()}
       </div>
@@ -252,8 +305,12 @@ function ImageDetail({ image, createMessage }) {
           boxes={boxes}
           drawBoxes={drawBoxes}
         />
+        <button className="blue button" onClick={downloadBoxesAsCSV}>
+          Tải xuống văn bản
+        </button>
       </div>
       ): (<></>)}
+
     </div>
   )
 }

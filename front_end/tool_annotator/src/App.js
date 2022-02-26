@@ -1,9 +1,9 @@
 import React from 'react';
 import { Redirect } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route, Link } from "react-router-dom";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Container from './components/stateless/Container';
 import Message from './components/Message';
-import images from './books.json';
+// import images from './books.json';
 import axios from 'axios';
 
 class App extends React.Component {
@@ -32,17 +32,13 @@ class App extends React.Component {
   }
 
   getImages() {
-    this.setState({ images: images, isLoading: false })
+    // this.setState({ images: images, isLoading: false })
     // Get images from api
-    // axios.get('/api/images').then(
-    //   (res) => {
-    //     this.setState({ images: images, isLoading: false })
-    //   // return res.data.results;
-    //   }
-    // )
-    // fetch(`http://localhost:5000/api/images`)
-    //   .then(res => res.json())
-    //   .then(res => this.setState({ images: images, isLoading: false }));
+    axios.get('/api/images').then(
+      (res) => {
+        this.setState({ images: res.data.data, isLoading: false })
+      }
+    )
   }
 
   handleImageUpload({ image_url, image_file }) {

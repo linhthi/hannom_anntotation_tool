@@ -1,7 +1,5 @@
-import React, { useState, useEffect} from 'react'
+import React, { useState} from 'react'
 import PropTypes from 'prop-types'
-import {ReactSVGPanZoom, TOOL_NONE, TOOL_AUTO, TOOL_PAN, TOOL_ZOOM_IN, TOOL_ZOOM_OUT} from 'react-svg-pan-zoom';
-
 const initMouse = {
   lastMoveX:0,
   lastMoveY:0,

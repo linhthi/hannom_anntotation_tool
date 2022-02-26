@@ -19,7 +19,16 @@ const getAllBook = () => {
     )
 }
 
+const getPage = (filename) => {
+    axios.get(`/api/image/getlabel/${filename}`).then(
+        (res) => {
+            return res.data.data;
+        }
+    )
+}
+
 export default {
     getAllBook,
     uploadBook,
+    getPage
 };

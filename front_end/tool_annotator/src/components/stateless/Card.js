@@ -10,7 +10,7 @@ function Card({ image, onDeleteImage }) {
     <div className="grid-item" style={{ textAlign: 'left' }}>
       <div className="card">
         <Link
-          to={`/images/${image.filename.replace('.jpg', '')}`}
+          to={`/images/${image.filename}`}
           className="image"
         >
           <img
@@ -25,14 +25,14 @@ function Card({ image, onDeleteImage }) {
               onClick={() => toggleDetectImage(!detectImage)}
             />
             <Link
-              to={`/images/${image.filename.replace('.jpg', '')}`}
+              to={`/images/${image.filename}`}
               className="ui image"
             >
               <FaInfoCircle color="#33ff33" />
             </Link>
               <FaTrashAlt
                 color="red"
-                onClick={() => onDeleteImage(image.filename.replace('.jpg', ''))}
+                onClick={() => onDeleteImage(image.filename)}
               />
           </div>
           {/* <div className="description">

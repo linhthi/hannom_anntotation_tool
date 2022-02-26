@@ -12,12 +12,18 @@ function Container(props) {
       <Route
         path="/images/:imageName"
         render={({ match }) => (
+          // <ImageDetail
+          //   image={props.images.find(
+          //     image => image.filename === `${match.params.imageName}`
+          //   )}
+          //   createMessage={props.createMessage}
+          // />
           <ImageDetail
-            image={props.images.find(
-              image => image.filename === `${match.params.imageName}.jpg`
-            )}
-            createMessage={props.createMessage}
-          />
+          image={{"id": match.params.imageName,
+                  "user_id": 1,
+                  "filename": match.params.imageName}}
+          createMessage={props.createMessage}
+        />
         )}
       />
       <Route
