@@ -134,7 +134,7 @@ textarea { border:1px solid #cccccc; margin:0.6rem 0; padding:0.2rem 0.4rem; }
 #leftsidebar_show_button:hover { color:red; cursor: pointer; }
 
 /* Left sidebar accordion */
-button.leftsidebar_accordion { font-size:large; background-color:#f2f2f2; cursor:pointer; padding:0.5rem 0.5rem; width:100%; text-align:left; border:0; outline:none; }
+button.leftsidebar_accordion { font-size:large; padding:0.5rem 0.5rem; width:100%; text-align:left; border:0; outline:none; }
 button.leftsidebar_accordion:focus { outline: none; }
 button.leftsidebar_accordion.active, button.leftsidebar_accordion:hover { background-color: #e6e6e6; }
 
@@ -1536,6 +1536,8 @@ var _via_ctx_final_small_img;
 var _via_ctx_final_smaller_img;
 var _via_img_original_link;
 var _via_moc_ban_files_list;
+
+
 var moc_ban_data = {{mocban_data|tojson|safe}}
 //Ended by Nguyen Trong Lam
 
@@ -1737,7 +1739,6 @@ function file_region() {
 // Added by Nguyen Trong Lam
 //
 var list_of_diff_size_img = document.getElementsByClassName("img_properties");
-list_of_diff_size_img.style.height = list_of_diff_size_img.style.width;
 
 
 
@@ -1757,7 +1758,6 @@ function show_original_image(){
   }
   let distance = Math.abs(height_left_panel - height_in_middle).toString() + "px";
   document.getElementById("org_button").style.margin = distance + " 0px 0px 0px";
-  console.log("height_in_middle", height_in_middle, "height_left_panel",height_left_panel);
   drawImageScaled(org_img, _via_ctx_org_img, 2);
 }
 
@@ -1792,7 +1792,6 @@ function dataURLtoFile(dataurl, filename) {
 
 function drawImageScaled(img, ctx, additional_ratio) {
    var canvas = ctx.canvas ;
-   console.log("img.width: ",img.width, "img.height", img.height);
    var hRatio = canvas.width  / img.width    ;
    var vRatio =  canvas.height / img.height  ;
    var ratio  = Math.min ( hRatio, vRatio ) / additional_ratio;
@@ -1829,8 +1828,7 @@ const b64toBlob = (b64Data, contentType='', sliceSize=512) => {
 //
 function _via_init() {
   console.log(VIA_NAME);
-  show_message(VIA_NAME + ' (' + VIA_SHORT_NAME + ') version ' + VIA_VERSION +
-               '. Ready !', 2*VIA_THEME_MESSAGE_TIMEOUT_MS);
+  show_message("Chao mung den voi HMI moc ban");
 
   if ( _via_is_debug_mode ) {
     document.getElementById('ui_top_panel').innerHTML += '<span>DEBUG MODE</span>';
@@ -3463,7 +3461,15 @@ function send_gauss_value(region_id){
   let attr = _via_canvas_regions[region_id].shape_attributes;
   let input = document.getElementById('invisible_file_input');
   let current_name_of_file = _via_image_filename_list[current_id];
-  console.log("attr: ", attr);
+  let smooth_button = document.getElementById("smoothing_img");
+  let finish_button = document.getElementById("finish_edit");
+  // Ngan can nguoi dung nhan lien tuc vao nut
+  smooth_button.disabled = true;
+  smooth_button.style.background = "gray";
+  finish_button.style.background = "gray";
+  finish_button.disabled = true;
+
+  document.body.style.cursor = "wait";
   let set_new_value_gauss = (mocban_server_path
   + "False" + "/"
   + "gaussian"+ "/"
@@ -3484,7 +3490,6 @@ function send_gauss_value(region_id){
       let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
       let url_path = URL.createObjectURL(res);
       bimg0.src = url_path;
-
   })
   }
 
@@ -5877,7 +5882,6 @@ function del_sel_regions() {
   _via_reg_canvas.focus();
   annotation_editor_show();
 
-  show_message('Deleted ' + del_region_count + ' selected regions');
 }
 
 function sel_all_regions() {
@@ -6318,7 +6322,7 @@ function zoom_in() {
   }
 
   if (_via_canvas_zoom_level_index === (VIA_CANVAS_ZOOM_LEVELS.length-1)) {
-    show_message('Further zoom-in not possible');
+    show_message('Không thể zoom thể zoom vào nữa');
   } else {
     var new_zoom_level_index = _via_canvas_zoom_level_index + 1;
     set_zoom( new_zoom_level_index );
@@ -6494,8 +6498,10 @@ function init_leftsidebar_accordion() {
   for ( i = 0; i < acc.length; ++i ) {
     acc[i].addEventListener('click', function() {
       update_vertical_space();
-      this.classList.toggle('active');
-      this.nextElementSibling.classList.toggle('show');
+      // Modified by Nguyen Trong Lam
+      //Purpose: Don't need show toggle
+      /* this.classList.toggle('active');
+      this.nextElementSibling.classList.toggle('show');*/
 
       switch( this.innerHTML ) {
       case 'Attributes':
@@ -7437,7 +7443,6 @@ function delete_existing_attribute_confirmed(input) {
   var attr_id   = input.attr_id.value;
   delete_existing_attribute(attr_type, attr_id);
   document.getElementById('user_input_attribute_id').value = '';
-  show_message('Deleted ' + attr_type + ' attribute [' + attr_id + ']');
   user_input_default_cancel_handler();
 }
 
@@ -9153,7 +9158,6 @@ function project_file_add_local() {
     if ( discarded_file_count ) {
       status_msg += ' ( Discarded ' + discarded_file_count + ' non-image files! )';
     }
-    show_message(status_msg);
 
     if ( new_img_index_list.length ) {
       // show first of newly added image
@@ -10994,7 +10998,17 @@ function _via_img_buffer_add_image(img_index) {
         _via_buffer_img_index_list.push(img_index);
         _via_buffer_img_shown_timestamp[arr_index] = Date.now(); // though, not seen yet
         ok_callback(img_index);
+        //Added by Nguyen Trong Lam
         show_final_image();
+        let smooth_button = document.getElementById("smoothing_img");
+        let finish_button = document.getElementById("finish_edit");
+        if (smooth_button !== 'undefined'){
+            smooth_button.disabled = false;
+            smooth_button.style.background = "#0095ff";
+            finish_button.style.background = "#0095ff";
+            document.body.style.cursor = "default";
+        }
+        //Ended by Nguyen Trong Lam
       });
       return;
     }
