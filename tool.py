@@ -2,7 +2,12 @@ import cv2
 import matplotlib.pyplot as plt
 import numpy as np
 from scipy.ndimage import gaussian_filter1d
-
+import os
+import json
+import base64
+from pathlib import Path
+import torch
+import mocban_pix2pix as pix2pix
 """This comment is for two function below
         Two functions below will check whether the coordinate (px, py)
         is inside the polygon which is defined by set of two coordinates
@@ -154,7 +159,7 @@ def show_line_with_diff_color(img, contours, color='r'):
 
 
 def smoothing_line(global_line_contours, mul_range, visualize, smoothenByX, smoothenByY, local_rate,
-                   img_shape, highlight):
+                   img_shape):
     """ This function emphasizes on smoothing specific region of the random line
 
           :param
@@ -180,27 +185,24 @@ def smoothing_line(global_line_contours, mul_range, visualize, smoothenByX, smoo
         local_line_y.extend(y)
 
 
-    if highlight:
-        print("highlight")
 
-    else:
-        # Smoothing only for local line
-        global_line_x, global_line_y = extract_coordinate_from_contours(global_line_contours)
-        new_local_line_y = gaussian_filter1d(local_line_y, local_rate)
-        new_local_line_x = gaussian_filter1d(local_line_x, local_rate)
+    # Smoothing only for local line
+    global_line_x, global_line_y = extract_coordinate_from_contours(global_line_contours)
+    new_local_line_y = gaussian_filter1d(local_line_y, local_rate)
+    new_local_line_x = gaussian_filter1d(local_line_x, local_rate)
 
-        new_local_line = [[list(a)] for a in zip(new_local_line_y, new_local_line_x)]
-        new_local_line = np.asarray(new_local_line)
-        start_local_line = 0
-        end_local_line = 0
-        for r in mul_range:
+    new_local_line = [[list(a)] for a in zip(new_local_line_y, new_local_line_x)]
+    new_local_line = np.asarray(new_local_line)
+    start_local_line = 0
+    end_local_line = 0
+    for r in mul_range:
             start_global_line, end_global_line = r
             start_local_line = end_local_line
             distance = abs(start_global_line - end_global_line)
             end_local_line = start_local_line + distance
             global_line_contours[start_global_line:end_global_line] = new_local_line[start_local_line:end_local_line]
 
-        return global_line_contours
+    return global_line_contours
 
 def convert_color_img(img, color):
     """
@@ -224,14 +226,159 @@ def convert_color_img(img, color):
         np_rgb_color[np_rgb_color[:, :, color_index] == 0, color_index] = 255
     return np_rgb_color
 
+def get_data_json_file(path, content):
+    Path(path).touch(exist_ok=True) # create file if not exist
+    if Path(path).stat().st_size == 0:
+        with open(path, 'w') as f:
+            f.write(json.dumps(content))
+    else:
+    	with open(path, 'r') as f:
+            content = json.loads(f.read())
+            
+    return content
 
+def update_data_json_file(path, keys, values):
+    with open(path, 'r') as f:
+        content = json.loads(f.read())
+    
+    #length of keys and value is equal 
+    for i in range(len(keys)):   
+        content[keys[i]] = values[i]
+    
+    with open(path, 'w') as f:
+        f.write(json.dumps(content))
+  
+                
 def list_contours(contours):
+    """ This function help union all the points in contours into one list
+          :param
+          --contours: all contours
+
+          :return
+             list contains all points in contours
+    """
     list = []
     max_len = 0
     for cnt in contours:
         for p in cnt:
             list.append(p)
     return list
+    
+def convert_img_to_base64(img): 
+    """ This function help union all the points in contours into one list
+          :param
+          --img: numpy image
+
+          :return
+             image in base64 form
+    """
+    img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', img)[1]).decode()
+    return img_base64
+    
+
+
+def padding_and_hold_ratio(cv_img):
+        h, w = cv_img.shape[:2]
+        if h < w:
+            diff = w - h
+            top_pad = diff // 2
+            bot_pad = diff - top_pad
+            padded_img = cv2.copyMakeBorder(cv_img, top_pad, bot_pad, 0, 0, cv2.BORDER_CONSTANT, value=(0, 0, 0))
+        else:
+            diff = h - w
+            left_pad = diff // 2
+            right_pad = diff - left_pad
+            padded_img = cv2.copyMakeBorder(cv_img, 0, 0, left_pad, right_pad, borderType=cv2.BORDER_CONSTANT,
+                                            value=(0, 0, 0))
+        return padded_img
+
+
+def concat_org_and_norm_imgs(org_img, norm_img):
+
+    print("org_img.shape",org_img.shape, "norm_img.shape", norm_img.shape) 
+    o_h, _ = org_img.shape
+    n_h, _ = norm_img.shape
+    
+                                          	
+    delta_h = max(o_h, n_h) - min(o_h, n_h)
+    if o_h < n_h:
+      org_img = cv2.copyMakeBorder(org_img, top=delta_h // 2, bottom=(delta_h - (delta_h //2)), left=0, right=0, borderType=cv2.BORDER_CONSTANT,
+                                         value=255) 
+
+    else:
+      norm_img = cv2.copyMakeBorder(norm_img, top=delta_h // 2, bottom=(delta_h - (delta_h //2)), left=0, right=0, borderType=cv2.BORDER_CONSTANT,
+                                         value=255)                                   
+
+                                   
+    return cv2.hconcat([org_img, norm_img])
+    
+def concat_images_with_diff_size(img, ratio):
+    h,w = img.shape
+    max_size = [int(ratio[-1] * h), int(w*ratio[-1])]
+    imgs = []
+    
+    for r in ratio: 
+        shape_for_img = [int(h * r), int(w * r)]                        
+        ratio_img = cv2.resize(img, shape_for_img, interpolation = cv2.INTER_AREA)
+        ratio_img = padding_to_specific_size(ratio_img, max_size, 255)
+        imgs.append(ratio_img)
+    
+    return cv2.hconcat(imgs) 
+    
+        
+
+                                  
+def padding_to_specific_size(img, specific_size, v):
+        """
+        Adding padding to image to turn it to original size
+             :param img: target image
+             :param specific_size: tuple of size image want to transfer, and it must greater than img.shape 
+	"""
+        height_img, width_img = img.shape
+        height_org, width_org = specific_size
+        delta_height = abs(height_img - height_org)
+        delta_width = abs(width_img - width_org)
+
+        pad_img = cv2.copyMakeBorder(img, top=int(delta_height / 2), bottom=delta_height - int(delta_height / 2), \
+		                     left=int(delta_width / 2), right=delta_width - int(delta_width / 2), \
+		                     borderType=cv2.BORDER_CONSTANT,
+		                     value=v)
+        return pad_img  
+                                          
+def create_threshold_image(img, threshold, normalize_obj, json_path, concat_path, f_smooth_path):
+        #---------------------------Handle Image------------------------------
+            
+        #size of image has some small change, preprocess_img just threshold and adjust to center
+        #keep track of this size_ratio_with_org_img for later concat image
+        normalized_pred_img = normalize_obj.preprocess_img(img, threshold)
+        size_ratio_with_org_img = normalized_pred_img.shape 
+	   
+	    
+        #pix2pix model to smoothen img and read image in tensor form in pytorch	    
+        #create size [1, 1, height, width]
+        normalized_pred_img = np.expand_dims(normalized_pred_img, axis=2)
+        tensor_normalized_img = torch.unsqueeze(pix2pix.eval_augmentation(image=normalized_pred_img)["image"], dim=0).to("cuda")
+	    
+        ##size of y_fake has be resize to 512x512
+        y_fake = pix2pix.gen(tensor_normalized_img)* 0.5 + 0.5 #normalize image
+        y_fake = torch.reshape(y_fake, (y_fake.shape[2], y_fake.shape[3]))
+        y_fake = y_fake.cpu().detach().numpy()*255
+	    
+	    
+        #threshold hold and adjust, size of image just a little bit small 512
+        final_img = normalize_obj.preprocess_img(y_fake.astype(np.uint8),threshold) # normalize image again
+        _,final_img_shape,_,_,_ = normalize_obj.get_attributes()
+            
+        #create concat image
+        #orignal image and first_normalize image
+        img_ratio_with_org_img = cv2.resize(final_img, size_ratio_with_org_img, interpolation = cv2.INTER_AREA)
+        concat_org_first_image = concat_org_and_norm_imgs(img, img_ratio_with_org_img.copy())
+	
+        cv2.imwrite(concat_path, concat_org_first_image)    
+        cv2.imwrite(f_smooth_path, final_img)    
+        
+         
+        return normalize_obj, concat_org_first_image, final_img 
 
 
 

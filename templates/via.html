@@ -503,7 +503,7 @@ div.button-3--transparent {
 
 
 
-.org_img_container span{
+.concat_org_norm_img_container span{
   display: inline;
 }
 
@@ -732,7 +732,7 @@ input:checked + .slider:after
        <div class="menubar">
         <ul>
             <!-- <li onclick="()" style="cursor:pointer; background: #DC4530; ">Hoàn Thành</li> -->
-            <<div class="button-3"  role="button"><a href="http://localhost:3000/images/{{mocban_data.img_folder}}">Hoàn Thành</a></div>
+            <li id = "done_edit"style="cursor:pointer; background: #DC4530;"><a>Hoàn Thành</a></li>
         </ul>
        </div>
       <!-- Ended by Nguyen Trong Lam -->
@@ -940,7 +940,7 @@ input:checked + .slider:after
           </table>
         </div>
 
-        <button class="leftsidebar_accordion active" id="org_button">Ảnh ban đầu</button>
+        <button class="leftsidebar_accordion active" id="org_button">Ảnh cắt và ảnh nhị phân hóa</button>
         <div class="leftsidebar_accordion_panel">
           <ul class="region_shape">
             <li id="region_shape_rect"  onclick="select_region_shape('rect')" title="Rectangle (Shortcut key 1)"><svg height="32" viewbox="0 0 32 32"><use xlink:href="#shape_rectangle"></use></svg></li>
@@ -988,10 +988,10 @@ input:checked + .slider:after
         </div>
 
         <!-- Added by Nguyen Trong Lam, show original image -->
-        <div class="leftsidebar_accordion" id="show_original_img">
+        <div class="leftsidebar_accordion" id="show_original_norm_img">
           <div class="leftsidebar_accordion_panel show">
-            <img id="org_img" alt="Original" style="display:None">
-            <canvas id="canvas_original_img" width = "inherit"
+            <img id="concat_org_norm_img" alt="Original" style="display:None">
+            <canvas id="canvas_original_norm_img" width = "inherit"
                     style="height: inherit; width:inherit">
               Your browser does not support the HTML canvas tag.
             </canvas>
@@ -1002,9 +1002,8 @@ input:checked + .slider:after
         <!-- Ended by Nguyen Trong Lam -->
 
 
-
       </div> <!-- end of leftsidebar -->
-
+       
       <!-- Main display area: contains image canvas, ... -->
       <div id="display_area">
 
@@ -1019,7 +1018,7 @@ input:checked + .slider:after
         <!-- Show final result after modifying -->
         <div id="final_result_container">
           <div style="padding: 0.5rem 0.5rem; background:#e6e6e6; color:black; font-size:large" id ="final_img_button">
-            Ảnh đầu ra với nhiều kích cỡ khác nhau
+            Ảnh đầu ra với nhiều kích cỡ khác nhau sau khi làm mượt
           </div>
            <div class="div-table" id ="final_img_container">
 
@@ -1350,7 +1349,7 @@ POSSIBILITY OF SUCH DAMAGE.
       </div> <!-- end of display_area -->
       <!-- Added by Nguyen Trong Lam, addtional pannel -->
         <div id="rightsidebar">
-          <div class="org_img_container">
+          <div class="concat_org_norm_container">
 
 
 
@@ -1361,9 +1360,22 @@ POSSIBILITY OF SUCH DAMAGE.
             <button class="button-3" style="visibility:hidden">Just to hold some space</button>
           </div>
 
-          <div class="button-container">
-
+          <div id="threshold_container">
+             <span>Nhị phân hóa: </span>
+             <input type="range" id="threshold_slider" oninput="show_slider_value(this)" data-string="show_threshold" class="form-range" min="60" max="220" value="${moc_ban_data.threshold_value}">
+             <span>Giá trị:<span id="show_threshold" style="padding: 10px;">{{mocban_data.threshold_value}}</span></span>
+             
+             <div class="button-container" style="padding-top: 10px">
+           	 <button class="button-7" id = "send_threshold" role="button" onclick="send_threshold_value()">Nhị phân</button>
+           	 <button class="button-7" style ="background:#FF7051" id = "finish_threshold" role="button" onclick="finish_threshold_value()">Xong</button>
+             </div>
+  
+             
           </div>
+          
+          
+     
+          
           <div class="slidetable" id ="table_content">
             <!-- More row will apper later -->
           </div>
@@ -1525,20 +1537,22 @@ var _via_reg_ctx; // initialized in _via_init()
 var _via_canvas_width, _via_canvas_height;
 
 //Added by Nguyen Trong Lam 1
-var _via_canvas_org_img   = document.getElementById('canvas_original_img');
+var _via_canvas_org_norm_img   = document.getElementById('canvas_original_norm_img');
 var _via_canvas_final_img   = document.getElementById('canvas_final_img');
 var _via_canvas_final_small_img   = document.getElementById('canvas_final_small_img');
 var _via_canvas_final_smaller_img   = document.getElementById('canvas_final_smaller_img');
+var _via_concat_org_norm_img   = document.getElementById('concat_org_norm_img');
+var _via_threshold_container   = document.getElementById('threshold_container'); 
 var _via_edit_img = document.getElementById(_via_img_buffer_get_html_id(_via_image_index)) // edit off current image
-var _via_ctx_org_img; //initialized in _via_init()
+var _via_ctx_org_norm_img; //initialized in _via_init()
 var _via_ctx_final_img; // initialized in _via_init()
 var _via_ctx_final_small_img;
 var _via_ctx_final_smaller_img;
 var _via_img_original_link;
 var _via_moc_ban_files_list;
-
-
+var _via_done_edit_btn = document.getElementById('done_edit'); 
 var moc_ban_data = {{mocban_data|tojson|safe}}
+_via_threshold_container.style.display = moc_ban_data.threshold_container
 //Ended by Nguyen Trong Lam
 
 // canvas zoom
@@ -1710,7 +1724,7 @@ var VIA_POLYGON_SEGMENT_SUBTENDED_ANGLE   = 5;   // in degree (used to approxima
 var VIA_FLOAT_PRECISION = 3; // number of decimal places to include in float values
 
 //Added by Nguyen Trong Lam
-var mocban_server_path = 'http://127.0.0.1:5000/';
+var mocban_server_path = 'http://localhost:5000/';
 var mocban_current_id = _via_image_index;
 var original_image_url =""; // initialize after choose image
 //Ended by Nguyen Trong Lam
@@ -1741,14 +1755,17 @@ function file_region() {
 var list_of_diff_size_img = document.getElementsByClassName("img_properties");
 
 
-
-function show_original_image(){
-  let org_img = document.getElementById("bim0");
-  let id_of_needed_layout = ["bim0", "shortcut_button", "shortcut_panel"]
+//-------------------------Handle concat original and first normalize image -------//
+function set_up_concat_org_norm_img(){
+  //set up first concat original and norm iamge
+  concat_org_norm_img.src = moc_ban_data.concat_org_f_img;
+  // set the size of the canvas region to display
+  let id_of_needed_layout = ["bim0", "shortcut_button", "shortcut_panel"];
   let height_in_middle = 0;
   let height_left_panel = 0;
   for (let i = 0; i < id_of_needed_layout.length; i++){
       if ( i < 1){
+
         height_in_middle += document.getElementById(id_of_needed_layout[i]).offsetHeight;
       }
       else{
@@ -1758,14 +1775,22 @@ function show_original_image(){
   }
   let distance = Math.abs(height_left_panel - height_in_middle).toString() + "px";
   document.getElementById("org_button").style.margin = distance + " 0px 0px 0px";
-  drawImageScaled(org_img, _via_ctx_org_img, 2);
 }
+
+//Listen the change of concat original and first norm image, if changed happen, then update it
+_via_concat_org_norm_img.addEventListener('load', function(){
+     // only update if user are changing the threshold slider
+    draw_scaled_image(concat_org_norm_img, _via_ctx_org_norm_img, 1.5);
+    
+})
+
+
 
 function show_final_image(){
    let final_img = document.getElementById("bim0");
-   drawImageScaled(final_img, _via_ctx_final_img, 1);
-   drawImageScaled(final_img, _via_ctx_final_small_img, 1.5);
-   drawImageScaled(final_img, _via_ctx_final_smaller_img, 2);
+   draw_scaled_image(final_img, _via_ctx_final_img, 1);
+   draw_scaled_image(final_img, _via_ctx_final_small_img, 1.5);
+   draw_scaled_image(final_img, _via_ctx_final_smaller_img, 2);
 }
 
 
@@ -1790,7 +1815,7 @@ function dataURLtoFile(dataurl, filename) {
         return new File([u8arr], filename, {type:'image/png'});
     }
 
-function drawImageScaled(img, ctx, additional_ratio) {
+function draw_scaled_image(img, ctx, additional_ratio) {
    var canvas = ctx.canvas ;
    var hRatio = canvas.width  / img.width    ;
    var vRatio =  canvas.height / img.height  ;
@@ -1874,7 +1899,7 @@ function _via_init_reg_canvas_context() {
   _via_reg_ctx  = _via_reg_canvas.getContext('2d');
 
   //Added by Nguyen Trong Lam
-  _via_ctx_org_img  = _via_canvas_org_img.getContext('2d');
+  _via_ctx_org_norm_img  = _via_canvas_org_norm_img.getContext('2d');
   _via_ctx_final_img = _via_canvas_final_img.getContext('2d');
   _via_ctx_final_small_img = _via_canvas_final_small_img.getContext('2d');
   _via_ctx_final_smaller_img = _via_canvas_final_smaller_img.getContext('2d');
@@ -3292,6 +3317,15 @@ function _via_reg_canvas_dblclick_handler(e) {
 // user clicks on the canvas
 function _via_reg_canvas_mousedown_handler(e) {
   e.stopPropagation();
+  
+  //Modified by Nguyen Trong Lam
+  //User has to select the threshold before moving on to the next step
+   if (_via_threshold_container.style.display === "block"){
+   	return;
+   }
+   
+   //Ended by Nguyen Trong Lam
+   
   _via_click_x0 = e.offsetX; _via_click_y0 = e.offsetY;
   _via_region_edge = is_on_region_corner(_via_click_x0, _via_click_y0);
   var region_id = is_inside_region(_via_click_x0, _via_click_y0);
@@ -3344,21 +3378,28 @@ function _via_reg_canvas_mousedown_handler(e) {
       // Added by Nguyen Trong Lam
       // Purpose: Adding smoothing attributes
       console.log("User enter the region");
+      create_smooth_panel()
+      //
 
-      // important note: _via_image_id: the id of current image
+
+    }
+  }
+}
+
+//Added by Nguyen Trong Lam
+function create_smooth_panel(){
+    // important note: _via_image_id: the id of current image
       // region_id // id of current region image
 
-      let input = document.getElementById('invisible_file_input');
-      let current_id = _via_image_index;
-      let current_name_of_file = _via_image_filename_list[current_id];
-
+      let current_name_of_file = _via_image_filename_list[_via_image_index];
+      let region_id = 0; // region_id is always equal 0 because moc ban tool only allow to create 1 region at a time
       document.getElementById("table_content").style.visibility = "visible";
       let path_to_get_effect = (
                       mocban_server_path
-                      + "False" + "/"
                       + "gaussian" + "/"
+                      + moc_ban_data.img_folder + "/"
                       + current_name_of_file + "/"
-                      +"/" + current_id + "/"
+                      +"/" + _via_image_index + "/"
                       + region_id.toString()
                       );
       fetch(path_to_get_effect)
@@ -3370,15 +3411,15 @@ function _via_reg_canvas_mousedown_handler(e) {
 
                        <div class = "sliderow">
                               <div class="slidecell"><p>Mức độ:</p></div>
-                               <div class="slidecell"><input type="range" id="localRate" oninput="showSliderValue()" class="form-range" min="1" max="50" value="${data.local_rate}"></div>
-                              <p style="padding: 10px;"> Giá trị: <span id="demo"></span></p>
+                               <div class="slidecell"><input type="range" id="localRate" oninput="show_slider_value(this)" data-string="local_value_slider" class="form-range" min="1" max="50" value="${data.local_rate}"></div>
+                              <p style="padding: 10px;"> Giá trị: <span id="local_value_slider"></span></p>
                        </div>
 
                          <div class = "sliderow">
                           <div class="slidecell"><p>Chiều X</p></div>
                           <div class="slidecell">
                               <label class="switch">
-                                <input type="checkbox" id="onlyX" checked onload="enableCheck(this);" value = "${data.only_x}">
+                                <input type="checkbox" id="onlyX" checked value = "${data.only_x}">
                                 <div class="slider round"></div>
                               </label>
                            </div>
@@ -3388,12 +3429,11 @@ function _via_reg_canvas_mousedown_handler(e) {
                             <div class="slidecell"><p>Chiều Y</p></div>
                             <div class="slidecell">
                               <label class="switch">
-                                <input type="checkbox" id="onlyY" checked onload="enableCheck(this);" value = "${data.only_y}">
+                                <input type="checkbox" id="onlyY" checked value = "${data.only_y}">
                                 <div class="slider round"></div>
                               </label>
                             </div>
                           </div>
-
                        `;
                       li += `<button class="button-7" role="button" id="smoothing_img" onclick="send_gauss_value(`
                       li += region_id.toString()
@@ -3402,36 +3442,79 @@ function _via_reg_canvas_mousedown_handler(e) {
                       li += `<p>Lưu ý: Thao tác sẽ không được lưu nếu không nhấn nút "xong"</p>`
           document.getElementById("table_content").innerHTML = li;
           document.getElementById("table_content").style.display = "block";
-      });
+      }).catch((error) => console.log("Something wrong at create_smooth_panel",error));
     // Ended by Nguyen Trong Lam
     // Display result
 
-    }
-  }
 }
-
 
 //Added by Nguyen Trong Lam
 //Purpose: Sending effect
-
-function showSliderValue(){
-let  x = document.getElementById("localRate").value;
-document.getElementById("demo").innerHTML = ' ' +  x;
+function send_threshold_value(){
+      let thresh_hold_btn = document.getElementById("send_threshold");
+      let current_name_of_file = _via_image_filename_list[_via_image_index];
+      let threshold = document.getElementById('threshold_slider');
+      
+      //disabled button until the image is loaded
+      thresh_hold_btn.disabled = true;
+      thresh_hold_btn.style.background = "gray";
+      let path_to_get_effect = (
+                      mocban_server_path
+                      + "smooth" + "/"
+                      + moc_ban_data.img_folder + "/"
+                      + current_name_of_file 
+                      );
+       fetch(path_to_get_effect,{
+    		method: 'POST',
+    		body: JSON.stringify({
+    		"threshold":threshold.value 
+    		}),
+    		headers: new Headers({
+      			"content-type": "application/json"
+      			})
+  		}).then(response => response.json()).then(function(res){
+      				let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
+      				//let url_path = URL.createObjectURL(res);
+      				bimg0.src = res.final_img;
+      				
+      				let concat_org_norm_img = document.getElementById("concat_org_norm_img");
+  				concat_org_norm_img.src = res.concat_org_f_img
+      				concat_org_norm_img.srcset = res.concat_org_f_img
+      				thresh_hold_btn.disabled = false;
+      				thresh_hold_btn.style.background = "#0095ff"; 
+  			}).catch(function(reason) {
+                		console.log("there is smt wrong with send_threshold_value");
+            	});
+            	
+      
+      
 }
 
-function enableCheck(e){
-  console.log(e);
-  console.log(e.value);
-  if (e.value =="true"){
-    console.log("in the true");
-    e.checked = true;
-  }
-  else{
-    e.checked = false;
-  }
+
+function show_slider_value(param){
+        let string = '';
+        if (param.value < 100){string = '  ' +  param.value;}
+        else {string = param.value;}
+	document.getElementById(param.dataset.string).innerHTML = string;
 }
 
 
+//send request after threshold
+function finish_threshold_value(){
+	_via_threshold_container.style.display = "None";
+}
+
+
+//done editing
+_via_done_edit_btn.addEventListener("click", function (){
+fetch(mocban_server_path+"/doneEdit/"+moc_ban_data.img_folder+"/"+_via_image_filename_list[_via_image_index])
+         .then(response => response.text())
+         .then(response => console.log(response))
+         .catch((e) => {console.log("error for at done edit")})
+
+window.location.href = "http://localhost:3000/images/" + moc_ban_data.img_folder;
+
+})
 
 //send request after smoothening the region
 function finish_edit_region(){
@@ -3440,15 +3523,11 @@ function finish_edit_region(){
          del_sel_regions();
          document.getElementById("table_content").style.display = "None";
 
-         let current_id = _via_image_index;
-         let current_name_of_file =_via_image_filename_list[current_id];
-         fetch(mocban_server_path+"/finishEdit/"+current_name_of_file).then(response => response.blob()).then(function(res){
-            let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
-            bimg0.src = URL.createObjectURL(res);
-            }).catch(function(reason) {
-                console.log("there is smt wrong with the undo image");
-
-            });
+         let current_name_of_file =_via_image_filename_list[_via_image_index];
+         fetch(mocban_server_path+"/finishEdit/"+moc_ban_data.img_folder+"/"+current_name_of_file)
+         .then(response => response.text())
+         .then(response => console.log(response))
+         .catch((e) => {console.log("error for at edit")})
     }
 }
 
@@ -3471,8 +3550,8 @@ function send_gauss_value(region_id){
 
   document.body.style.cursor = "wait";
   let set_new_value_gauss = (mocban_server_path
-  + "False" + "/"
   + "gaussian"+ "/"
+  + moc_ban_data.img_folder + "/"
   + _via_current_image_filename + "/"
   + current_id + "/"
   + region_id);
@@ -3490,7 +3569,7 @@ function send_gauss_value(region_id){
       let bimg0 = document.getElementById(_via_img_buffer_get_html_id(_via_image_index))
       let url_path = URL.createObjectURL(res);
       bimg0.src = url_path;
-  })
+  }).catch((e) => alert("có lỗi rồi, thử tạo lại vùng khác nhé!"))
   }
 
 // implements the following functionalities:
@@ -3498,6 +3577,14 @@ function send_gauss_value(region_id){
 //  - moving/resizing/select/unselect existing region
 function _via_reg_canvas_mouseup_handler(e) {
   e.stopPropagation();
+  
+  //Modified by Nguyen Trong Lam
+  //User has to select the threshold before moving on to the next step
+   if (_via_threshold_container.style.display === "block"){
+   	return;
+   }
+   
+   //Ended by Nguyen Trong Lam
   _via_click_x1 = e.offsetX; _via_click_y1 = e.offsetY;
 
   var click_dx = Math.abs(_via_click_x1 - _via_click_x0);
@@ -5664,6 +5751,8 @@ function _via_reg_canvas_keydown_handler(e) {
         if ( _via_current_shape === VIA_REGION_SHAPE.POLYLINE ||
              _via_current_shape === VIA_REGION_SHAPE.POLYGON) {
           _via_polyshape_finish_drawing();
+          create_smooth_panel() // Added by Nguyen Trong Lam
+
         }
     }
     if ( e.key === 'Backspace' ) {
@@ -9120,7 +9209,7 @@ function project_add_new_file(filename, size, file_id) {
 function project_file_add_local() {
 
   // Modified by Nguyen Trong Lam
-  var user_selected_images = createNewFileList(moc_ban_data.filename, moc_ban_data.img);
+  var user_selected_images = createNewFileList(moc_ban_data.filename, moc_ban_data.final_img);
   // Ended by Nguyen Trong Lam
 
   var new_img_index_list = [];
@@ -9134,14 +9223,13 @@ function project_file_add_local() {
         // a new file was added to project
         var new_img_id = project_add_new_file(user_selected_images[i].name,
                                               user_selected_images[i].size);
-        //console.log("new_img_id", new_img_id);
+
         _via_img_fileref[new_img_id] = user_selected_images[i];
-        //console.log("_via_img_fileref[new_img_id] all", _via_img_fileref);
-        //console.log("_via_img_fileref[new_img_id] new_img_id", _via_img_fileref[new_img_id]);
+
         set_file_annotations_to_default_value(new_img_id);
-        //console.log("_via_image_id_list", _via_image_id_list);
+
         new_img_index_list.push( _via_image_id_list.indexOf(new_img_id) );
-        //console.log("new_img_index_list", new_img_index_list);
+
       } else {
         // an existing file was resolved using browser's file selector
           var img_id = _via_image_id_list[img_index];
@@ -10835,7 +10923,9 @@ function _via_show_img(img_index) {
       _via_is_loading_current_image = false;
       img_loading_spinbar(img_index, false);
       _via_show_img(img_index);
-      show_original_image();
+      //Added by Nguyen Trong Lam
+      set_up_concat_org_norm_img();
+      //Ended by Nguyen Trong Lam
 
     }, function(err_img_index) {
       _via_is_loading_current_image = false;
@@ -11000,10 +11090,15 @@ function _via_img_buffer_add_image(img_index) {
         ok_callback(img_index);
         //Added by Nguyen Trong Lam
         show_final_image();
+        
+        
+        //Update orignal image if user restart threshold
+
         let smooth_button = document.getElementById("smoothing_img");
         let finish_button = document.getElementById("finish_edit");
-        if (smooth_button !== 'undefined'){
+        if (smooth_button !== 'undefined' && smooth_button !== null){
             smooth_button.disabled = false;
+            finish_button.disabled = false;
             smooth_button.style.background = "#0095ff";
             finish_button.style.background = "#0095ff";
             document.body.style.cursor = "default";
