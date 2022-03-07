@@ -12,10 +12,10 @@ function BoxesDetail({
 }) {
   const firstPage = boxes.slice(0,3)
   const [currentBoxes, setCurrentBoxes] = useState()
-  const handlePageClick = (e) => {
-    const currentBoxes = boxes.slice(e.selected*3, e.selected*3 +3)
-    setCurrentBoxes(currentBoxes)
-  }
+  // const handlePageClick = (e) => {
+  //   const currentBoxes = boxes.slice(e.selected*3, e.selected*3 +3)
+  //   setCurrentBoxes(currentBoxes)
+  // }
   const newBox = currentBoxes ? currentBoxes : firstPage
   return (
     <div className="ui segments">

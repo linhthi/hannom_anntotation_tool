@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { FaEye, FaCheck, FaEdit, FaTrash } from 'react-icons/fa'
+import {FaCheck, FaEdit, FaTrash } from 'react-icons/fa'
 import BoxCoord from '../stateless/BoxCoord'
 import BoxEditForm from '../stateless/BoxEditForm'
 import Label from '../stateless/Label'
@@ -60,7 +60,7 @@ class BoxDetail extends React.Component {
   render() {
     const { box } = this.props
 
-    const { boxIsDrawn, editMode, coords } = this.state
+    const { editMode, coords } = this.state
 
     return (
       <div className="segment" key={box.id}>

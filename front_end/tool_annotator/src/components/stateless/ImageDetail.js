@@ -1,9 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback} from 'react'
 import { parse } from 'json2csv'
 import PropTypes from 'prop-types'
-import BoxesDetail from './BoxesDetail'
 import ImageAnnoDisplay from './ImageAnnoDisplay'
-import { convertIdStrToInt } from '../utils/helpers'
 import ImageLabelDisplay from './ImageLabelDisplay'
 import {FaEdit, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
@@ -16,7 +14,6 @@ function ImageDetail({ image, createMessage }) {
   const [drawBoxes, setDrawBoxes] = useState([])
   const [boxes, setBoxes] = useState([])
   const [editModes, setEditModes] = useState([])
-  const [addBoxMode, setAddBoxMode] = useState(false)
   const [scale, setScale] = useState(0.45)
   const [svgWidth, setSvgWidth] = useState(0)
   const [svgHeight, setSvgHeight] = useState(0)
@@ -40,8 +37,10 @@ function ImageDetail({ image, createMessage }) {
       setBoxes(res.bboxes.sort((a, b) => a.id - b.id))
       setEditModes(Array(res.bboxes.length).fill(false))
     }
-    setSvgWidth(res.width *scale)
-    setSvgHeight(res.height *scale)
+    // setScale(0.45)
+    setSvgWidth(window.innerWidth / 2.2)
+    setSvgHeight(res.height * (window.innerWidth / 2.2 / res.width))
+    setScale(window.innerWidth / 2.2 / res.width)
 
   }
 
@@ -58,9 +57,14 @@ function ImageDetail({ image, createMessage }) {
 
   useEffect(() => {
     // if (typeof image === 'undefined') return
-
+    // if (ref.current.width > page.width) {
+    //   setScale(ref.current.width / page.width)
+    // }
     setSvgWidth(page.width *scale)
     setSvgHeight(page.height *scale)
+    // setSvgWidth(page.width *scale)
+    //   setSvgHeight(page.height *scale)
+    
     console.log("Image", image)
   }, [scale])
 
@@ -68,9 +72,9 @@ function ImageDetail({ image, createMessage }) {
     setDrawBoxes(drawBoxes)
   }, [])
 
-  const updateisAddBoundingBox = useCallback((isAddBoundingBox) => {
-    setIsAddBoundingBox(isAddBoundingBox)
-  }, [])
+  // const updateisAddBoundingBox = useCallback((isAddBoundingBox) => {
+  //   setIsAddBoundingBox(isAddBoundingBox)
+  // }, [])
 
   const updateNewListDrawing = useCallback((newListDrawing) => {
     setNewListDrawing(newListDrawing)
@@ -136,7 +140,7 @@ function ImageDetail({ image, createMessage }) {
 			"y_min": drawBoxes.y_min,
 			"y_max": drawBoxes.y_max
 		}
-    const foundIndex = boxes.findIndex(x => x.id == newBox.id)
+    const foundIndex = boxes.findIndex(x => x.id === newBox.id)
     console.log("Index in array", foundIndex)
     boxes[foundIndex] = newBox
     setBoxes([...boxes])
@@ -154,9 +158,13 @@ function ImageDetail({ image, createMessage }) {
   const handleZoom = (e) => {
     setIsFullScreen(!isFullScreen)
     if (isFullScreen) {
-      setScale(0.45)
+      // setScale(0.45)
+    
+      setScale(window.innerWidth / 2.3 / page.width)
+      
     } else {
-      setScale(0.65)
+      // setScale(0.65)
+      setScale(window.innerWidth / 1.7/ page.width)
     }
   }
 	
