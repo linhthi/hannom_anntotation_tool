@@ -299,9 +299,12 @@ def save_annotation_and_label(image_file):
         }
         detected_boxes.append(current_box)
         img_box_crop = cv2.resize(img_box_crop, (512, 512), interpolation = cv2.INTER_AREA)
-        characters_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{image_file}/characters/img_{current_box["id"]}')
+        characters_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{image_file}/characters')
         if os.path.isdir(characters_path) == False:
             os.mkdir(characters_path)
+            characters_path = os.path.join(characters_path, f'img_{current_box["id"]}')
+            if os.path.isdir(characters_path) == False:
+                os.mkdir(characters_path)
         cv2.imwrite(os.path.join(characters_path, f'img_{current_box["id"]}.png'), img_box_crop)
 
     page = {
@@ -314,6 +317,39 @@ def save_annotation_and_label(image_file):
     with open(os.path.join(app.config['UPLOAD_FOLDER'], image_file+'/'+image_file_json), 'w') as json_file:
         json.dump(page, json_file)
     return jsonify({'message': 'Label successfull'})
+
+
+@app.route('/api/images/crop/<image_file>', methods=['GET'])
+def crop_characters(image_file):
+    # Read image
+    folder_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file)
+    image_file_path = os.path.join(folder_path, image_file +'.png')
+    img = Image.open(image_file_path)
+    # img = image_to_byte_array(img)   
+
+    # Read anntations from json
+    image_file_json = os.path.join(folder_path, image_file +'.json')
+    with open(image_file_json, 'r') as f:
+        data = f.read()
+    page_annotation = json.loads(data)
+    bboxes = page_annotation["bboxes"] 
+
+    # Crop all characters in image
+    for box in bboxes:
+        x_min, y_min, x_max, y_max = box['x_min'], box['y_min'], box['x_max'], box['y_max']
+        print(x_min, y_min, x_max, y_max)
+        img_box_crop = img.crop((x_min, y_min, x_max, y_max))
+
+        # img_box_crop = cv2.resize(img_box_crop, (224, 224), interpolation = cv2.INTER_AREA)
+        # img_box_crop = img_box_crop.resize((224, 224))
+        characters_path = os.path.join(folder_path, f'characters/img_{box["id"]}')
+        if os.path.isdir(characters_path) == False:
+            os.mkdir(characters_path)   
+        print(characters_path)
+        img_box_crop.save(os.path.join(characters_path, f'img_{box["id"]}.png'))
+
+    return jsonify({'message: crop successfull'})
+
 
 
 # @app.route('/api/images/autolabel/<img_id>', methods=['GET', 'POST'])
