@@ -147,14 +147,6 @@ function ImageDetail({ image, createMessage }) {
     // setDrawBoxes(newBox)
 	}
 
-	// const handleTrashIconClick = (e) => {
-  //   const arr = boxes.filter((item) => {
-  //     return item.id !== drawBoxes.id
-  //   })
-  //   setBoxes([...arr])
-  //   alert("Đã xóa")
-  // }
-
   const handleZoom = (e) => {
     setIsFullScreen(!isFullScreen)
     if (isFullScreen) {
@@ -196,6 +188,12 @@ function ImageDetail({ image, createMessage }) {
     })
   }
 
+  const handleSmooth = () => {
+    axios.post(`/api/images/crop/${image.filename}`, drawBoxes)
+          .then(response => console.log(response))
+    window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}`
+  }
+
   const renderEdit = () => {
     return (
       <div className='gray'>
@@ -227,7 +225,7 @@ function ImageDetail({ image, createMessage }) {
           </button>
           <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
-          onClick={()=> window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}`}>
+          onClick={handleSmooth}>
             Làm mịn nét chữ
           </button>
           </Link>
