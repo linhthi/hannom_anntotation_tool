@@ -3,11 +3,16 @@ from flask import Flask, jsonify, request, session, sessions, flash, send_file, 
 # from pymongo import message
 from werkzeug.security import check_password_hash, generate_password_hash
 from werkzeug.utils import secure_filename
+from torchvision.utils import save_image, make_grid
+
+#from flask_jwt_extended import JWTManager, jwt_required, create_access_token
+#from pymongo import MongoClient
+#from bson.objectid import ObjectId
 # from flask_jwt_extended import JWTManager, jwt_required, create_access_token
 # from pymongo import MongoClient
 # from bson.objectid import ObjectId
 import os
-import gridfs
+#import gridfs
 from detectors.DB import *
 import easyocr
 import numpy as np
@@ -27,12 +32,10 @@ import io
 import matplotlib.pyplot as plt
 import numpy as np
 import copy
-from tool import is_inside_polygon,smoothing_line, is_inside_contour_and_get_local_line,convert_color_img,show_line_with_diff_color
+from tool import *
 from normalize import Normalize
-import base64
 from collections import defaultdict
 import json
-# import mocban_pix2pix as model
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -52,6 +55,18 @@ def image_to_byte_array(image:Image):
   return imgByteArr
 
 
+
+# Making a Connection with MongoClient
+#client = MongoClient("mongodb://localhost:27017/")
+
+# 
+#db = client["a"]
+#fs = gridfs.GridFS(db)
+
+# collection
+#user = db["User"]
+#book = db['Book']
+#box_img = db['Box']
 # # Making a Connection with MongoClient
 # client = MongoClient("mongodb://localhost:27017/")
 
@@ -68,10 +83,13 @@ basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
 
 app = Flask(__name__)
+
+#jwt = JWTManager(app)
 # jwt = JWTManager(app)
 
+
 # JWT Config
-app.config["JWT_SECRET_KEY"] = "this-is-secret-key"
+#app.config["JWT_SECRET_KEY"] = "this-is-secret-key"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -141,6 +159,7 @@ def get_box_img(box, image):
     crop_img = img[ymin:ymax, xmin:xmax, :].copy()
 
     return crop_img, xmin, ymin, xmax, ymax, height, width
+
 
 # Example for using jwt 
 # @app.route("/dashboard")
@@ -226,6 +245,7 @@ def get_box_img(box, image):
 #     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
 #     return jsonify({'message': 'Upload file successful'}), 201
 
+
 @app.route('/api/images/upload', methods=['GET', 'POST'])
 def upload():
     file = request.files['inputFile']
@@ -245,6 +265,7 @@ def upload():
     file.save(os.path.join(path, file.filename))
     return jsonify({'message': 'Upload file successful'}), 201
 
+
 # @app.route('/api/images/uploads_old/<file_path>', methods=['GET'])
 # def get_img_old(file_path):
 #     """Get image preview, return image"""
@@ -253,6 +274,7 @@ def upload():
 
 #     return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=True)
 
+
 @app.route('/api/images/uploads/<image_file>', methods=['GET'])
 def get_img(image_file):
     """Get image preview, return image"""
@@ -260,21 +282,6 @@ def get_img(image_file):
     if (os.path.exists(os.path.join(file_path, f'{image_file}.png'))):
         print("File has existed")
     return send_from_directory(file_path, f'{image_file}.png', as_attachment=True)
-
-
-# @app.route('/api/images/annotate/<book_id>', methods=['GET', 'POST'])
-# def annotate(book_id):
-#     img_id = book_id
-#     img_file = book.find_one({"_id": ObjectId(str(img_id))})
-
-#     img_ = fs.find_one({'filename': img_file['filename']})
-#     img = img_.read()
-#     bbox = detect_single_image(img)['bbox']
-
-#     book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": bbox}})
-
-#     return jsonify({'message': 'Get annotion successful'}, {"bbox": bbox}), 200
-
 
 @app.route('/api/images/auto/<image_file>', methods=['POST'])
 def save_annotation_and_label(image_file):
@@ -352,32 +359,6 @@ def crop_characters(image_file):
 
 
 
-# @app.route('/api/images/autolabel/<img_id>', methods=['GET', 'POST'])
-# def autolabel(img_id):
-#     current_book = book.find_one({"_id": ObjectId(str(img_id))})
-#     img_file = current_book['filename']
-#     img_ = fs.find_one({'filename': img_file})
-#     img = img_.read()
-#     bboxes = detect_single_image(img)['bbox']
-#     detected_boxes = []
-#     for box in bboxes:
-#         print("Sample box: {}".format(box))
-#         img_box_crop, x_min, y_min, x_max, y_max, height, width  = get_box_img(box, img)
-#         label_detect = detect_symbol(img_box_crop)
-#         current_box = {
-#             'id': str(uuid.uuid4()),
-#             'label': label_detect,
-#             'x_min': x_min.item(),
-#             'y_min': y_min.item(),
-#             'x_max': x_max.item(),
-#             'y_max': y_max.item()
-#         }
-#         detected_boxes.append(current_box)
-#         img_box_crop = cv2.resize(img_box_crop, (512, 512), interpolation = cv2.INTER_AREA)
-#         cv2.imwrite(f'static/characters/img_{current_box["id"]}.png', img_box_crop)
-    
-#     book.update_one({"_id": ObjectId(str(img_id))}, {"$set": {"boxes": detected_boxes, "height": height, "width": width}})
-#     return jsonify({'message': 'Label successfull'})
 
 @app.route('/api/image/getlabel/<image_file>', methods=['GET'])
 def getlabel(image_file):
@@ -413,102 +394,188 @@ def getAllImages():
     return jsonify(message="successful", data=images), 200
 
 ### Lam
-@app.route('/smooth/<img_folder>/<target_img_name>')
+@app.route('/smooth/<img_folder>/<target_img_name>', methods=['POST', 'GET'])
 def show_img(target_img_name, img_folder):
-    path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
-    # model.config['TEST_DIR'] = path
-    # model.val_dataset = model.MapDataset(root_dir=model.config['TEST_DIR'],augmentation=model.eval_augmentation)
-    # model.val_loader = model.DataLoader(model.val_dataset, batch_size=1, shuffle=False)
 
-    # model.test(model.gen, model.val_loader, path)
-    file_path = os.path.join(path, f'{target_img_name}.png')
-    img = cv2.imread(file_path,0)
-    normalized_pred_img = normalize_obj.preprocess_img(img)
-    img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', normalized_pred_img)[1]).decode()
-    mocban_data = {'filename':target_img_name,
-                'img':img_base64,
-                'img_folder': img_folder
+    #path to specific file
+    folder_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
+    file_path = os.path.join(folder_path, f'{target_img_name}.png') #cropped image or original image
+    json_path = os.path.join(folder_path, f'{target_img_name}.json') #json file
+    f_smooth_path = os.path.join(folder_path, f'{target_img_name}_smooth.png') #smooth image
+    concat_org_norm_path = os.path.join(folder_path, f'{target_img_name}_concat.png') #concat of original and normalize image
+
+    img = cv2.imread(file_path,0) #cropped image or original image
+    property_of_image = get_data_json_file(json_path, {"has_threshold":False, "size": img.shape, "no_cnts":-1, "threshold":127})
+    global normalize_obj #empty obj
+
+
+    if request.method == 'GET':
+        print("-----------------GET-------------------")
+        try:
+           mocban_data = {}
+           if property_of_image["has_threshold"]:
+                    #load data to normalize_obj
+                    all_contours = []
+                    for i in range(property_of_image["no_cnts"]):
+                        all_contours.append(np.array(property_of_image[f'cnt_{i}']))
+
+                    normalize_obj.set_attributes(all_contours, property_of_image['size'], np.array(property_of_image['hierarchy']))
+
+                    #update it to global normalize obj for later gaussian
+                    concat_img = cv2.imread(concat_org_norm_path,0)
+                    final_img = cv2.imread(f_smooth_path,0)
+                    threshold_container = "none"
+           else:
+                    #---------------------------Threshold------------------------------
+                    #update the value after threshold
+                    normalize_obj, concat_img, final_img = create_threshold_image(img, 127, normalize_obj,
+                                                                                         json_path,
+                                                                                         concat_org_norm_path,
+                                                                                         f_smooth_path)
+                    threshold_container = "block"
+           mocban_data = { 'filename': target_img_name,
+                   'final_img': convert_img_to_base64(final_img),
+                   'concat_org_f_img': convert_img_to_base64(concat_img),
+                   'img_folder': img_folder,
+                   'threshold_value': 127,
+                   'threshold_container': threshold_container,
+                   'has_threshold': property_of_image["has_threshold"]
+                 }
+        except Exception as e:
+            print("Error at the GET request threshold: ", e)
+        finally:
+            return render_template('via.html', mocban_data=mocban_data)
+
+
+    if request.method == 'POST':
+        print("-----------------POST-------------------")
+        try:
+            request_data = request.get_json()
+            threshold = int(request_data["threshold"])
+            concat_img = cv2.imread(concat_org_norm_path,0)
+            normalize_obj, concat_img, final_img = create_threshold_image(img, threshold, normalize_obj,
+                                                                                          json_path,
+                                                                                          concat_org_norm_path,
+                                                                                          f_smooth_path)
+            mocban_data = {
+                     'final_img':convert_img_to_base64(final_img),
+                     'concat_org_f_img':convert_img_to_base64(concat_img),
             }
-    return render_template('via.html', mocban_data=mocban_data)
+        except Exception as e:
+            print("Error at the POST request threshold: ", e)
+        finally:
+            return mocban_data
 
-@app.route('/imgs/<img_name>')
-def get_img_chacracter(img_name):
-    return send_from_directory(app.config['UPLOAD_FOLDER'], img_name, as_attachment=False )
+            
+    
+    
+    
+
+@app.route('/thresh/<img_folder>/<target_img_name>/<int:threshold>')
+def change_threshold(target_img_name, img_folder, threshold):
+        if request.method == 'POST':
+            request_data = request.get_json()
+            threshold = int(request_data["threshold"])
 
 
 """ Recieving the gaussian value and make the change on the local line
     params:
     --id_img: ID of target image
     --region_id: ID of specific region in image
-    --highlight: whether just show image or make a change
+
 """
-@app.route('/<highlight>/gaussian/<img_folder>/<target_img_name>/<id_img>/<region_id>', methods=['POST', 'GET'])
-def upload_image(id_img,region_id, target_img_name, highlight, img_folder):
+@app.route('/gaussian/<img_folder>/<target_img_name>/<id_img>/<region_id>', methods=['POST', 'GET'])
+def character_effect(id_img,region_id, target_img_name, img_folder):
+    effect = "gaussian" # may be change later
+    global normalize_obj
     if request.method == 'GET':
-        print("------------------GET-------------")
-        return {
-            "local_rate": 0,
-            "only_x": "True",
-            "only_y": "True",
-        }
+        return	{
+                    "local_rate": 0,
+                    "only_x": "True",
+                    "only_y": "True",
+                }
 
     if request.method == 'POST':
-
+      try:
         #initialize value
         request_data = request.get_json()
-        highlight = True if highlight.lower() == "true" else False
-        local = None
-        only_x = None
-        only_y = None
-        all_points_x = request_data['attr']['all_points_x']
-        all_points_y = request_data['attr']['all_points_y']
+        local = None # level of smoothing
+        only_x = None # smoothing by the horizonal orientation
+        only_y = None # smoothing by the vertical orientation
+        all_points_x = request_data['attr']['all_points_x'] # x-coordinate of polygon
+        all_points_y = request_data['attr']['all_points_y'] # y-coordinate of polygon
 
 
-        #update in image
-        # Testing new feature without reading from a file
-        if not highlight:
-            local = int(request_data['local_rate'])
-            only_x = True if request_data['only_x'].lower() == "true" else False
-            only_y = True if request_data['only_y'].lower() == "true" else False
+
+        local = int(request_data['local_rate'])
+        only_x = True if request_data['only_x'].lower() == "true" else False
+        only_y = True if request_data['only_y'].lower() == "true" else False
 
         #correct
-        path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
+        folder_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')
+        f_smooth_path = os.path.join(folder_path, f'{target_img_name}_smooth.png') #smooth image 
         _,normalized_shape,_,all_contours,_ = normalize_obj.get_attributes()
-        highlight_contour = []
+        
+        print(normalized_shape, all_contours)
+        #cnt_points_of_polygon contains: - index of contour in all_contours
+        #                                - range of points in the index contour 
+        cnt_points_of_polygon = []
 
         for index_of_cnt in range(len(all_contours)):
             r, mul_range = is_inside_contour_and_get_local_line(all_points_x,
                                                                 all_points_y,
                                                                 all_contours[index_of_cnt])
             if r:
-                highlight_contour.append([index_of_cnt, mul_range])
+                cnt_points_of_polygon.append([index_of_cnt, mul_range])
 
 
-
-        print("highlight_contour",highlight_contour)
-        for hcnt in highlight_contour:
+	#if length of mul_range > 0 then it means the range in contour if combine of 2 region line1(0-> unknown) and (unknown -> end)
+        #print("cnt_points_of_polygon",cnt_points_of_polygon)
+        for hcnt in cnt_points_of_polygon:
             index, mul_range = hcnt
             global_contours = all_contours[index].copy()
             g_contours = smoothing_line(global_contours, mul_range, False,
                                                           only_x,only_y,
-                                                          local,normalized_shape,highlight)
+                                                          local,normalized_shape)
+                                               
 
-        if not highlight:
-            normalize_obj.update(False, index,g_contours)
-
+        normalize_obj.update(False, index,g_contours)
         result_image = normalize_obj.convert_to_original_image()
-        cv2.imwrite(path, result_image)
-        return send_from_directory(app.config['UPLOAD_FOLDER'],  f'{img_folder}/characters/{target_img_name}', as_attachment=False)
+        cv2.imwrite(f_smooth_path, result_image)
+        
+      except Exception as e:
+        print("Error at smoothening: ", e, "do nothing to image and return it")
+      finally:
+        return send_from_directory(folder_path,  f'{target_img_name}_smooth.png', as_attachment=False)
 
 
 
-@app.route('/finishEdit/<filename>/', methods=['POST', 'GET'])
-def finish_edit(filename):
+@app.route('/finishEdit/<img_folder>/<target_img_name>', methods=['POST', 'GET'])
+def finish_edit(target_img_name, img_folder):
+
+    #----------------------------------save smooth changes into normalization -------------------           
     normalize_obj.update(True, None, None)
-    path = os.path.join(app.config['CHARACTERS'], filename)
-    result_img = normalize_obj.convert_to_original_image()
-    cv2.imwrite(path, result_img)
-    return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
+    
+    return "success finish update normalization"
+    
+@app.route('/doneEdit/<img_folder>/<target_img_name>')
+def done_edit(target_img_name, img_folder):
+
+    #----------------------------------update into the json -------------------                    
+    #update for json file
+    #numpy can not be saved in json file
+    #so need to convert contours and hierarchy to list 
+    folder_path = os.path.join(app.config['UPLOAD_FOLDER'], f'{img_folder}/characters/{target_img_name}')  
+    json_path = os.path.join(folder_path, f'{target_img_name}.json') #json file
+    
+    _,normalized_shape,hierarchy,all_contours,_ = normalize_obj.get_attributes()
+    
+    update_data_json_file(json_path, ['size', 'has_threshold', 'no_cnts', 'hierarchy'], [normalized_shape, True, len(all_contours), hierarchy.tolist()])
+    for i in range(len(all_contours)):
+        update_data_json_file(json_path, [f'cnt_{i}'], [all_contours[i].tolist()])
+        
+    return "success save changes into json file"
+    
 
 
 if __name__ == '__main__':
