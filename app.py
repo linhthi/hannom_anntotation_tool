@@ -55,41 +55,10 @@ def image_to_byte_array(image:Image):
   return imgByteArr
 
 
-
-# Making a Connection with MongoClient
-#client = MongoClient("mongodb://localhost:27017/")
-
-# 
-#db = client["a"]
-#fs = gridfs.GridFS(db)
-
-# collection
-#user = db["User"]
-#book = db['Book']
-#box_img = db['Box']
-# # Making a Connection with MongoClient
-# client = MongoClient("mongodb://localhost:27017/")
-
-# # database
-# db = client["a"]
-# fs = gridfs.GridFS(db)
-
-# # collection
-# user = db["User"]
-# book = db['Book']
-# box_img = db['Box']
-
 basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
 
 app = Flask(__name__)
-
-#jwt = JWTManager(app)
-# jwt = JWTManager(app)
-
-
-# JWT Config
-#app.config["JWT_SECRET_KEY"] = "this-is-secret-key"
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -161,118 +130,14 @@ def get_box_img(box, image):
     return crop_img, xmin, ymin, xmax, ymax, height, width
 
 
-# Example for using jwt 
-# @app.route("/dashboard")
-# @jwt_required()
-# def dasboard():
-#     return jsonify(message="Welcome! to the Dashboard!")
-
-
-# @app.route("/api/user/signup", methods=["POST"])
-# def signup():
-#     email = request.json["email"]
-#     test = user.find_one({"email": email})
-#     if test:
-#         return jsonify(message="User Already Exist"), 409
-#     else:
-#         first_name = request.json["first_name"]
-#         last_name = request.json["last_name"]
-#         password = request.json["password"]
-#         user_info = dict(first_name=first_name, last_name=last_name, email=email, password=generate_password_hash(password))
-#         user.insert_one(user_info)
-#         return jsonify(message="User added sucessfully"), 201
-
-
-# @app.route("/api/user/signin", methods=["POST"])
-# def signin():
-#     if request.is_json:
-#         email = request.json["email"]
-#         password = request.json["password"]
-#     else:
-#         email = request.form["email"]
-#         password = request.form["password"]
-
-#     test = user.find_one({"email": email})
-#     if check_password_hash(test['password'], password):
-#         access_token = create_access_token(identity=email)
-#         return jsonify(message="Login Succeeded!", 
-#         access_token=access_token,
-#         email=email,
-#         name=test['first_name'] + " " + test['last_name']
-#         ), 201
-#     else:
-#         return jsonify(message="Bad Email or Password"), 401
-
-
-# @app.route('/api/user/logout/')
-# def logout():
-#     if 'email' in session:
-#         sessions.pop('email', None)
-#     return jsonify({'message': 'You successfully logged'})
-
-
-# @app.route('/api/images', methods=['GET'])
-# def getAllBook():
-#     books = book.find()
-#     books_ = []
-#     for item in books:
-#         temp = {
-#             "book_id": item.get("book_id"),
-#             "user_id": item.get("user_id"),
-#             "name": item.get("filename"),
-#             "width": item.get("width"),
-#             "height": item.get("height")
-#         }
-#         books_.append(temp)
-#     print(books_)
-#     return jsonify(message="successful", results=books_), 200
-
-
-
-# @app.route('/api/images/upload_old', methods=['GET', 'POST'])
-# def upload_old():
-#     file = request.files['inputFile']
-#     user_id = request.form['user_id']
-#     title = request.form['title']
-    
-#     contents = file.read()
-#     book_id = str(uuid.uuid4())
-
-#     book_info = dict(user_id=user_id,book_id=book_id, title=title, filename=file.filename, annotation=None)
-#     book.insert_one(book_info)
-
-#     fs.put(contents, filename=file.filename)
-#     file.save(os.path.join(app.config['UPLOAD_FOLDER'], file.filename))
-#     return jsonify({'message': 'Upload file successful'}), 201
-
-
 @app.route('/api/images/upload', methods=['GET', 'POST'])
 def upload():
     file = request.files['inputFile']
-    # user_id = request.form['user_id']
-    # title = request.form['title']
-    
-    # contents = file.read()
-    # book_id = str(uuid.uuid4())
-
-    # book_info = dict(user_id=user_id,book_id=book_id, title=title, filename=file.filename, annotation=None)
-    # book.insert_one(book_info)
-
-    # fs.put(contents, filename=file.filename)
     path = os.path.join(app.config['UPLOAD_FOLDER'], (file.filename).split('.')[0])
     if os.path.isdir(path) == False:
         os.mkdir(path)
     file.save(os.path.join(path, file.filename))
     return jsonify({'message': 'Upload file successful'}), 201
-
-
-# @app.route('/api/images/uploads_old/<file_path>', methods=['GET'])
-# def get_img_old(file_path):
-#     """Get image preview, return image"""
-#     if (os.path.exists(os.path.join(app.config['UPLOAD_FOLDER'], file_path))):
-#         print("File has existed")
-
-#     return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=True)
 
 
 @app.route('/api/images/uploads/<image_file>', methods=['GET'])
