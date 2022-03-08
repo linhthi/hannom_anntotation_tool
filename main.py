@@ -24,7 +24,7 @@ normalize_obj = Normalize()
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg', 'gif'])
 
 
-@app.route('/show_imgs/<target_img_name>')
+@app.route('/show_imgs/<folder>/<target_img_name>')
 def show_img(target_img_name):
     path = os.path.join(app.config['CHARACTERS'], target_img_name)
     img = cv2.imread(path,0)
