@@ -188,9 +188,10 @@ function ImageDetail({ image, createMessage }) {
     })
   }
 
-  const handleSmooth = () => {
+  const handleSmooth = async () => {
     axios.post(`/api/images/crop/${image.filename}`, drawBoxes)
           .then(response => console.log(response))
+    await new Promise(resolve => setTimeout(resolve, 1000))
     window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}`
   }
 
