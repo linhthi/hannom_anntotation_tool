@@ -3,35 +3,39 @@ import numpy as np
 import matplotlib.pyplot as plt
 from tool import convert_color_img
 
+
 class Normalize:
     def __init__(self):
-        self.contours = None
+        self.current_contours = None
         self.result_img_shape = None
         self.no_of_contour = None
         self.hierarchy = None
         self.previous_cnt = None
-        self.original_contours= None
+        self.base_contours = None
 
     def set_attributes(self, cnt, shape, hierarchy):
-        self.contours = list(cnt)
+        self.current_contours = list(cnt)
         self.result_img_shape = shape
         self.hierarchy = hierarchy
-        self.original_contours = list(cnt)
-        self.previous_cnt = list(cnt)
+        self.base_contours = list(cnt)
 
     def get_attributes(self):
-        return self.contours, self.result_img_shape, self.hierarchy,\
-               self.original_contours, self.previous_cnt
+        return self.current_contours, self.result_img_shape, self.hierarchy, \
+               self.base_contours
 
-    def update(self, prev, index_cnt,new_cnt_of_int):
-        if prev is False:
-            self.previous_cnt = self.contours.copy()
-            self.contours[index_cnt] = new_cnt_of_int
+    def update(self, base, index_cnt, new_cnt_of_int):
+        # only update current contour
+        if base is False:
+            self.current_contours[index_cnt] = new_cnt_of_int
+        # update into base contour
         else:
-            #self.contours = self.previous_cnt
-            self.original_contours = self.contours.copy()
+            self.base_contours = self.current_contours.copy()
 
-    def shift_image(self,img, x, y):
+    def update_after_remove(self, img):
+        contours, hierarchy = cv2.findContours(img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+        self.set_attributes(contours, img.shape, hierarchy)
+
+    def shift_image(self, img, x, y):
         """
             Pad into image to center of character is center of image
             :param img: cv2 binary image
@@ -55,7 +59,7 @@ class Normalize:
                                          value=0)
         return pad_img
 
-    def padding_and_hold_ratio(self,cv_img):
+    def padding_and_hold_ratio(self, cv_img):
         h, w = cv_img.shape[:2]
         if h < w:
             diff = w - h
@@ -70,14 +74,13 @@ class Normalize:
                                             value=(0, 0, 0))
         return padded_img
 
-    def list_contours(self,contours):
+    def list_contours(self, contours):
         list = []
         max_len = 0
         for cnt in contours:
             for p in cnt:
                 list.append(p)
         return list
-
 
     def filter_much_small_contour(self, bin_img, contours, hierarchy=None, min_area=70):
         """
@@ -96,8 +99,7 @@ class Normalize:
                 # hole in character
                 if hierarchy[0][index][3] != -1:
                     cv2.drawContours(inv_mask, [contour], -1, 0, -1)
-                    # plt.imshow(inv_mask, cmap='gray')
-                    # plt.show()
+
                 # hole out in character
                 else:
                     cv2.drawContours(mask, [contour], -1, 0, -1)
@@ -107,8 +109,7 @@ class Normalize:
         bin_img = cv2.bitwise_or(bin_img, 1 - inv_mask, mask=cv2.resize(total_mask, bin_img.shape))
         return bin_img, self.list_contours(new_contours)
 
-
-    def crop_char(self,thresh, contours):
+    def crop_char(self, thresh, contours):
         """
         Crop image based on contours, find the most top, bot, left, right points
         :param thresh: binary image
@@ -122,8 +123,7 @@ class Normalize:
         image = thresh[max(0, ymin - 2):ymax, max(0, xmin - 2):xmax]
         return image
 
-
-    def find_center(self,list2, mask):
+    def find_center(self, list2, mask):
         # scipy.ndimage.measurements.center_of_mass¶
         """
         Find center of the character(mask)
@@ -144,7 +144,7 @@ class Normalize:
 
         return x / kpCnt, y / kpCnt  # x_center, y_center
 
-    def normalize_mask(self,thresh):
+    def normalize_mask(self, thresh):
         """
         Get character image and shift center of character to center of image(a part of image can be disappeared)
         :param thresh: binary image
@@ -152,15 +152,16 @@ class Normalize:
         """
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         thresh, contours = self.filter_much_small_contour(thresh, contours, hierarchy)
+
         thresh = self.crop_char(thresh, contours)
+
         contours, hierarchy = cv2.findContours(thresh, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
         x_center, y_center = self.find_center(self.list_contours(contours), thresh)
         shifted_img = self.shift_image(thresh, thresh.shape[1] / 2 - x_center, thresh.shape[0] / 2 - y_center)
 
-        # plt.imshow(cv2.circle(cv2.cvtColor(thresh, cv2.COLOR_GRAY2RGB), (int(x_center), int(y_center)), 10, (255, 0, 0), 1), cmap='gray')
         return self.padding_and_hold_ratio(shifted_img)
 
-    def convert_color_img(self,img, color):
+    def convert_color_img(self, img, color):
         """
         Convert color of character of binary image [0, 255]
         :param img: cv2 binary image
@@ -177,29 +178,12 @@ class Normalize:
         elif color == 'b':
             noChannel.append(2)
         else:
-            noChanne = [0,1,2]
+            noChanne = [0, 1, 2]
         for color_index in noChannel:
             np_rgb_color[np_rgb_color[:, :, color_index] == 0, color_index] = 255
         return np_rgb_color
 
-    def padding_to_original_size(self,img, original_size):
-        """
-          Adding padding to image to turn it to original size
-          :param img: target image
-          :param original_size: tuple of size image want to transfer
-        """
-        height_img, width_img = img.shape
-        height_org, width_org = original_size
-        delta_height = abs(height_img - height_org)
-        delta_width = abs(width_img - width_org)
-
-        pad_img = cv2.copyMakeBorder(img, top=int(delta_height / 2), bottom=delta_height - int(delta_height / 2), \
-                                     left=int(delta_width / 2), right=delta_width - int(delta_width / 2), \
-                                     borderType=cv2.BORDER_CONSTANT,
-                                     value=0)
-        return pad_img
-
-    def preprocess_img(self,cv_img, threshold=110):
+    def preprocess_img(self, cv_img, threshold=110, trial="first"):
         """
         Combine the above functions to crop character area
         cv_img: cv bgr img
@@ -207,16 +191,27 @@ class Normalize:
         """
 
         ret, bin_print_img = cv2.threshold(cv_img, threshold, 1, cv2.THRESH_BINARY_INV)
+
+        bin_print_img = self.padding_and_hold_ratio(bin_print_img)
+
         normalized_print_img = self.normalize_mask(bin_print_img)
-        normalized_print_img = self.padding_to_original_size(normalized_print_img, cv_img.shape)
-        # normalized_print_img is image of filled contour
-        contours, hierarchy = cv2.findContours(normalized_print_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
-        self.set_attributes(contours, normalized_print_img.shape, hierarchy)
-        #print("len(contours)",len(contours))
-        return 255 - normalized_print_img*255
+
+        # adding some extra pace for user easy to select polygon
+        if trial == "second":
+            normalized_print_img = self.add_extra_padding(normalized_print_img, 20, 0)
+            contours, hierarchy = cv2.findContours(normalized_print_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_NONE)
+            self.set_attributes(contours, normalized_print_img.shape, hierarchy)
+
+        return 255 - normalized_print_img * 255
 
     def convert_to_original_image(self):
         blank = np.zeros(self.result_img_shape, dtype=np.uint8)
-        blank = cv2.drawContours(blank, self.contours, -1, 255, -1)
+        blank = cv2.drawContours(blank, self.current_contours, -1, 255, -1)
         return 255 - blank
 
+    def add_extra_padding(self, img, pixel, color_value):
+        pad_img = cv2.copyMakeBorder(img, top=pixel, bottom=pixel, left=pixel, right=pixel,
+                                     borderType=cv2.BORDER_CONSTANT,
+                                     value=color_value)
+
+        return pad_img

@@ -13,7 +13,7 @@ from tool import is_inside_polygon,smoothing_line, is_inside_contour_and_get_loc
 from normalize import Normalize
 import base64
 from collections import defaultdict
-
+import mocban_pix2pix as model
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
@@ -53,6 +53,7 @@ def crop_character():
 ### Lam
 @app.route('/show_imgs/<target_img_name>')
 def show_img(target_img_name):
+    model.test(model.gen, model.val_loader, app.config['UPLOAD_FOLDER_CHARACTER'])
     path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], target_img_name)
     img = cv2.imread(path,0)
     normalized_pred_img = normalize_obj.preprocess_img(img)
@@ -152,44 +153,46 @@ def upload_image(id_img,region_id, filename, highlight):
             only_y = True if request_data['only_y'].lower() == "true" else False
 
         #correct
-        path = os.path.join(app.config['CHARACTERS'], filename)
+        path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
         _,normalized_shape,_,all_contours,_ = normalize_obj.get_attributes()
         highlight_contour = []
 
         for index_of_cnt in range(len(all_contours)):
-            r, mul_range = is_inside_contour_and_get_local_line(all_points_x,
+            is_inside, mul_range = is_inside_contour_and_get_local_line(all_points_x,
                                                                 all_points_y,
                                                                 all_contours[index_of_cnt])
-            if r:
+            if is_inside:
                 highlight_contour.append([index_of_cnt, mul_range])
 
 
+        #check whether has contours in the highlight_contour
+        #if not, indicates that the polygon region is in background or inside the character
+        if len(highlight_contour) > 0:
+            #make change on the image via contour
+            for hcnt in highlight_contour:
+                index, mul_range = hcnt
+                global_contours = all_contours[index].copy()
+                g_contours = smoothing_line(global_contours, mul_range, False,
+                                                              only_x,only_y,
+                                                              local,normalized_shape,highlight)
 
-        print("highlight_contour",highlight_contour)
-        for hcnt in highlight_contour:
-            index, mul_range = hcnt
-            global_contours = all_contours[index].copy()
-            g_contours = smoothing_line(global_contours, mul_range, False,
-                                                          only_x,only_y,
-                                                          local,normalized_shape,highlight)
+            if not highlight:
+                normalize_obj.update(False, index,g_contours)
 
-        if not highlight:
-            normalize_obj.update(False, index,g_contours)
+            result_image = normalize_obj.convert_to_original_image()
+            cv2.imwrite(path, result_image)
 
-        result_image = normalize_obj.convert_to_original_image()
-        cv2.imwrite(path, result_image)
-        return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
+        return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
 
 
 
 @app.route('/finishEdit/<filename>/', methods=['POST', 'GET'])
 def finish_edit(filename):
     normalize_obj.update(True, None, None)
-    path = os.path.join(app.config['CHARACTERS'], filename)
+    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], filename)
     result_img = normalize_obj.convert_to_original_image()
     cv2.imwrite(path, result_img)
-    return send_from_directory(app.config['CHARACTERS'], filename, as_attachment=False)
-
+    return send_from_directory(app.config['UPLOAD_FOLDER_CHARACTER'], filename, as_attachment=False)
 
 
 
