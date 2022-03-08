@@ -13,6 +13,7 @@ from tool import is_inside_polygon,smoothing_line, is_inside_contour_and_get_loc
 from normalize import Normalize
 import base64
 from collections import defaultdict
+import json
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
@@ -21,7 +22,7 @@ uploads_path = os.path.join(basedir, 'uploads')
 app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
-app.config['UPLOAD_FOLDER_CHARACTER'] = 'static/characters'
+app.config['UPLOAD_FOLDER_CHARACTER'] = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 normalize_obj = Normalize()
 
@@ -39,6 +40,7 @@ def get_img(file_path):
 
     return send_from_directory(app.config['UPLOAD_FOLDER'], file_path, as_attachment=False)
 
+
 @app.route('/api/images/crop', methods=['GET'])
 def crop_character():
     box = request.json['box']
@@ -51,14 +53,15 @@ def crop_character():
     return jsonify({'message': 'Crop successfull'})
 
 ### Lam
-@app.route('/show_imgs/<target_img_name>')
-def show_img(target_img_name):
-    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], target_img_name)
+@app.route('/smooth/<img_folder>/<target_img_name>')
+def show_img(target_img_name, img_folder):
+    path = os.path.join(app.config['UPLOAD_FOLDER_CHARACTER'], f'{img_folder}/characters/{target_img_name}')
     img = cv2.imread(path,0)
     normalized_pred_img = normalize_obj.preprocess_img(img)
     img_base64 = "data:image/png;base64," + base64.b64encode(cv2.imencode('.png', normalized_pred_img)[1]).decode()
     mocban_data = {'filename':target_img_name,
-                'img':img_base64
+                'img':img_base64,
+                'img_folder': img_folder
             }
     return render_template('via.html', mocban_data=mocban_data)
 
