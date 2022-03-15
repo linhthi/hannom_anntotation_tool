@@ -1,6 +1,6 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import lines from '../../lines.json'
+// import lines from '../../lines.json'
 
 function ImageLabelDisplay(props) {
   const {
