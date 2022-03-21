@@ -9,6 +9,7 @@ import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import {Alert} from 'react-alert'
 import axios from 'axios'
+import API from '../../constant/API'
 
 
 function ImageDetail({ image, createMessage }) {
@@ -29,7 +30,7 @@ function ImageDetail({ image, createMessage }) {
 
 
   const fetchMyAPI = async () => {
-    let response = await axios(`/api/image/getlabel/${image.filename}`)
+    let response = await axios(`${API.GET_LABEL}/${image.filename}`)
     let res = await response.data.data
     console.log("Respone", res)
     setPage(res)

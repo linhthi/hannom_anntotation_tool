@@ -2,6 +2,7 @@ import React, { useState } from 'react'
 import PropTypes from 'prop-types'
 import { Link } from 'react-router-dom'
 import { FaClone, FaInfoCircle, FaTrashAlt } from 'react-icons/fa'
+import API from '../../constant/API'
 
 function Card({ image, onDeleteImage }) {
   const [detectImage, toggleDetectImage] = useState(true)
@@ -14,7 +15,7 @@ function Card({ image, onDeleteImage }) {
           className="image"
         >
           <img
-            src={`http://localhost:5000/api/images/uploads/${image.filename}`}
+            src={`${API.GET_IMAGE}/${image.filename}`}
             alt="detect result or original"
           />
         </Link>
