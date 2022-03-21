@@ -1,14 +1,14 @@
-import React from 'react';
-import { Redirect } from 'react-router-dom';
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
-import Container from './components/stateless/Container';
-import Message from './components/Message';
-// import images from './books.json';
-import axios from 'axios';
+import React from 'react'
+import { Redirect } from 'react-router-dom'
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
+import Container from './components/stateless/Container'
+import Message from './components/Message'
+import axios from 'axios'
+import API from './constant/API'
 
 class App extends React.Component {
   constructor(props) {
-    super(props);
+    super(props)
     this.state = {
       images: [],
       isLoading: false,
@@ -17,24 +17,23 @@ class App extends React.Component {
         type: null,
         text: null,
       },
-    };
+    }
 
-    this.getImages = this.getImages.bind(this);
-    this.handleImageUpload = this.handleImageUpload.bind(this);
-    this.handleDeleteImage = this.handleDeleteImage.bind(this);
-    this.handleTabChange = this.handleTabChange.bind(this);
-    this.createMessage = this.createMessage.bind(this);
-    this.resetMessage = this.resetMessage.bind(this);
+    this.getImages = this.getImages.bind(this)
+    this.handleImageUpload = this.handleImageUpload.bind(this)
+    this.handleDeleteImage = this.handleDeleteImage.bind(this)
+    this.handleTabChange = this.handleTabChange.bind(this)
+    this.createMessage = this.createMessage.bind(this)
+    this.resetMessage = this.resetMessage.bind(this)
   }
 
   componentDidMount() {
-    this.getImages();
+    this.getImages()
   }
 
   getImages() {
-    // this.setState({ images: images, isLoading: false })
     // Get images from api
-    axios.get('/api/images').then(
+    axios.get(`${API.GET_ALL_IMAGES}`).then(
       (res) => {
         this.setState({ images: res.data.data, isLoading: false })
       }
@@ -42,10 +41,10 @@ class App extends React.Component {
   }
 
   handleImageUpload({ image_url, image_file }) {
-    const data = new FormData();
-    data.append('image_file', image_file);
-    data.append('image_url', image_url);
-    this.setState({ isLoading: true });
+    const data = new FormData()
+    data.append('image_file', image_file)
+    data.append('image_url', image_url)
+    this.setState({ isLoading: true })
     fetch(`${process.env.REACT_APP_API_URL}/api/images/`, {
       method: 'POST',
       body: data,
@@ -55,20 +54,20 @@ class App extends React.Component {
     })
       .then(res => res.json())
       .then(res => {
-        this.getImages();
+        this.getImages()
         if (res.status === 'fail') {
-          throw new Error('Upload failed');
+          throw new Error('Upload failed')
         }
-        this.createMessage('success', 'Image has been successfully uploaded.');
+        this.createMessage('success', 'Image has been successfully uploaded.')
       })
       .catch(err => {
-        this.createMessage('error', 'Something went wrong with the uploading.');
-        this.setState({ isLoading: false });
-      });
+        this.createMessage('error', 'Something went wrong with the uploading.')
+        this.setState({ isLoading: false })
+      })
   }
 
   handleDeleteImage(imageName) {
-    // const { authToken } = window.localStorage;
+    // const { authToken } = window.localStorage
     fetch(`${process.env.REACT_APP_API_URL}/api/images/${imageName}`, {
       method: 'DELETE',
       // headers: {
@@ -78,13 +77,13 @@ class App extends React.Component {
       .then(res => res.json())
       .then(res => {
         if (res.status === 'success') {
-          this.getImages();
+          this.getImages()
         }
-      });
+      })
   }
 
   handleTabChange(selectedTab) {
-    this.setState({ selectedTab });
+    this.setState({ selectedTab })
   }
 
   createMessage(type, text) {
@@ -97,9 +96,9 @@ class App extends React.Component {
       },
       () =>
         setTimeout(() => {
-          this.resetMessage();
+          this.resetMessage()
         }, 5000)
-    );
+    )
   }
 
   resetMessage() {
@@ -108,7 +107,7 @@ class App extends React.Component {
         type: null,
         text: null,
       },
-    });
+    })
   }
 
 
@@ -118,7 +117,7 @@ class App extends React.Component {
       isLoading,
       message,
       selectedTab,
-    } = this.state;
+    } = this.state
     return (
       <Router>
       <React.Fragment>
@@ -148,8 +147,8 @@ class App extends React.Component {
         </Switch>
       </React.Fragment>
       </Router>
-    );
+    )
   }
 }
 
-export default App;
+export default App

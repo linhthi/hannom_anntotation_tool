@@ -1,33 +1,33 @@
-import React, { useState } from "react";
-import { useHistory } from 'react-router-dom';
-import AuthService from '../services/auth.service';
+import React, { useState } from "react"
+import { useHistory } from 'react-router-dom'
+import AuthService from '../services/auth.service'
 
 
 function Login() {
-    const [email, setEmail] = useState("");
-    const [password, setPassword] = useState("");
-    const [loading, setLoading] = useState(false);
-    const [message, setMessage] = useState("");
-    const history = useHistory();
+    const [email, setEmail] = useState("")
+    const [password, setPassword] = useState("")
+    const [loading, setLoading] = useState(false)
+    const [message, setMessage] = useState("")
+    const history = useHistory()
 
     const changeEmail = (e) => {
-        setEmail(e.target.value);
-    };
+        setEmail(e.target.value)
+    }
 
     const changePassword = (e) => {
-        setPassword(e.target.value);
-    };
+        setPassword(e.target.value)
+    }
 
     const handleLogin = (e) => {
-        e.preventDefault();
+        e.preventDefault()
 
-        setMessage("");
-        setLoading(true);
+        setMessage("")
+        setLoading(true)
 
         AuthService.login(email, password).then(
         (response) => {
-            console.log('Response:' + JSON.stringify(response, null, 2));
-            // window.location.reload();
+            console.log('Response:' + JSON.stringify(response, null, 2))
+            // window.location.reload()
         },
         (error) => {
             const resMessage =
@@ -35,14 +35,14 @@ function Login() {
                 error.response.data &&
                 error.response.data.message) ||
             error.message ||
-            error.toString();
+            error.toString()
 
-            setLoading(false);
-            setMessage(resMessage);
+            setLoading(false)
+            setMessage(resMessage)
         }
-        );
-        history.push('/profile');
-    };
+        )
+        history.push('/profile')
+    }
 
     return (
         <form>
@@ -87,7 +87,7 @@ function Login() {
             </div>
           )}
         </form>
-    );
+    )
 }
 
-export default Login;
+export default Login

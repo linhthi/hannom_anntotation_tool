@@ -1,5 +1,6 @@
 import React, { useState} from 'react'
 import PropTypes from 'prop-types'
+import API from '../../constant/API'
 const initMouse = {
   lastMoveX:0,
   lastMoveY:0,
@@ -206,7 +207,7 @@ function ImageAnnoDisplay(props) {
       >
         
         <image
-          xlinkHref={`http://localhost:5000/api/images/uploads/${filename}`}
+          xlinkHref={`${API.GET_IMAGE}/${filename}`}
           width={svgWidth}
           height={svgHeight}
           style={
