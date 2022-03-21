@@ -217,11 +217,16 @@ def crop_characters(image_file):
 
             img_box_crop = img.crop((x_min, y_min, x_max, y_max))
             characters_path = os.path.join(folder_path, f'characters/img_{box["id"]}')
-
+            
             if os.path.exists(characters_path) == False:
                 os.mkdir(characters_path)   
             print(characters_path)
             img_box_crop.save(os.path.join(characters_path, f'img_{box["id"]}.png'))
+            json_path = os.path.join(characters_path, f'img_{box["id"]}.json')
+            property_of_image = {"has_threshold":False, "size": img_box_crop.shape, "no_cnts":-1, "threshold":127}
+            with open(json_path, 'w') as json_file:
+                json.dump(property_of_image, json_file)
+
     
     elif request.method == 'POST':
         box = request.json
@@ -236,7 +241,11 @@ def crop_characters(image_file):
             os.mkdir(characters_path)   
         print(characters_path)
         img_box_crop.save(os.path.join(characters_path, f'img_{box["id"]}.png'))
-    return jsonify({'message: crop successfull'})
+        json_path = os.path.join(characters_path, f'img_{box["id"]}.json')
+        property_of_image = {"has_threshold":False, "size": img_box_crop.shape, "no_cnts":-1, "threshold":127}
+        with open(json_path, 'w') as json_file:
+            json.dump(property_of_image, json_file)
+    return jsonify({'message: crop successfull'}), 200
 
 
 @app.route('/api/image/getlabel/<image_file>', methods=['GET'])
@@ -253,14 +262,14 @@ def getlabel(image_file):
     return jsonify(message="successful", data=obj), 200
 
 
-# @app.get('/api/image/label/<imag_file>', methods=['POST'])
-# def saveLabel(image_file):
-#     data = request.json['data']
-#     file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file + '/' + image_file + '.json')
-#     with open(file_path, 'w') as f:
-#         json.dump(data, f)
+@app.route('/api/image/label/<image_file>', methods=['POST'])
+def saveLabel(image_file):
+    data = request.json['data']
+    file_path = os.path.join(app.config['UPLOAD_FOLDER'], image_file + '/' + image_file + '.json')
+    with open(file_path, 'w') as f:
+        json.dump(data, f)
 
-#     return jsonify(message="Save successfull", data=data), 200
+    return jsonify(message="Save successfull", data=data), 200
 
 @app.route('/api/images', methods=['GET'])
 def getAllImages():
