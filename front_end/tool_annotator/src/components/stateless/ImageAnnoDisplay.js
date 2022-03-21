@@ -48,6 +48,7 @@ function ImageAnnoDisplay(props) {
   const [drawings, setDrawings] = React.useState([])
   const [mouseState, setMouseState] = React.useState(initMouse)
   const [drawBoxes, setDrawBoxes] = useState([])
+  const [svgRectElem, setSvgRectElem] = useState([])
 
   const searchBox = (x, y) => {
     boxes.map(box => {
@@ -132,10 +133,18 @@ function ImageAnnoDisplay(props) {
   }  
 
   const renderManual = () => {
+    // setMouseState({
+    //   ...mouseState,
+    //   startX: drawBoxes.x_min,
+    //   startY: drawBoxes.y_min,
+    //   width: drawBoxes.x_max - drawBoxes.x_min,
+    //   height: drawBoxes.y_max - drawBoxes.y_min
+    // })
     return drawings.length > 0 ? (
       <>
         {updateNewListDrawing(drawings)}
         {mouseState.isDrawing ? (
+          <g>
           <rect
             x={mouseState.startX}
             y={mouseState.startY}
@@ -144,19 +153,24 @@ function ImageAnnoDisplay(props) {
             fill="none"
             style={{ strokeWidth: 1, stroke: "black" }}
           />
-        ) : null}
-        {drawings.map((a, index) => (
-          <g key={index} style={{ cursor: "pointer" }}>
-            <rect
-              x={a.startX}
-              y={a.startY}
-              width={a.width}
-              height={a.height}
-              fill="none"
-              style={{ strokeWidth: 0.5, stroke: "red" }}
-            />
           </g>
-        ))}
+        ) : null}
+        {isDrawing ? (
+          <>
+          {drawings.map((a, index) => (
+            <g key={index} style={{ cursor: "pointer" }}>
+              <rect
+                x={a.startX}
+                y={a.startY}
+                width={a.width}
+                height={a.height}
+                fill="none"
+                style={{ strokeWidth: 0.2, stroke: "red" }}
+              />
+            </g>
+          ))}
+          </>
+        ) : (null)}
       </>
     ) : (
       <>
@@ -175,11 +189,6 @@ function ImageAnnoDisplay(props) {
   }
 
   return (
-  // <div>
-  // <ReactSVGPanZoom
-  // width={500} height={400}
-  // tool='zoom-in'
-  // >
     <div
       id="svgWrapper"
       onMouseLeave={leave}
@@ -206,17 +215,20 @@ function ImageAnnoDisplay(props) {
           // onMouseMove={handleMouseMove}
         />
         {boxes.map(box => (
-          box.label ?
-          <g>
-            <rect
-                key={box.id}
-                x={box.x_min * scale}
-                y={box.y_min * scale}
-                width={(box.x_max - box.x_min) * scale}
-                height={(box.y_max - box.y_min) * scale}
-                style={{ fill: 'none', stroke: 'lime', strokeWidth: '1' }}
-
-            />
+          box.id == drawBoxes.id && !isDrawing?
+            <g>
+              <rect
+                  key={drawBoxes.id}
+                  x={drawBoxes.x_min * scale}
+                  y={drawBoxes.y_min * scale}
+                  width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
+                  height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
+                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '1.0' }}
+                  onMouseLeave={leave}
+                  onMouseUp={up}
+                  onMouseMove={move}
+                  onMouseDown={down}
+              />
             </g>
             :
             <g>
@@ -226,33 +238,15 @@ function ImageAnnoDisplay(props) {
                 y={box.y_min * scale}
                 width={(box.x_max - box.x_min) * scale}
                 height={(box.y_max - box.y_min) * scale}
-                style={{ fill: 'none', stroke: 'red', strokeWidth: '0.5' }}
-
+                style={box.label ? { fill: 'none', stroke: 'lime', strokeWidth: '1' }:
+                        { fill: 'none', stroke: 'red', strokeWidth: '0.5' }}
             />
             </g>
 
             ))}
-        {/* {drawBoxes.length > 0 
-          drawBoxes.map(box => ( */}
-            <g>
-              <rect
-                  key={drawBoxes.id}
-                  x={drawBoxes.x_min * scale}
-                  y={drawBoxes.y_min * scale}
-                  width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
-                  height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
-                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '2' }}
-
-              />
-              </g>
-            {/* </g>
-          ))} */}
-          {console.log("Drawings: ", drawings)}
           {renderManual()}
       </svg>
     </div>
-    // </ReactSVGPanZoom>
-    // </div>
   )
 }
 

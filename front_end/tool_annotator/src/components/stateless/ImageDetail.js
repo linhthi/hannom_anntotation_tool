@@ -1,14 +1,13 @@
 import React, { useState, useRef, useEffect, useCallback} from 'react'
 import { parse } from 'json2csv'
 import PropTypes from 'prop-types'
-import BoxesDetail from './BoxesDetail'
 import ImageAnnoDisplay from './ImageAnnoDisplay'
-import { convertIdStrToInt } from '../utils/helpers'
 import ImageLabelDisplay from './ImageLabelDisplay'
 import {FaEdit, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
+import {Alert} from 'react-alert'
 import axios from 'axios'
 
 
@@ -16,7 +15,6 @@ function ImageDetail({ image, createMessage }) {
   const [drawBoxes, setDrawBoxes] = useState([])
   const [boxes, setBoxes] = useState([])
   const [editModes, setEditModes] = useState([])
-  const [addBoxMode, setAddBoxMode] = useState(false)
   const [scale, setScale] = useState(0.45)
   const [svgWidth, setSvgWidth] = useState(0)
   const [svgHeight, setSvgHeight] = useState(0)
@@ -40,45 +38,30 @@ function ImageDetail({ image, createMessage }) {
       setBoxes(res.bboxes.sort((a, b) => a.id - b.id))
       setEditModes(Array(res.bboxes.length).fill(false))
     }
-    setSvgWidth(res.width *scale)
-    setSvgHeight(res.height *scale)
+  
+    setSvgWidth(window.innerWidth / 2.7)
+    setSvgHeight(res.height * (window.innerWidth / 2.7/ res.width))
+    setScale(window.innerWidth / 2.7 / res.width)
 
   }
 
   useEffect(()=> {
     fetchMyAPI()
-    console.log("Page", page)
-    
     setLoading(false)
-    console.log("load",loading)
-    console.log("Hello")
   }, [])
 
-  console.log("Pageeeee", loading)
-
   useEffect(() => {
-    // if (typeof image === 'undefined') return
-
     setSvgWidth(page.width *scale)
     setSvgHeight(page.height *scale)
-    console.log("Image", image)
   }, [scale])
 
   const callback = useCallback((drawBoxes) => {
     setDrawBoxes(drawBoxes)
   }, [])
 
-  const updateisAddBoundingBox = useCallback((isAddBoundingBox) => {
-    setIsAddBoundingBox(isAddBoundingBox)
-  }, [])
-
   const updateNewListDrawing = useCallback((newListDrawing) => {
     setNewListDrawing(newListDrawing)
   }, [])
-
-  // if (typeof page === 'undefined') {
-  //   return <div>Loading...</div>
-  // }
 
   const updateListBox = newListDrawing => {
     newListDrawing.map((a, index) => {
@@ -96,16 +79,7 @@ function ImageDetail({ image, createMessage }) {
   const onAddBoxButtonClick = () => {
     setIsAddBoundingBox(!isAddBoundingBox)
     updateListBox(newListDrawing)
-    // if (newListDrawing.length > 0) {
-    //   setDrawBoxes({
-    //     "id": 'id' + (new Date()).getTime(),
-    //     "label": null,
-    //     "x_min": newListDrawing[0].startX / scale,
-    //     "x_max": (newListDrawing[0].startX + newListDrawing[0].width) / scale,
-    //     "y_min": newListDrawing[0].startY / scale,
-    //     "y_max": (newListDrawing[0].startY + newListDrawing[0].height) / scale,
-    //   })
-    // }
+    setDrawBoxes({})
   }
 
 
@@ -136,27 +110,21 @@ function ImageDetail({ image, createMessage }) {
 			"y_min": drawBoxes.y_min,
 			"y_max": drawBoxes.y_max
 		}
-    const foundIndex = boxes.findIndex(x => x.id == newBox.id)
+    const foundIndex = boxes.findIndex(x => x.id === newBox.id)
     console.log("Index in array", foundIndex)
     boxes[foundIndex] = newBox
     setBoxes([...boxes])
-    // setDrawBoxes(newBox)
+    // setNewListDrawing([])
+    onSavePage()
 	}
-
-	// const handleTrashIconClick = (e) => {
-  //   const arr = boxes.filter((item) => {
-  //     return item.id !== drawBoxes.id
-  //   })
-  //   setBoxes([...arr])
-  //   alert("Đã xóa")
-  // }
 
   const handleZoom = (e) => {
     setIsFullScreen(!isFullScreen)
     if (isFullScreen) {
-      setScale(0.45)
+      setScale(window.innerWidth / 2.7 / page.width)
+      
     } else {
-      setScale(0.65)
+      setScale(window.innerWidth / 1.7/ page.width)
     }
   }
 	
@@ -186,6 +154,20 @@ function ImageDetail({ image, createMessage }) {
         }
       ]
     })
+  }
+
+  const handleSmooth = async () => {
+    axios.post(`/api/images/crop/${image.filename}`, drawBoxes)
+          .then(response => console.log(response))
+    await new Promise(resolve => setTimeout(resolve, 1000))
+    window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}`
+  }
+
+  const onSavePage = () => {
+    page['bboxes'] = boxes
+    axios.post(`/api/image/label/${image.filename}`, {'data': page})
+         .then(res => console.log(res))
+    alert('Đã lưu')
   }
 
   const renderEdit = () => {
@@ -219,7 +201,7 @@ function ImageDetail({ image, createMessage }) {
           </button>
           <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
-          onClick={()=> window.location.href = `http://localhost:5000/smooth/${image.filename}/img_${drawBoxes.id}`}>
+          onClick={handleSmooth}>
             Làm mịn nét chữ
           </button>
           </Link>
@@ -288,7 +270,7 @@ function ImageDetail({ image, createMessage }) {
 
         <button
           className="blue button"
-          onClick={onAddBoxButtonClick}
+          onClick={onSavePage}
         >
           Lưu trang
         </button>

@@ -1,6 +1,6 @@
-import React, { useState, useEffect} from 'react'
+import React from 'react'
 import PropTypes from 'prop-types'
-import lines from '../../lines.json'
+// import lines from '../../lines.json'
 
 function ImageLabelDisplay(props) {
   const {
@@ -10,8 +10,6 @@ function ImageLabelDisplay(props) {
     scale,
     drawBoxes,
   } = props
-
-  const [moveable, setMoveable] = useState(false)
 
   return (
     <svg
@@ -31,7 +29,7 @@ function ImageLabelDisplay(props) {
         />
       </g>
 
-      {lines.map(line => (
+      {/* {lines.map(line => (
         <g>
           <line 
           x1={line.x*scale*1.45} 
@@ -41,7 +39,7 @@ function ImageLabelDisplay(props) {
           style={{ stroke: 'black', strokeWidth: '0.5' }}
           />
         </g>
-      ))}
+      ))} */}
 
       {boxes.map(box => (
         box.label ? 
