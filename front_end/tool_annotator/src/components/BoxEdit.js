@@ -1,6 +1,5 @@
 import React, {useState} from 'react'
 import PropTypes from 'prop-types'
-import Label from './Label'
 import {FaEdit, FaTrash } from 'react-icons/fa'
 
 function BoxEdit(props) {
@@ -9,7 +8,6 @@ function BoxEdit(props) {
 		parrentCallback,
 	} = props
 
-	const [isSave, setIsSave] = useState(false)
 	const [isEdit, setEdit] = useState(false)
 	const [newLabel, setNewLabel] = useState()
 

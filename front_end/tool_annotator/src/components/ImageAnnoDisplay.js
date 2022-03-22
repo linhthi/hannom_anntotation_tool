@@ -1,6 +1,6 @@
 import React, { useState} from 'react'
 import PropTypes from 'prop-types'
-import API from '../../constant/API'
+import API from '../constant/API'
 const initMouse = {
   lastMoveX:0,
   lastMoveY:0,
@@ -49,7 +49,6 @@ function ImageAnnoDisplay(props) {
   const [drawings, setDrawings] = React.useState([])
   const [mouseState, setMouseState] = React.useState(initMouse)
   const [drawBoxes, setDrawBoxes] = useState([])
-  const [svgRectElem, setSvgRectElem] = useState([])
 
   const searchBox = (x, y) => {
     boxes.map(box => {
@@ -134,13 +133,6 @@ function ImageAnnoDisplay(props) {
   }  
 
   const renderManual = () => {
-    // setMouseState({
-    //   ...mouseState,
-    //   startX: drawBoxes.x_min,
-    //   startY: drawBoxes.y_min,
-    //   width: drawBoxes.x_max - drawBoxes.x_min,
-    //   height: drawBoxes.y_max - drawBoxes.y_min
-    // })
     return drawings.length > 0 ? (
       <>
         {updateNewListDrawing(drawings)}
@@ -213,7 +205,6 @@ function ImageAnnoDisplay(props) {
           style={
             imageWidth > imageHeight ? { width: '100%' } : { height: '100%' }
           }
-          // onMouseMove={handleMouseMove}
         />
         {boxes.map(box => (
           box.id == drawBoxes.id && !isDrawing?
@@ -260,8 +251,6 @@ ImageAnnoDisplay.propTypes = {
   scale: PropTypes.number.isRequired,
   boxes: PropTypes.array.isRequired,
   isDrawing: PropTypes.bool.isRequired,
-  // onImageClick: PropTypes.func.isRequired,
-  // createMessage: PropTypes.func.isRequired,
   parrentCallback: PropTypes.func.isRequired,
   updateNewListDrawing: PropTypes.func.isRequired,
 }
