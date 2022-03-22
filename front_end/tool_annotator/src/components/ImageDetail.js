@@ -7,9 +7,9 @@ import {FaEdit, FaTrash } from 'react-icons/fa'
 import { Link } from 'react-router-dom'
 import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
-import {Alert} from 'react-alert'
 import axios from 'axios'
-import API from '../../constant/API'
+import API from '../constant/API'
+// import {Alert} from 'react-alert'
 
 
 function ImageDetail({ image, createMessage }) {
@@ -200,12 +200,12 @@ function ImageDetail({ image, createMessage }) {
           >
             <FaTrash />
           </button>
-          <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
+          {/* <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
           onClick={handleSmooth}>
             Làm mịn nét chữ
           </button>
-          </Link>
+          </Link> */}
           {isEdit ?  (
             <button
             className="circular primary button"
@@ -288,9 +288,9 @@ function ImageDetail({ image, createMessage }) {
           boxes={boxes}
           drawBoxes={drawBoxes}
         />
-        <button className="blue button" onClick={downloadBoxesAsCSV}>
+        {/* <button className="blue button" onClick={downloadBoxesAsCSV}>
           Tải xuống văn bản
-        </button>
+        </button> */}
       </div>
       ): (<></>)}
 
