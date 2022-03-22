@@ -1,23 +1,10 @@
 import React from 'react'
-// import { Link } from 'react-router-dom'
 import PropTypes from 'prop-types'
 import Card from './Card'
-import Loader from '../Loader'
+import Loader from './Loader'
 
 function CardList(props) {
   const { selectedTab, images, isLoading } = props
-  // if (selectedTab === 'yours' && currentUser === '') {
-  //   return (
-  //     <div className="row">
-  //       <div>
-  //         <p>
-  //           In order to see your images, log in first at{' '}
-  //           <Link to="/login">here</Link>.
-  //         </p>
-  //       </div>
-  //     </div>
-  //   )
-  // }
 
   let cards
   if (selectedTab === 'all') {
@@ -30,17 +17,7 @@ function CardList(props) {
           onDeleteImage={props.onDeleteImage}
         />
       ))
-  // } else {
-  //   cards = props.images
-  //     .filter(image => image.user.username === props.currentUser)
-  //     .sort((a, b) => b.id - a.id)
-  //     .map(image => (
-  //       <Card
-  //         key={image._id}
-  //         image={image}
-  //         onDeleteImage={props.onDeleteImage}
-  //       />
-  //     ))
+  
   }
 
   return (

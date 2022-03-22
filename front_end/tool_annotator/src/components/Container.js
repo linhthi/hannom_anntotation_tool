@@ -1,9 +1,8 @@
 import React from 'react'
 import { Route } from 'react-router-dom'
 import PropTypes from 'prop-types'
-import AddImageForm from '../statefull/AddImageForm'
+// import AddImageForm from '../AddImageForm'
 import CardList from './CardList'
-import ImageTabNavBar from './ImageTabNavBar'
 import ImageDetail from './ImageDetail'
 
 function Container(props) {
@@ -12,12 +11,6 @@ function Container(props) {
       <Route
         path="/images/:imageName"
         render={({ match }) => (
-          // <ImageDetail
-          //   image={props.images.find(
-          //     image => image.filename === `${match.params.imageName}`
-          //   )}
-          //   createMessage={props.createMessage}
-          // />
           <ImageDetail
           image={{"id": match.params.imageName,
                   "user_id": 1,
@@ -31,14 +24,10 @@ function Container(props) {
         path="/images"
         render={() => (
           <div className="grid space-around">
-            <div className="grid-row">
+            {/* <div className="grid-row">
                 <AddImageForm onButtonClick={props.onButtonClick} />
             </div>
-            <div className="grid-row">
-              <ImageTabNavBar
-                onTabChange={props.onTabChange}
-              />
-            </div>
+            */}
             <CardList
               images={props.images}
               isLoading={props.isLoading}
