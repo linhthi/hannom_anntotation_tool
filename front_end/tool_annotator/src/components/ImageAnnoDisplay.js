@@ -215,7 +215,7 @@ function ImageAnnoDisplay(props) {
                   y={drawBoxes.y_min * scale}
                   width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
                   height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
-                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '1.0' }}
+                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '2.0' }}
                   onMouseLeave={leave}
                   onMouseUp={up}
                   onMouseMove={move}
