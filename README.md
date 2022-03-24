@@ -1,4 +1,4 @@
-###clone
+### clone
 git clone --branch dev https://github.com/linhthi/hannom_anntotation_tool.git
 
 ### Data
