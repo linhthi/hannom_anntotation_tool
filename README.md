@@ -27,3 +27,6 @@ Start front_end:
 ```
 npm start
 ```
+
+### Success
+http://localhost:3000/images
