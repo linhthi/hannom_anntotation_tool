@@ -5,6 +5,8 @@ git clone --branch dev https://github.com/linhthi/hannom_anntotation_tool.git
 https://drive.google.com/drive/folders/1bWIKV3CYlKuaOIfxXTlWXMMuTGDh8zMW?usp=sharing
 
 ### Backend
+Config at: config.py
+
 Install packages:
 ```
 pip install -r requirements.txt
@@ -19,6 +21,8 @@ python app.py
 ```
 
 ### Frontend
+Config at: front_end/tool_annotator/.env
+
 Move to frontend directory:
 ```
 cd front_end/tool_annotator

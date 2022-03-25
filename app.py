@@ -36,12 +36,14 @@ import copy
 #from normalize import Normalize
 from collections import defaultdict
 import json
+import config
 
 
 basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
 
 app = Flask(__name__)
+app.config.from_object(config)
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
@@ -472,4 +474,4 @@ def getAllImages():
 
 
 if __name__ == '__main__':
-    app.run(host="localhost", debug=True)
+    app.run(port=config.PORT, debug=config.DEBUG)
