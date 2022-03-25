@@ -9,6 +9,10 @@ Install packages:
 ```
 pip install -r requirements.txt
 ```
+```bat
+yum update -y && yum install -y libXext libSM libXrender
+sudo apt-get install -y libsm6 libxext6 libxrender-dev
+```
 Run backend:
 ```
 python app.py
