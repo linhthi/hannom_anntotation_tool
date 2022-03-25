@@ -29,11 +29,11 @@ import json
 import cv2
 from PIL import Image
 import io
-import matplotlib.pyplot as plt
+#import matplotlib.pyplot as plt
 import numpy as np
 import copy
-from tool import *
-from normalize import Normalize
+#from tool import *
+#from normalize import Normalize
 from collections import defaultdict
 import json
 
@@ -45,7 +45,7 @@ app = Flask(__name__)
 
 app.config['UPLOAD_FOLDER'] = 'static/uploads'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
-normalize_obj = Normalize()
+#normalize_obj = Normalize()
 
 
 def image_to_byte_array(image:Image):
