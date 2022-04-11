@@ -95,6 +95,11 @@ def save_annotation_and_label(image_folder):
     """
     for image_file in os.listdir(image_folder):
         start = time.time()
+        image_file_json = image_file + '.json'
+        file_json = os.path.join(image_folder, image_file+'/'+image_file_json)
+        if os.path.exists(file_json) == True:
+            print("Has been json file: {}".format(file_json))
+            continue
         print("Processing at image: {}".format(image_file))
         file_path = os.path.join(image_folder, image_file + '/' + image_file +'.png')
         img = Image.open(file_path)
@@ -103,7 +108,6 @@ def save_annotation_and_label(image_folder):
             bboxes = detect_single_image(img)['bbox']
         except RuntimeError:
             pass
-        image_file_json = image_file + '.json'
         detected_boxes = []
         height, width = None, None
         for box in bboxes:
