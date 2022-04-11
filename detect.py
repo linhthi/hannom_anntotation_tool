@@ -119,8 +119,6 @@ def save_annotation_and_label(image_folder):
                     'y_max': y_max.item()
                 }
                 detected_boxes.append(current_box)
-            catch Error:
-                pass
 
         page = {
             "_id": str(uuid.uuid4()),
