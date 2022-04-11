@@ -108,16 +108,19 @@ def save_annotation_and_label(image_folder):
         height, width = None, None
         for box in bboxes:
             img_box_crop, x_min, y_min, x_max, y_max, height, width  = get_box_img(box, img)
-            label_detect = detect_symbol(img_box_crop)
-            current_box = {
-                'id': str(uuid.uuid4()),
-                'label': label_detect,
-                'x_min': x_min.item(),
-                'y_min': y_min.item(),
-                'x_max': x_max.item(),
-                'y_max': y_max.item()
-            }
-            detected_boxes.append(current_box)
+            try:
+                label_detect = detect_symbol(img_box_crop)
+                current_box = {
+                    'id': str(uuid.uuid4()),
+                    'label': label_detect,
+                    'x_min': x_min.item(),
+                    'y_min': y_min.item(),
+                    'x_max': x_max.item(),
+                    'y_max': y_max.item()
+                }
+                detected_boxes.append(current_box)
+            catch Error:
+                pass
 
         page = {
             "_id": str(uuid.uuid4()),
