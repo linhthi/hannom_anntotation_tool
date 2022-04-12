@@ -45,7 +45,7 @@ uploads_path = os.path.join(basedir, 'uploads')
 app = Flask(__name__)
 app.config.from_object(config)
 
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
+app.config['UPLOAD_FOLDER'] = 'static/uploads/tt4'
 ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 #normalize_obj = Normalize()
 
@@ -60,10 +60,6 @@ def image_to_byte_array(image:Image):
 basedir = os.path.abspath(os.path.dirname(__file__))
 uploads_path = os.path.join(basedir, 'uploads')
 
-app = Flask(__name__)
-app.config['UPLOAD_FOLDER'] = 'static/uploads'
-
-ALLOWED_EXTENSIONS = set(['png', 'jpg', 'jpeg'])
 
 # Easy_OCR
 # reader = easyocr.Reader(['ch_tra'])
