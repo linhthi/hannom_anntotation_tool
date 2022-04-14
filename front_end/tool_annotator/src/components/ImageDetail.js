@@ -9,7 +9,6 @@ import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import axios from 'axios'
 import API from '../constant/API'
-// import {Alert} from 'react-alert'
 
 
 function ImageDetail({ image, createMessage }) {
@@ -83,6 +82,12 @@ function ImageDetail({ image, createMessage }) {
     setDrawBoxes({})
   }
 
+  const updateBoxes = (boxes) => {
+    setBoxes(boxes)
+  }
+
+  
+
 
   const downloadBoxesAsCSV = () => {
     const fields = ['label', 'x_min', 'y_min', 'x_max', 'y_max']
@@ -134,27 +139,30 @@ function ImageDetail({ image, createMessage }) {
 	}
 
   const handleTrashIconClick = () => {
-
-    confirmAlert({
-      message: 'Xác nhận xóa bouding box của ô!',
-      buttons: [
-        {
-          label: 'Có',
-          onClick: () => {
-            const arr = boxes.filter((item) => {
-              return item.id !== drawBoxes.id
-            })
-            setDrawBoxes({})
-            setBoxes([...arr])
-            alert("Đã xóa!")
-          }
-        },
-        {
-          label: 'Không',
-          onClick: () => {}
-        }
-      ]
+    const arr = boxes.filter((item) => {
+      return item.id !== drawBoxes.id
     })
+    setDrawBoxes({})
+    setBoxes([...arr])
+    // confirmAlert({
+    //   message: 'Xác nhận xóa bouding box của ô!',
+    //   buttons: [
+    //     {
+    //       label: 'Có',
+    //       onClick: () => {
+    //         const arr = boxes.filter((item) => {
+    //           return item.id !== drawBoxes.id
+    //         })
+    //         setDrawBoxes({})
+    //         setBoxes([...arr])
+    //       }
+    //     },
+    //     {
+    //       label: 'Không',
+    //       onClick: () => {}
+    //     }
+    //   ]
+    // })
   }
 
   const handleSmooth = async () => {
@@ -236,6 +244,7 @@ function ImageDetail({ image, createMessage }) {
           isDrawing={isAddBoundingBox}
           parrentCallback={callback}
           updateNewListDrawing={updateNewListDrawing}
+          updateBoxes={updateBoxes}
         />
         {!isFullScreen ? (
           <button
