@@ -9,7 +9,6 @@ import { confirmAlert } from 'react-confirm-alert'
 import 'react-confirm-alert/src/react-confirm-alert.css'
 import axios from 'axios'
 import API from '../constant/API'
-// import {Alert} from 'react-alert'
 
 
 function ImageDetail({ image, createMessage }) {
@@ -83,6 +82,12 @@ function ImageDetail({ image, createMessage }) {
     setDrawBoxes({})
   }
 
+  const updateBoxes = (boxes) => {
+    setBoxes(boxes)
+  }
+
+  
+
 
   const downloadBoxesAsCSV = () => {
     const fields = ['label', 'x_min', 'y_min', 'x_max', 'y_max']
@@ -125,7 +130,7 @@ function ImageDetail({ image, createMessage }) {
       setScale(window.innerWidth / 2.7 / page.width)
       
     } else {
-      setScale(window.innerWidth / 1.7/ page.width)
+      setScale(window.innerWidth / 2/ page.width)
     }
   }
 	
@@ -134,27 +139,30 @@ function ImageDetail({ image, createMessage }) {
 	}
 
   const handleTrashIconClick = () => {
-
-    confirmAlert({
-      message: 'Xác nhận xóa bouding box của ô!',
-      buttons: [
-        {
-          label: 'Có',
-          onClick: () => {
-            const arr = boxes.filter((item) => {
-              return item.id !== drawBoxes.id
-            })
-            setDrawBoxes({})
-            setBoxes([...arr])
-            alert("Đã xóa!")
-          }
-        },
-        {
-          label: 'Không',
-          onClick: () => {}
-        }
-      ]
+    const arr = boxes.filter((item) => {
+      return item.id !== drawBoxes.id
     })
+    setDrawBoxes({})
+    setBoxes([...arr])
+    // confirmAlert({
+    //   message: 'Xác nhận xóa bouding box của ô!',
+    //   buttons: [
+    //     {
+    //       label: 'Có',
+    //       onClick: () => {
+    //         const arr = boxes.filter((item) => {
+    //           return item.id !== drawBoxes.id
+    //         })
+    //         setDrawBoxes({})
+    //         setBoxes([...arr])
+    //       }
+    //     },
+    //     {
+    //       label: 'Không',
+    //       onClick: () => {}
+    //     }
+    //   ]
+    // })
   }
 
   const handleSmooth = async () => {
@@ -173,7 +181,7 @@ function ImageDetail({ image, createMessage }) {
 
   const renderEdit = () => {
     return (
-      <div className='gray'>
+      <div className='gray label-bar'>
         {!isAddBoundingBox ? (
           <>
           <span className="box-label-first">Nhãn </span>
@@ -182,7 +190,7 @@ function ImageDetail({ image, createMessage }) {
           key={drawBoxes.label}
           defaultValue={drawBoxes.label}
           disabled={!isEdit}
-          style={{fontSize: 20, width: "50px", height: "50px"}}
+          style={{fontSize: 20, width: "100px", height: "40px", marginRight: "10px"}}
           onChange={onLabelChange}
           >
           
@@ -194,12 +202,12 @@ function ImageDetail({ image, createMessage }) {
           >
             <FaEdit />
           </button>
-          <button
+          {/* <button
             className="circular button"
             onClick={handleTrashIconClick}
           >
             <FaTrash />
-          </button>
+          </button> */}
           {/* <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
           onClick={handleSmooth}>
@@ -236,6 +244,7 @@ function ImageDetail({ image, createMessage }) {
           isDrawing={isAddBoundingBox}
           parrentCallback={callback}
           updateNewListDrawing={updateNewListDrawing}
+          updateBoxes={updateBoxes}
         />
         {!isFullScreen ? (
           <button

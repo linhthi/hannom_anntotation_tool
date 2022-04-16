@@ -14,35 +14,36 @@ function Card({ image, onDeleteImage }) {
           to={`/images/${image.filename}`}
           className="image"
         >
-          <img
+          <div className="extra-content">
+              <div>
+                Image id{' '}
+                <span style={{ color: 'red' }}>{image.id}</span>
+              </div>
+            </div>
+          {/* <img
             src={`${API.GET_IMAGE}/${image.filename}`}
             alt="detect result or original"
-          />
+          /> */}
         </Link>
         <div className="content">
+          
           <div>
-            <FaClone
+            {/* <FaClone
               color={detectImage ? '#33ff33' : ''}
               onClick={() => toggleDetectImage(!detectImage)}
-            />
+            /> */}
             <Link
               to={`/images/${image.filename}`}
               className="ui image"
             >
-              <FaInfoCircle color="#33ff33" />
+              {/* <FaInfoCircle color="#33ff33" /> */}
             </Link>
-              <FaTrashAlt
+              {/* <FaTrashAlt
                 color="red"
                 onClick={() => onDeleteImage(image.filename)}
-              />
+              /> */}
           </div>
           
-        </div>
-        <div className="extra-content">
-          <div>
-            Image id{' '}
-            <span style={{ color: 'red' }}>{image.id}</span>
-          </div>
         </div>
       </div>
     </div>

@@ -33,11 +33,12 @@ ul {
 }
 
 .grid-row {
-  width: 100%;
+  width: 50%;
 }
 
 .grid-item {
-  width: 30%;
+  width: 10%;
+  margin: 5px;
 }
 
 .flex-center {
@@ -188,8 +189,10 @@ ul {
 }
 
 .button {
-  padding: 8px;
-  margin: 10px;
+  padding: 5px;
+  margin: 5px;
+  margin-left: 10px;
+  margin-right: 10px;
   box-shadow: none;
   border-radius: 5px;
   border-color: transparent;
@@ -298,6 +301,10 @@ span.label {
   font-size: 2rem;
 }
 
+.label-bar {
+  margin: 0 auto;
+}
+
 .footer-dark {
   background: #121212;
   color: #FEFEFE;
@@ -378,3 +385,4 @@ span.label {
     border: none;
   }
 }
+
