@@ -130,7 +130,7 @@ function ImageDetail({ image, createMessage }) {
       setScale(window.innerWidth / 2.7 / page.width)
       
     } else {
-      setScale(window.innerWidth / 1.7/ page.width)
+      setScale(window.innerWidth / 2/ page.width)
     }
   }
 	
@@ -181,7 +181,7 @@ function ImageDetail({ image, createMessage }) {
 
   const renderEdit = () => {
     return (
-      <div className='gray'>
+      <div className='gray label-bar'>
         {!isAddBoundingBox ? (
           <>
           <span className="box-label-first">Nhãn </span>
@@ -190,7 +190,7 @@ function ImageDetail({ image, createMessage }) {
           key={drawBoxes.label}
           defaultValue={drawBoxes.label}
           disabled={!isEdit}
-          style={{fontSize: 20, width: "50px", height: "50px"}}
+          style={{fontSize: 20, width: "100px", height: "40px", marginRight: "10px"}}
           onChange={onLabelChange}
           >
           
@@ -202,12 +202,12 @@ function ImageDetail({ image, createMessage }) {
           >
             <FaEdit />
           </button>
-          <button
+          {/* <button
             className="circular button"
             onClick={handleTrashIconClick}
           >
             <FaTrash />
-          </button>
+          </button> */}
           {/* <Link to={`/smooth_feature/${drawBoxes.id}.png`}>
           <button className="button"
           onClick={handleSmooth}>

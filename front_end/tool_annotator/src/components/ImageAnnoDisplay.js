@@ -144,31 +144,51 @@ function ImageAnnoDisplay(props) {
     }
     else if (e.keyCode ===  37)  { // Enter left key
       if (drawBoxes != null) {
-        drawBoxes.x_min = drawBoxes.x_min - 4
-        drawBoxes.x_max = drawBoxes.x_max - 4
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min - 4,
+          "x_max": drawBoxes.x_max - 4,
+          "y_min": drawBoxes.y_min,
+          "y_max": drawBoxes.y_max
+        }
+        setDrawBoxes(newBox)
       }
-      setDrawBoxes(drawBoxes)
     }
     else if (e.keyCode === 39) { // Enter right key
       if (drawBoxes != null) {
-        drawBoxes.x_min = drawBoxes.x_min + 4
-        drawBoxes.x_max = drawBoxes.x_max + 4
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min + 4,
+          "x_max": drawBoxes.x_max + 4,
+          "y_min": drawBoxes.y_min,
+          "y_max": drawBoxes.y_max
+        }
+        setDrawBoxes(newBox)
       }
-      setDrawBoxes(drawBoxes)
     }
     else if (e.keyCode === 38) { // Enter up key
       if (drawBoxes != null) {
-        drawBoxes.y_min = drawBoxes.y_min - 4
-        drawBoxes.y_max = drawBoxes.y_max - 4
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min,
+          "x_max": drawBoxes.x_max,
+          "y_min": drawBoxes.y_min - 4,
+          "y_max": drawBoxes.y_max - 4
+        }
+        setDrawBoxes(newBox)
       }
-      setDrawBoxes(drawBoxes)
     }
     else if (e.keyCode === 40 ) { // Enter down key
       if (drawBoxes != null) {
-        drawBoxes.y_min = drawBoxes.y_min + 4
-        drawBoxes.y_max = drawBoxes.y_max + 4
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min,
+          "x_max": drawBoxes.x_max,
+          "y_min": drawBoxes.y_min + 4,
+          "y_max": drawBoxes.y_max + 4
+        }
+        setDrawBoxes(newBox)
       }
-      setDrawBoxes(drawBoxes)
     }
   }
 
@@ -251,18 +271,6 @@ function ImageAnnoDisplay(props) {
         {boxes.map(box => (
           box.id == drawBoxes.id && !isDrawing?
             <g>
-              <rect
-                  key={drawBoxes.id}
-                  x={drawBoxes.x_min * scale}
-                  y={drawBoxes.y_min * scale}
-                  width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
-                  height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
-                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '2.0' }}
-                  onMouseLeave={leave}
-                  onMouseUp={up}
-                  onMouseMove={move}
-                  onMouseDown={down}
-              />
             </g>
             :
             <g>
@@ -278,6 +286,18 @@ function ImageAnnoDisplay(props) {
             </g>
 
             ))}
+        {
+          <g>
+              <rect
+                  key={drawBoxes.id}
+                  x={drawBoxes.x_min * scale}
+                  y={drawBoxes.y_min * scale}
+                  width={(drawBoxes.x_max - drawBoxes.x_min) * scale}
+                  height={(drawBoxes.y_max - drawBoxes.y_min) * scale}
+                  style={{ fill: 'none', stroke: 'yellow', strokeWidth: '2.0' }}
+              />
+            </g>
+          }
           {renderManual()}
       </svg>
     </div>
