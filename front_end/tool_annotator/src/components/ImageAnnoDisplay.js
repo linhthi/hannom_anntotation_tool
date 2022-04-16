@@ -190,6 +190,55 @@ function ImageAnnoDisplay(props) {
         setDrawBoxes(newBox)
       }
     }
+    else if (e.keyCode === 65 ) { // Enter A key
+      if (drawBoxes != null) {
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min - 4,
+          "x_max": drawBoxes.x_max,
+          "y_min": drawBoxes.y_min,
+          "y_max": drawBoxes.y_max,
+        }
+        setDrawBoxes(newBox)
+      }
+    }
+    else if (e.keyCode === 83 ) { // Enter S key
+      if (drawBoxes != null) {
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min + 4,
+          "x_max": drawBoxes.x_max,
+          "y_min": drawBoxes.y_min,
+          "y_max": drawBoxes.y_max,
+        }
+        setDrawBoxes(newBox)
+      }
+    }
+    else if (e.keyCode === 87 ) { // Enter W key
+      if (drawBoxes != null) {
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min,
+          "x_max": drawBoxes.x_max,
+          "y_min": drawBoxes.y_min - 4,
+          "y_max": drawBoxes.y_max,
+        }
+        setDrawBoxes(newBox)
+      }
+    }
+
+    else if (e.keyCode === 90 ) { // Enter E key
+      if (drawBoxes != null) {
+        const newBox = {
+          "id": drawBoxes.id,
+          "x_min": drawBoxes.x_min,
+          "x_max": drawBoxes.x_max,
+          "y_min": drawBoxes.y_min + 4,
+          "y_max": drawBoxes.y_max,
+        }
+        setDrawBoxes(newBox)
+      }
+    }
   }
 
   const renderManual = () => {
