@@ -7,20 +7,20 @@ function NavBar({ title, isAuthenticated }) {
     <div className="nav flex-center space-around text-center">
       <div className="nav-header">{title}</div>
       <div className="nav-link">
-        <Link to="/">Home</Link>
+        <Link to="/">Trang chủ</Link>
       </div>
       {isAuthenticated && (
         <div className="nav-link">
-          <Link to="/logout">Log Out</Link>
+          <Link to="/logout">Đăng xuất</Link>
         </div>
       )}
       {!isAuthenticated && (
         <React.Fragment>
           <div className="nav-link">
-            <Link to="/register">Register</Link>
+            <Link to="/register">Đăng ký</Link>
           </div>
           <div className="nav-link">
-            <Link to="/login">Log In</Link>
+            <Link to="/login">Đăng nhập</Link>
           </div>
         </React.Fragment>
       )}

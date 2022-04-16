@@ -1,16 +1,20 @@
 import React from 'react'
 import { Redirect } from 'react-router-dom'
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom"
-import Container from './components/stateless/Container'
+import Container from './components/Container'
 import Message from './components/Message'
 import axios from 'axios'
 import API from './constant/API'
+import NavBar from './components/NavBar'
+import RegisterLoginForm from './components/RegisterLoginForm'
 
 class App extends React.Component {
   constructor(props) {
     super(props)
     this.state = {
       images: [],
+      currentUser: '',
+      isAuthenticated: false,
       isLoading: false,
       selectedTab: 'all',
       message: {
@@ -115,6 +119,7 @@ class App extends React.Component {
     const {
       images,
       isLoading,
+      isAuthenticated,
       message,
       selectedTab,
     } = this.state
@@ -127,6 +132,10 @@ class App extends React.Component {
         {message.type && message.text && (
           <Message type={message.type} text={message.text} />
         )}
+        <NavBar
+          title={"Công cụ gán nhãn Hán Nôm"}
+          isAuthenticated={false}
+        />
         <Switch>
           <Route
             path="/images"
@@ -144,6 +153,27 @@ class App extends React.Component {
           />
 
           <Route exact path="/" render={() => <Redirect to="/images" />} />
+          <Route 
+            exact path='/register' 
+            render={() => (
+              <RegisterLoginForm
+              isAuthenticated={isAuthenticated}
+              formType="register"
+              onButtonClick={this.handleRegisterLoginUser}
+              />
+            )} 
+          />
+          <Route
+            exact
+            path="/login"
+            render={() => (
+              <RegisterLoginForm
+                isAuthenticated={isAuthenticated}
+                formType="login"
+                onButtonClick={this.handleRegisterLoginUser}
+              />
+            )}
+          />
         </Switch>
       </React.Fragment>
       </Router>

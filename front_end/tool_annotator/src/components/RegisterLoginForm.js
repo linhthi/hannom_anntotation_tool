@@ -50,9 +50,10 @@ class RegisterLoginForm extends React.Component {
 
   render() {
     const { username, password, valid } = this.state
-    // if (isAuthenticated) {
-    //   return <Redirect to="/" />
-    // }
+    const { isAuthenticated, formType } = this.props
+    if (isAuthenticated) {
+      return <Redirect to="/" />
+    }
 
     return (
       <div className="container column" style={{ margin: '30px auto' }}>
