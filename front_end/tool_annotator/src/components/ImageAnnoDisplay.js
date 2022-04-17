@@ -152,6 +152,10 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max
         }
         setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
     else if (e.keyCode === 39) { // Enter right key
@@ -164,6 +168,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
     else if (e.keyCode === 38) { // Enter up key
@@ -176,6 +185,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max - 4
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
     else if (e.keyCode === 40 ) { // Enter down key
@@ -188,6 +202,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max + 4
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
     else if (e.keyCode === 65 ) { // Enter A key
@@ -200,6 +219,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max,
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
     else if (e.keyCode === 83 ) { // Enter S key
@@ -212,6 +236,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max,
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
     else if (e.keyCode === 87 ) { // Enter W key
@@ -224,6 +253,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max,
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
 
@@ -237,6 +271,11 @@ function ImageAnnoDisplay(props) {
           "y_max": drawBoxes.y_max,
         }
         setDrawBoxes(newBox)
+        setDrawBoxes(newBox)
+        const foundIndex = boxes.findIndex(x => x.id === newBox.id)
+        console.log("Index in array", foundIndex)
+        boxes[foundIndex] = newBox
+        updateBoxes([...boxes])
       }
     }
   }
