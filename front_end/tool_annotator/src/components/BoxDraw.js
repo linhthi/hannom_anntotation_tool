@@ -54,8 +54,8 @@ function BoxDraw() {
       isDrawing: true,
       startX: startX,
       startY: startY,
-      width: 0,
-      height: 0,
+      width: 2,
+      height: 2,
       offsetX: offset.left,
       offsetY: offset.top
     })
@@ -67,14 +67,12 @@ function BoxDraw() {
     var wid = mouseState.width
     var hei = mouseState.height
 
-//     if (wid < 5 || hei < 5) {
-//       setMouseState({ ...initMouse })
-//     } else {
-//       setMouseState({ ...initMouse })
-//       setDrawings([...drawings, ...[mouseState]])
-//     }
-    setMouseState({ ...initMouse })
-    setDrawings([...drawings, ...[mouseState]])
+    if (wid < 5 || hei < 5) {
+      setMouseState({ ...initMouse })
+    } else {
+      setMouseState({ ...initMouse })
+      setDrawings([...drawings, ...[mouseState]])
+    }
   }
 
   const move = e => {
@@ -83,8 +81,8 @@ function BoxDraw() {
     var currX = e.pageX - mouseState.offsetX
     var currY = e.pageY - mouseState.offsetY
 
-    var wid = currX - mouseState.startX
-    var hei = currY - mouseState.startY
+    var wid = currX - mouseState.startX + 1
+    var hei = currY - mouseState.startY + 1
     if (wid <= 0) {
       wid = Math.abs(wid)
     } else {
