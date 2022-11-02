@@ -54,8 +54,8 @@ function BoxDraw() {
       isDrawing: true,
       startX: startX,
       startY: startY,
-      width: 2,
-      height: 2,
+      width: 0,
+      height: 0,
       offsetX: offset.left,
       offsetY: offset.top
     })
@@ -67,12 +67,14 @@ function BoxDraw() {
     var wid = mouseState.width
     var hei = mouseState.height
 
-    if (wid < 5 || hei < 5) {
-      setMouseState({ ...initMouse })
-    } else {
-      setMouseState({ ...initMouse })
-      setDrawings([...drawings, ...[mouseState]])
-    }
+//     if (wid < 5 || hei < 5) {
+//       setMouseState({ ...initMouse })
+//     } else {
+//       setMouseState({ ...initMouse })
+//       setDrawings([...drawings, ...[mouseState]])
+//     }
+    setMouseState({ ...initMouse })
+    setDrawings([...drawings, ...[mouseState]])
   }
 
   const move = e => {
