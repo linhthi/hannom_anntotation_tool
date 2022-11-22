@@ -92,7 +92,7 @@ function ImageAnnoDisplay(props) {
     var wid = mouseState.width
     var hei = mouseState.height
 
-    if (wid < 10 || hei < 10) {
+    if (wid < 2 || hei < 2) {
       setMouseState({ ...initMouse })
     } else {
       setMouseState({ ...initMouse })
